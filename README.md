@@ -1,0 +1,2 @@
+# ScratchPad
+ KaTeX powered scratchpad.
