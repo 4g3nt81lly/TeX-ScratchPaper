@@ -1,6 +1,4 @@
 # macOS files
-.DS_Store
-# PyCharm files
-.idea/
+**/.DS_Store
 # Playground files
-.playground
+**/*.playground/**
