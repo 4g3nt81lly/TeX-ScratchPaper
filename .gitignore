@@ -1,4 +1,6 @@
 # macOS files
 **/.DS_Store
+
 # Playground files
+**/*.playground
 **/*.playground/**
