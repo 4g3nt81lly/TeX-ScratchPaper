@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "37883CBC26770D490094A71F"
-               BuildableName = "ScratchPad.app"
-               BlueprintName = "ScratchPad"
-               ReferencedContainer = "container:ScratchPad.xcodeproj">
+               BuildableName = "TeX-ScratchPad.app"
+               BlueprintName = "TeX-ScratchPad"
+               ReferencedContainer = "container:TeX-ScratchPad.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "37883CBC26770D490094A71F"
-            BuildableName = "ScratchPad.app"
-            BlueprintName = "ScratchPad"
-            ReferencedContainer = "container:ScratchPad.xcodeproj">
+            BuildableName = "TeX-ScratchPad.app"
+            BlueprintName = "TeX-ScratchPad"
+            ReferencedContainer = "container:TeX-ScratchPad.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "37883CBC26770D490094A71F"
-            BuildableName = "ScratchPad.app"
-            BlueprintName = "ScratchPad"
-            ReferencedContainer = "container:ScratchPad.xcodeproj">
+            BuildableName = "TeX-ScratchPad.app"
+            BlueprintName = "TeX-ScratchPad"
+            ReferencedContainer = "container:TeX-ScratchPad.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

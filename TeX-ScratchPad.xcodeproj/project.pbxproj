@@ -30,13 +30,13 @@
 		374B919E27FCAA0400342439 /* OrderedDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedDictionary.swift; sourceTree = "<group>"; };
 		374B91A027FE931E00342439 /* ScrollTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollTextView.swift; sourceTree = "<group>"; };
 		374B91A227FFD8FE00342439 /* ExportAccessoryView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ExportAccessoryView.xib; sourceTree = "<group>"; };
-		37883CBD26770D490094A71F /* ScratchPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScratchPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		37883CBD26770D490094A71F /* TeX-ScratchPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TeX-ScratchPad.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		37883CC026770D490094A71F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		37883CC426770D490094A71F /* ScratchPad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScratchPad.swift; sourceTree = "<group>"; };
 		37883CC626770D4C0094A71F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		37883CC926770D4C0094A71F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		37883CCB26770D4C0094A71F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		37883CCC26770D4C0094A71F /* ScratchPad.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ScratchPad.entitlements; sourceTree = "<group>"; };
+		37883CCC26770D4C0094A71F /* TeX-ScratchPad.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "TeX-ScratchPad.entitlements"; sourceTree = "<group>"; };
 		37883CD626770DEB0094A71F /* Content.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Content.swift; sourceTree = "<group>"; };
 		37883CDA26770E670094A71F /* KatexMathView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KatexMathView.swift; sourceTree = "<group>"; };
 		37883CE026770EA90094A71F /* katex */ = {isa = PBXFileReference; lastKnownFileType = folder; path = katex; sourceTree = "<group>"; };
@@ -73,7 +73,7 @@
 		37883CBE26770D490094A71F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				37883CBD26770D490094A71F /* ScratchPad.app */,
+				37883CBD26770D490094A71F /* TeX-ScratchPad.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -91,7 +91,7 @@
 				37883CE026770EA90094A71F /* katex */,
 			);
 			name = Scribble;
-			path = ScratchPad;
+			path = "TeX-ScratchPad";
 			sourceTree = "<group>";
 		};
 		37883CD526770DD20094A71F /* Objects */ = {
@@ -111,7 +111,7 @@
 				374B91A227FFD8FE00342439 /* ExportAccessoryView.xib */,
 				37883CCB26770D4C0094A71F /* Info.plist */,
 				37883CC626770D4C0094A71F /* Assets.xcassets */,
-				37883CCC26770D4C0094A71F /* ScratchPad.entitlements */,
+				37883CCC26770D4C0094A71F /* TeX-ScratchPad.entitlements */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -132,9 +132,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		37883CBC26770D490094A71F /* ScratchPad */ = {
+		37883CBC26770D490094A71F /* TeX-ScratchPad */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 37883CCF26770D4C0094A71F /* Build configuration list for PBXNativeTarget "ScratchPad" */;
+			buildConfigurationList = 37883CCF26770D4C0094A71F /* Build configuration list for PBXNativeTarget "TeX-ScratchPad" */;
 			buildPhases = (
 				37883CB926770D490094A71F /* Sources */,
 				37883CBA26770D490094A71F /* Frameworks */,
@@ -144,9 +144,9 @@
 			);
 			dependencies = (
 			);
-			name = ScratchPad;
+			name = "TeX-ScratchPad";
 			productName = Scribble;
-			productReference = 37883CBD26770D490094A71F /* ScratchPad.app */;
+			productReference = 37883CBD26770D490094A71F /* TeX-ScratchPad.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -163,7 +163,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 37883CB826770D490094A71F /* Build configuration list for PBXProject "ScratchPad" */;
+			buildConfigurationList = 37883CB826770D490094A71F /* Build configuration list for PBXProject "TeX-ScratchPad" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -176,7 +176,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				37883CBC26770D490094A71F /* ScratchPad */,
+				37883CBC26770D490094A71F /* TeX-ScratchPad */,
 			);
 		};
 /* End PBXProject section */
@@ -352,7 +352,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = ScratchPad/ScratchPad.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "TeX-ScratchPad/TeX-ScratchPad.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -360,12 +360,12 @@
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = NQ67CRQP88;
 				ENABLE_HARDENED_RUNTIME = YES;
-				INFOPLIST_FILE = ScratchPad/Info.plist;
+				INFOPLIST_FILE = "TeX-ScratchPad/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = prj.division.ScratchPad;
+				PRODUCT_BUNDLE_IDENTIFIER = prj.alpha.TeXScratchPad;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
@@ -376,7 +376,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = ScratchPad/ScratchPad.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "TeX-ScratchPad/TeX-ScratchPad.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -384,12 +384,12 @@
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = NQ67CRQP88;
 				ENABLE_HARDENED_RUNTIME = YES;
-				INFOPLIST_FILE = ScratchPad/Info.plist;
+				INFOPLIST_FILE = "TeX-ScratchPad/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = prj.division.ScratchPad;
+				PRODUCT_BUNDLE_IDENTIFIER = prj.alpha.TeXScratchPad;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
@@ -398,7 +398,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		37883CB826770D490094A71F /* Build configuration list for PBXProject "ScratchPad" */ = {
+		37883CB826770D490094A71F /* Build configuration list for PBXProject "TeX-ScratchPad" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				37883CCD26770D4C0094A71F /* Debug */,
@@ -407,7 +407,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		37883CCF26770D4C0094A71F /* Build configuration list for PBXNativeTarget "ScratchPad" */ = {
+		37883CCF26770D4C0094A71F /* Build configuration list for PBXNativeTarget "TeX-ScratchPad" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				37883CD026770D4C0094A71F /* Debug */,

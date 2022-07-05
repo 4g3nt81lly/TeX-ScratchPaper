@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="21179.7" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21179.7"/>
         <plugIn identifier="com.apple.WebKit2IBPlugin" version="21179.7"/>
         <capability name="Image references" minToolsVersion="12.0"/>
@@ -15,11 +14,11 @@
                 <application id="hnw-xV-0zn" sceneMemberID="viewController">
                     <menu key="mainMenu" title="Main Menu" systemMenu="main" id="AYu-sK-qS6">
                         <items>
-                            <menuItem title="ScratchPad" id="1Xt-HY-uBw">
+                            <menuItem title="TeX-ScratchPad" id="1Xt-HY-uBw">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="ScratchPad" systemMenu="apple" id="uQy-DD-JDr">
+                                <menu key="submenu" title="TeX-ScratchPad" systemMenu="apple" id="uQy-DD-JDr">
                                     <items>
-                                        <menuItem title="About ScratchPad" id="5kV-Vb-QxS">
+                                        <menuItem title="About TeX-ScratchPad" id="5kV-Vb-QxS">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="orderFrontStandardAboutPanel:" target="Ady-hI-5gd" id="Exp-CZ-Vem"/>
@@ -33,7 +32,7 @@
                                             <menu key="submenu" title="Services" systemMenu="services" id="hz9-B4-Xy5"/>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="4je-JR-u6R"/>
-                                        <menuItem title="Hide ScratchPad" keyEquivalent="h" id="Olw-nP-bQN">
+                                        <menuItem title="Hide TeX-ScratchPad" keyEquivalent="h" id="Olw-nP-bQN">
                                             <connections>
                                                 <action selector="hide:" target="Ady-hI-5gd" id="PnN-Uc-m68"/>
                                             </connections>
@@ -51,7 +50,7 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="kCx-OE-vgT"/>
-                                        <menuItem title="Quit ScratchPad" keyEquivalent="q" id="4sb-4s-VLi">
+                                        <menuItem title="Quit TeX-ScratchPad" keyEquivalent="q" id="4sb-4s-VLi">
                                             <connections>
                                                 <action selector="terminate:" target="Ady-hI-5gd" id="Te7-pn-YzF"/>
                                             </connections>
@@ -827,7 +826,7 @@
                                         <menuItem title="KaTeX Supported Functions" id="3Sv-h8-0yI">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                         </menuItem>
-                                        <menuItem title="ScratchPad Help" keyEquivalent="?" id="FKE-Sm-Kum">
+                                        <menuItem title="TeX-ScratchPad Help" keyEquivalent="?" id="FKE-Sm-Kum">
                                             <connections>
                                                 <action selector="showHelp:" target="Ady-hI-5gd" id="y7X-2Q-9no"/>
                                             </connections>
@@ -1182,7 +1181,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="400" height="460"/>
                                         <clipView key="contentView" drawsBackground="NO" id="0bt-AL-kTk">
                                             <rect key="frame" x="0.0" y="0.0" width="400" height="460"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" allowsCharacterPickerTouchBarItem="NO" allowsUndo="YES" textCompletion="NO" id="aYi-hb-SPx" customClass="TextView" customModule="ScratchPad" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="0.0" width="400" height="460"/>
@@ -1240,7 +1239,7 @@
                                         <rect key="frame" x="0.0" y="428" width="399" height="5"/>
                                     </box>
                                     <button toolTip="Lock to Bottom" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="blq-8R-fcl">
-                                        <rect key="frame" x="346" y="432" width="18.5" height="28"/>
+                                        <rect key="frame" x="346" y="436" width="18" height="19"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="19" id="2hF-nH-5Et"/>
                                             <constraint firstAttribute="width" constant="18" id="m9I-Ju-SQV"/>
@@ -1274,7 +1273,7 @@
                                         </connections>
                                     </button>
                                     <button toolTip="Lock to Bottom" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bMB-L3-GxW">
-                                        <rect key="frame" x="371" y="433" width="18.5" height="26"/>
+                                        <rect key="frame" x="371" y="436" width="18" height="19"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="19" id="2LE-cv-C8o"/>
                                             <constraint firstAttribute="width" constant="18" id="aLB-7w-iuR"/>
@@ -1303,7 +1302,7 @@
                                         </connections>
                                     </button>
                                     <button toolTip="Lock Preview" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="JEc-JB-bCX">
-                                        <rect key="frame" x="10" y="430.5" width="19" height="29"/>
+                                        <rect key="frame" x="10" y="437" width="19" height="15"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="19" id="2Ze-ut-xhf"/>
                                             <constraint firstAttribute="height" constant="15" id="6ls-Ag-I70"/>
@@ -1344,7 +1343,7 @@
                                         </constraints>
                                     </box>
                                     <button toolTip="Display Style" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9dF-Xw-qtF">
-                                        <rect key="frame" x="305" y="431.5" width="18.5" height="29"/>
+                                        <rect key="frame" x="305" y="436" width="18" height="19"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="19" id="UPN-fO-tcI"/>
                                             <constraint firstAttribute="width" constant="18" id="aux-6S-TaW"/>
@@ -1434,7 +1433,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="179" height="430"/>
                             </customView>
                             <button identifier="outline" toolTip="Outline" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cp0-Pq-RUn">
-                                <rect key="frame" x="55" y="437" width="15" height="15"/>
+                                <rect key="frame" x="55" y="440" width="15" height="9"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="15" id="GNf-tK-tMg"/>
                                     <constraint firstAttribute="height" constant="9" id="xou-b8-J1R"/>
@@ -1449,7 +1448,7 @@
                                 </connections>
                             </button>
                             <button identifier="configuration" toolTip="Configuration" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="VAT-hG-yCw">
-                                <rect key="frame" x="109" y="437" width="17.25" height="16"/>
+                                <rect key="frame" x="109" y="440" width="17" height="9"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="9" id="InX-eZ-Tgf"/>
                                     <constraint firstAttribute="width" constant="17" id="aS5-ih-VEP"/>
@@ -1464,7 +1463,7 @@
                                 </connections>
                             </button>
                             <button identifier="error" toolTip="Error" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cRm-sH-KE5">
-                                <rect key="frame" x="81" y="437.5" width="17.5" height="15"/>
+                                <rect key="frame" x="81" y="440" width="17" height="9"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="9" id="aqv-vg-RkF"/>
                                     <constraint firstAttribute="width" constant="17" id="el2-pf-Oxo"/>
@@ -1515,7 +1514,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="160" height="421"/>
                                 <clipView key="contentView" drawsBackground="NO" id="8eE-t1-AlM">
                                     <rect key="frame" x="0.0" y="0.0" width="160" height="421"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" tableStyle="sourceList" selectionHighlightStyle="sourceList" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowHeight="26" rowSizeStyle="automatic" viewBased="YES" id="v3Q-ho-gQ3" customClass="TableView" customModule="ScratchPad" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="160" height="421"/>
@@ -1634,7 +1633,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="160" height="420"/>
                                 <clipView key="contentView" drawsBackground="NO" id="yf0-Bg-X4o">
                                     <rect key="frame" x="0.0" y="0.0" width="160" height="420"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" tableStyle="sourceList" selectionHighlightStyle="sourceList" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowHeight="52" rowSizeStyle="automatic" viewBased="YES" id="W7k-Lh-oM4" customClass="TableView" customModule="ScratchPad" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="160" height="420"/>
@@ -1785,18 +1784,18 @@
         </scene>
     </scenes>
     <resources>
-        <image name="arrow.down.to.line.compact" catalog="system" width="17" height="18"/>
-        <image name="arrow.left.arrow.right" catalog="system" width="20" height="23"/>
-        <image name="arrow.right.to.line.compact" catalog="system" width="19" height="16"/>
-        <image name="exclamationmark.triangle" catalog="system" width="17" height="15"/>
-        <image name="exclamationmark.triangle.fill" catalog="system" width="17" height="15"/>
-        <image name="function" catalog="system" width="20" height="12"/>
-        <image name="gearshape" catalog="system" width="16" height="16"/>
-        <image name="gearshape.fill" catalog="system" width="16" height="16"/>
-        <image name="list.bullet.circle" catalog="system" width="15" height="15"/>
-        <image name="list.bullet.circle.fill" catalog="system" width="15" height="15"/>
-        <image name="sidebar.left" catalog="system" width="18" height="14"/>
-        <image name="sum" catalog="system" width="14" height="19"/>
-        <image name="textformat.alt" catalog="system" width="18" height="12"/>
+        <image name="arrow.down.to.line.compact" catalog="system" width="32" height="32"/>
+        <image name="arrow.left.arrow.right" catalog="system" width="32" height="32"/>
+        <image name="arrow.right.to.line.compact" catalog="system" width="32" height="32"/>
+        <image name="exclamationmark.triangle" catalog="system" width="32" height="32"/>
+        <image name="exclamationmark.triangle.fill" catalog="system" width="32" height="32"/>
+        <image name="function" catalog="system" width="32" height="32"/>
+        <image name="gearshape" catalog="system" width="32" height="32"/>
+        <image name="gearshape.fill" catalog="system" width="32" height="32"/>
+        <image name="list.bullet.circle" catalog="system" width="32" height="32"/>
+        <image name="list.bullet.circle.fill" catalog="system" width="32" height="32"/>
+        <image name="sidebar.left" catalog="system" width="32" height="32"/>
+        <image name="sum" catalog="system" width="32" height="32"/>
+        <image name="textformat.alt" catalog="system" width="32" height="32"/>
     </resources>
 </document>
