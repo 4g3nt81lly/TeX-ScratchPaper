@@ -249,7 +249,7 @@
                                                 <items>
                                                     <menuItem title="Fraction" keyEquivalent="/" id="eHv-dm-8Na"/>
                                                     <menuItem title="Exponent" keyEquivalent="6" id="7Ej-XQ-rDY">
-                                                        <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
+                                                        <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
                                                     </menuItem>
                                                     <menuItem title="Square Root" keyEquivalent="V" id="DSj-L1-4Qq"/>
                                                     <menuItem title="Root" keyEquivalent="v" id="dTG-KJ-PKV">
@@ -600,12 +600,7 @@
                         <outlet property="delegate" destination="Voe-Tx-rLC" id="PrD-fu-P6m"/>
                     </connections>
                 </application>
-                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Scratch_Paper" customModuleProvider="target">
-                    <connections>
-                        <outlet property="documentController" destination="M2f-pA-6X3" id="StG-m9-MTE"/>
-                    </connections>
-                </customObject>
-                <customObject id="M2f-pA-6X3" customClass="DocumentController" customModule="Scratch_Paper" customModuleProvider="target"/>
+                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Scratch_Paper" customModuleProvider="target"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="64" y="-70"/>
@@ -627,7 +622,7 @@
                             <allowedToolbarItems>
                                 <toolbarItem implicitItemIdentifier="DE1962A0-ABD7-4E5F-85A4-D074472593AC" explicitItemIdentifier="sidebar" label="Sidebar" paletteLabel="Sidebar" tag="-1" image="sidebar.left" catalog="system" bordered="YES" sizingBehavior="auto" navigational="YES" id="lvo-Wp-pZZ">
                                     <connections>
-                                        <action selector="toggleSidebar:" target="ClL-cD-twK" id="lOQ-3z-q5A"/>
+                                        <action selector="toggleSidebar:" target="4UP-IP-76X" id="MY1-6b-tSg"/>
                                     </connections>
                                 </toolbarItem>
                                 <toolbarItem implicitItemIdentifier="B61A5937-8986-43A1-AFB5-56B449726845" explicitItemIdentifier="displayMode" label="Display Mode" paletteLabel="Display Mode" toolTip="Display Mode" title="Display Mode" sizingBehavior="auto" id="01h-xs-a2p">
@@ -639,11 +634,16 @@
                                             <font key="font" metaFont="systemBold" size="12"/>
                                         </buttonCell>
                                         <connections>
-                                            <action selector="toolbarConfigChanged:" target="ClL-cD-twK" id="6b5-py-hqU"/>
-                                            <binding destination="ClL-cD-twK" name="value" keyPath="self.document.content.configuration.displayMode" id="aXd-Q2-IJv">
+                                            <action selector="toolbarConfigChanged:" target="ClL-cD-twK" id="lvO-il-IXi"/>
+                                            <binding destination="ClL-cD-twK" name="value" keyPath="self.document.content.configuration.displayMode" id="Ddb-gc-gcO">
                                                 <dictionary key="options">
                                                     <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
+                                                    <bool key="NSAlwaysPresentsApplicationModalAlerts" value="YES"/>
                                                     <bool key="NSConditionallySetsEnabled" value="NO"/>
+                                                    <integer key="NSMultipleValuesPlaceholder" value="0"/>
+                                                    <integer key="NSNoSelectionPlaceholder" value="0"/>
+                                                    <integer key="NSNotApplicablePlaceholder" value="0"/>
+                                                    <integer key="NSNullPlaceholder" value="0"/>
                                                 </dictionary>
                                             </binding>
                                         </connections>
@@ -661,11 +661,16 @@
                                             </segments>
                                         </segmentedCell>
                                         <connections>
-                                            <action selector="toolbarConfigChanged:" target="ClL-cD-twK" id="a0D-xi-TCO"/>
-                                            <binding destination="ClL-cD-twK" name="selectedIndex" keyPath="self.document.content.configuration.renderMode" id="gGd-FE-IQi">
+                                            <action selector="toolbarConfigChanged:" target="ClL-cD-twK" id="GK9-3s-1MG"/>
+                                            <binding destination="ClL-cD-twK" name="selectedIndex" keyPath="self.document.content.configuration.renderMode" id="haB-da-O5d">
                                                 <dictionary key="options">
                                                     <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
+                                                    <bool key="NSAlwaysPresentsApplicationModalAlerts" value="YES"/>
                                                     <bool key="NSConditionallySetsEnabled" value="NO"/>
+                                                    <integer key="NSMultipleValuesPlaceholder" value="0"/>
+                                                    <integer key="NSNoSelectionPlaceholder" value="0"/>
+                                                    <integer key="NSNotApplicablePlaceholder" value="0"/>
+                                                    <integer key="NSNullPlaceholder" value="0"/>
                                                 </dictionary>
                                             </binding>
                                         </connections>
@@ -744,9 +749,10 @@
                                                     <size key="maxSize" width="800" height="10000000"/>
                                                     <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                                     <connections>
-                                                        <binding destination="rnH-qv-OTz" name="value" keyPath="self.document.content.contentString" id="Idn-kp-Z0d">
+                                                        <binding destination="rnH-qv-OTz" name="value" keyPath="self.document.content.contentString" id="i3b-BD-lXe">
                                                             <dictionary key="options">
                                                                 <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
+                                                                <bool key="NSAlwaysPresentsApplicationModalAlerts" value="YES"/>
                                                                 <bool key="NSConditionallySetsEditable" value="NO"/>
                                                                 <bool key="NSContinuouslyUpdatesValue" value="YES"/>
                                                                 <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
@@ -787,7 +793,7 @@
                                             <wkPreferences key="preferences" javaScriptCanOpenWindowsAutomatically="NO"/>
                                         </wkWebViewConfiguration>
                                         <connections>
-                                            <outlet property="navigationDelegate" destination="rnH-qv-OTz" id="leX-cM-0u9"/>
+                                            <outlet property="navigationDelegate" destination="rnH-qv-OTz" id="0yT-Ok-M9Z"/>
                                         </connections>
                                     </wkWebView>
                                     <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="Yya-k9-5UY">
@@ -814,15 +820,25 @@
                                         <color key="contentTintColor" name="controlAccentColor" catalog="System" colorSpace="catalog"/>
                                         <connections>
                                             <action selector="barConfigChanged:" target="rnH-qv-OTz" id="nue-oV-JEu"/>
-                                            <binding destination="rnH-qv-OTz" name="enabled" keyPath="self.document.content.configuration.lineToLine" id="Dkt-G4-XpZ">
+                                            <binding destination="rnH-qv-OTz" name="enabled" keyPath="self.document.content.configuration.lineToLine" id="qW9-TW-xPi">
                                                 <dictionary key="options">
+                                                    <integer key="NSMultipleValuesPlaceholder" value="1"/>
+                                                    <integer key="NSNoSelectionPlaceholder" value="1"/>
+                                                    <integer key="NSNotApplicablePlaceholder" value="1"/>
+                                                    <integer key="NSNullPlaceholder" value="1"/>
+                                                    <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                     <string key="NSValueTransformerName">NSNegateBoolean</string>
                                                 </dictionary>
                                             </binding>
-                                            <binding destination="rnH-qv-OTz" name="value" keyPath="self.document.content.configuration.lockToBottom" id="Bep-By-Q9T">
+                                            <binding destination="rnH-qv-OTz" name="value" keyPath="self.document.content.configuration.lockToBottom" id="xIG-RU-zfN">
                                                 <dictionary key="options">
                                                     <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                                     <bool key="NSConditionallySetsEnabled" value="NO"/>
+                                                    <integer key="NSMultipleValuesPlaceholder" value="0"/>
+                                                    <integer key="NSNoSelectionPlaceholder" value="0"/>
+                                                    <integer key="NSNotApplicablePlaceholder" value="0"/>
+                                                    <integer key="NSNullPlaceholder" value="0"/>
+                                                    <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                 </dictionary>
                                             </binding>
                                         </connections>
@@ -848,10 +864,15 @@
                                         <color key="contentTintColor" name="controlAccentColor" catalog="System" colorSpace="catalog"/>
                                         <connections>
                                             <action selector="barConfigChanged:" target="rnH-qv-OTz" id="wRT-Kx-PTN"/>
-                                            <binding destination="rnH-qv-OTz" name="value" keyPath="self.document.content.configuration.lockToRight" id="XBC-sG-Y9X">
+                                            <binding destination="rnH-qv-OTz" name="value" keyPath="self.document.content.configuration.lockToRight" id="svb-9M-mDY">
                                                 <dictionary key="options">
                                                     <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                                     <bool key="NSConditionallySetsEnabled" value="NO"/>
+                                                    <integer key="NSMultipleValuesPlaceholder" value="0"/>
+                                                    <integer key="NSNoSelectionPlaceholder" value="0"/>
+                                                    <integer key="NSNotApplicablePlaceholder" value="0"/>
+                                                    <integer key="NSNullPlaceholder" value="0"/>
+                                                    <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                 </dictionary>
                                             </binding>
                                         </connections>
@@ -882,10 +903,15 @@
                                         </buttonCell>
                                         <connections>
                                             <action selector="barConfigChanged:" target="rnH-qv-OTz" id="R9l-Wd-vFo"/>
-                                            <binding destination="rnH-qv-OTz" name="value" keyPath="self.document.content.configuration.lineToLine" id="tHt-qF-30r">
+                                            <binding destination="rnH-qv-OTz" name="value" keyPath="self.document.content.configuration.lineToLine" id="wLI-cI-5ug">
                                                 <dictionary key="options">
                                                     <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                                     <bool key="NSConditionallySetsEnabled" value="NO"/>
+                                                    <integer key="NSMultipleValuesPlaceholder" value="0"/>
+                                                    <integer key="NSNoSelectionPlaceholder" value="0"/>
+                                                    <integer key="NSNotApplicablePlaceholder" value="0"/>
+                                                    <integer key="NSNullPlaceholder" value="0"/>
+                                                    <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                 </dictionary>
                                             </binding>
                                         </connections>
@@ -923,10 +949,15 @@
                                         </buttonCell>
                                         <connections>
                                             <action selector="barConfigChanged:" target="rnH-qv-OTz" id="0oA-CP-Mq9"/>
-                                            <binding destination="rnH-qv-OTz" name="value" keyPath="self.document.content.configuration.displayStyle" id="D8C-Ph-Xpy">
+                                            <binding destination="rnH-qv-OTz" name="value" keyPath="self.document.content.configuration.displayStyle" id="RzT-Bq-k9t">
                                                 <dictionary key="options">
                                                     <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                                     <bool key="NSConditionallySetsEnabled" value="NO"/>
+                                                    <integer key="NSMultipleValuesPlaceholder" value="0"/>
+                                                    <integer key="NSNoSelectionPlaceholder" value="0"/>
+                                                    <integer key="NSNotApplicablePlaceholder" value="0"/>
+                                                    <integer key="NSNullPlaceholder" value="0"/>
+                                                    <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                 </dictionary>
                                             </binding>
                                         </connections>
@@ -965,8 +996,8 @@
                         </holdingPriorities>
                     </splitView>
                     <connections>
-                        <outlet property="contentTextView" destination="aYi-hb-SPx" id="Tma-Mt-N6K"/>
-                        <outlet property="katexView" destination="ZHV-S3-S2k" id="2h3-hx-IlI"/>
+                        <outlet property="contentTextView" destination="aYi-hb-SPx" id="HZg-u9-gq6"/>
+                        <outlet property="katexView" destination="ZHV-S3-S2k" id="4eO-b9-2On"/>
                     </connections>
                 </viewController>
                 <customObject id="6IX-ue-RrP" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -1071,7 +1102,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="sidebarView" destination="w1c-W2-AIZ" id="xFa-cY-g9h"/>
+                        <outlet property="sidebarView" destination="w1c-W2-AIZ" id="STT-d1-QJW"/>
                     </connections>
                 </viewController>
                 <customObject id="fj7-iE-PvK" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -1181,7 +1212,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="outlineTableView" destination="v3Q-ho-gQ3" id="foI-ik-SOC"/>
+                        <outlet property="outlineTableView" destination="v3Q-ho-gQ3" id="rmD-1g-nbn"/>
                     </connections>
                 </viewController>
                 <customObject id="dEW-dx-hJw" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

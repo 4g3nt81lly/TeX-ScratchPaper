@@ -9,15 +9,18 @@ import Cocoa
 import SwiftUI
 import Combine
 
-/// The application's standard user defaults object.
-let userDefaults = UserDefaults.standard
-
 /**
  A strong reference to the application's delegate object `AppDelegate`.
  
  This reference will always be available, allowing the `AppDelegate` object to be accessible at a global scope.
  */
 let appDelegate = NSApp.delegate as! AppDelegate
+
+/// The application's default notification center.
+let notificationCenter = NotificationCenter.default
+
+/// The application's standard user defaults object.
+let userDefaults = UserDefaults.standard
 
 /// The application's default file manager object.
 let fileManager = FileManager.default
@@ -28,9 +31,26 @@ let mainStoryboard = NSStoryboard.main!
 /// The application's main bundle object.
 let mainBundle = Bundle.main
 
-/// An instance of the global environment communication channel.
+/// An instance of the global environment channel.
 let global = GlobalChannel()
 
+/**
+ Application's universally accessible settings object.
+ 
+ Reads and decodes settings from application support directory within the current user domain.
+ If the configuration file is not found under the target directory, it will attempt to create a new instance.
+ 
+ - Note: This property is initialized as part of the delegate's instantiation process, which guarantees it to be readily available when one requests it.
+ */
+var appSettings: AppSettings = {
+    if let pathURL = Scratch_Paper.fileManager.urls(for: .applicationSupportDirectory,
+                                                    in: .userDomainMask).first?.appendingPathComponent("config"),
+       let data = try? Data(contentsOf: pathURL),
+       let appSettings = try? NSKeyedUnarchiver.unarchivedObject(ofClass: AppSettings.self, from: data) {
+        return appSettings
+    }
+    return AppSettings()
+}()
 
 extension String {
     
@@ -245,10 +265,10 @@ extension Published {
     // default config
     init(wrappedValue defaultValue: Value, _ key: String) {
         // initialize with initial value
-        self.init(initialValue: appDelegate.settings.value(forKey: key) as! Value)
+        self.init(initialValue: appSettings.value(forKey: key) as! Value)
         projectedValue.sink { value in
             // update settings
-            appDelegate.settings.setValue(value, forKey: key)
+            appSettings.setValue(value, forKey: key)
         }.store(in: &cancellables)
     }
 }

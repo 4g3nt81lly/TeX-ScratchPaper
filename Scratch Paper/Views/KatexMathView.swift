@@ -20,13 +20,13 @@ import JavaScriptCore
 class KatexMathView: WKWebView {
     
     /**
-     Reference to the associated document object.
+     A weak reference to the associated document object.
      
      Implicitly unwrapped optional is used rather than creating a dummy document object to avoid redundant calls.
      
      - Note: This is set by its superview `Editor` as it initializes the KaTeX view from `viewDidAppear()`.
      */
-    var document: ScratchPaper!
+    weak var document: Document!
     
     /**
      An array keeping track of the line ranges.

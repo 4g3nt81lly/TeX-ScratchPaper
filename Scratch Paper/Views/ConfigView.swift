@@ -18,11 +18,13 @@ struct ConfigView: View {
     @ObservedObject var config: Configuration
     
     /**
-     A strong reference to the editor view from which the `ConfigView` instance is presented.
+     An unowned reference to the editor view from which the `ConfigView` instance is presented.
      
      This reference is used to interact with the editor view.
+     
+     - Note: It does NOT retain the editor view object.
      */
-    var editor: Editor
+    unowned var editor: Editor!
     
     /**
      Set this state property to `true` to notify `ConfigView` of user's request to save current configuration as the app's default configuration, which subsequently displays a confirmation alert.

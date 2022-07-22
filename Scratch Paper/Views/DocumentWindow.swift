@@ -25,7 +25,7 @@ class DocumentWindow: NSWindowController {
      A computed property that gets editor object on-demand.
      */
     var editor: Editor {
-        return (self.document as! ScratchPaper).editor
+        return (self.document as! Document).editor
     }
     
     /**
@@ -83,11 +83,6 @@ class DocumentWindow: NSWindowController {
         
         return savePanel
     }()
-    
-    /// Toggle sidebar.
-    @IBAction func toggleSidebar(_ sender: Any) {
-        (self.contentViewController as! MainSplitView).toggleSidebar(nil)
-    }
     
     /**
      Action sent when the user interacts with the toolbar items and the "render" button.
@@ -222,6 +217,17 @@ class DocumentWindow: NSWindowController {
             }
         }
     }
+    
+    deinit {
+        self.window?.toolbar?.items.forEach({ item in
+            if item.itemIdentifier.rawValue == "displayMode" {
+                item.unbind(.value)
+            } else if item.itemIdentifier.rawValue == "renderMode" {
+                item.unbind(.selectedIndex)
+            }
+        })
+    }
+    
 }
 
 extension DocumentWindow: NSToolbarDelegate {
@@ -284,5 +290,40 @@ extension DocumentWindow: NSToolbarDelegate {
     @objc func presentConfigView() {
         self.editor.presentConfigView()
     }
+    
+}
+
+extension DocumentWindow: NSWindowDelegate {
+    
+    func windowWillClose(_ notification: Notification) {
+        // unbind all toolbar items
+        for item in self.window!.toolbar!.items {
+            if item.itemIdentifier.rawValue == "displayMode" {
+                (item.view as! NSButton).unbind(.value)
+            } else if item.itemIdentifier.rawValue == "renderMode" {
+                (item.view as! NSSegmentedControl).unbind(.selectedIndex)
+            }
+        }
+    }
+    
+    // MARK: Backtracing for troubleshooting.
+    
+    /*
+    
+    override func windowWillLoad() {
+        super.windowWillLoad()
+        print("[Window] Window will load with document \(String(describing: self.document)) and content \(String(describing: (self.document as? Document)?.content)).")
+    }
+    
+    override func windowDidLoad() {
+        super.windowDidLoad()
+        print("[Window \(self.window!)] Window did load with document \(String(describing: self.document)) and content \(String(describing: (self.document as? Document)?.content)).")
+    }
+    
+    func windowWillClose(_ notification: Notification) {
+        print("[Window \(self.window!)] Window will close with document \(String(describing: self.document)) and content \(String(describing: (self.document as? Document)?.content)).")
+    }
+     
+     */
     
 }

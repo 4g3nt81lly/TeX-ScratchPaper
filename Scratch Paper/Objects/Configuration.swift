@@ -224,7 +224,7 @@ class Configuration: NSObject, NSCopying, ObservableObject, Reflectable, LoopSaf
                     self.trustAllCommands = self.trustedCommands.map({ $0.trusted }).all
                 }
                 for index in 0..<self.trustedCommands.count {
-                    appDelegate.settings.trustedCommands[index].trusted = self.trustedCommands[index].trusted
+                    appSettings.trustedCommands[index].trusted = self.trustedCommands[index].trusted
                 }
             }
         }
@@ -237,27 +237,27 @@ class Configuration: NSObject, NSCopying, ObservableObject, Reflectable, LoopSaf
      */
     func saveToSettings() {
         for property in self.properties.filter({ $0.first != "_" }) {
-            appDelegate.settings.setValue(self[property], forKey: property)
+            appSettings.setValue(self[property], forKey: property)
         }
-        appDelegate.settings.liveRender = self.liveRender
+        appSettings.liveRender = self.liveRender
         
-        appDelegate.settings.renderError = self.renderError
-        appDelegate.settings.errorColorString = self.errorColorString
+        appSettings.renderError = self.renderError
+        appSettings.errorColorString = self.errorColorString
         
-        appDelegate.settings.minLineThicknessEnabled = self.minLineThicknessEnabled
-        appDelegate.settings.minLineThickness = self.minLineThickness
+        appSettings.minLineThicknessEnabled = self.minLineThicknessEnabled
+        appSettings.minLineThickness = self.minLineThickness
         
-        appDelegate.settings.leftJustifyTags = self.leftJustifyTags
+        appSettings.leftJustifyTags = self.leftJustifyTags
         
-        appDelegate.settings.sizeLimitEnabled = self.sizeLimitEnabled
-        appDelegate.settings.sizeLimit = self.sizeLimit
+        appSettings.sizeLimitEnabled = self.sizeLimitEnabled
+        appSettings.sizeLimit = self.sizeLimit
         
-        appDelegate.settings.maxExpansionEnabled = self.maxExpansionEnabled
-        appDelegate.settings.maxExpansion = self.maxExpansion
+        appSettings.maxExpansionEnabled = self.maxExpansionEnabled
+        appSettings.maxExpansion = self.maxExpansion
         
-        appDelegate.settings.trustAllCommands = self.trustAllCommands
+        appSettings.trustAllCommands = self.trustAllCommands
         for index in 0..<self.trustedCommands.count {
-            appDelegate.settings.trustedCommands[index].trusted = self.trustedCommands[index].trusted
+            appSettings.trustedCommands[index].trusted = self.trustedCommands[index].trusted
         }
     }
     

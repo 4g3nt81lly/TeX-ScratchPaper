@@ -19,10 +19,10 @@
 		376DD608288153D8008B4CA0 /* BookmarksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376DD607288153D8008B4CA0 /* BookmarksController.swift */; };
 		376DD61028821C26008B4CA0 /* SymbolPicker in Frameworks */ = {isa = PBXBuildFile; productRef = 376DD60F28821C26008B4CA0 /* SymbolPicker */; };
 		37883CC126770D490094A71F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37883CC026770D490094A71F /* AppDelegate.swift */; };
-		37883CC526770D490094A71F /* ScratchPaper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37883CC426770D490094A71F /* ScratchPaper.swift */; };
+		37883CC526770D490094A71F /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37883CC426770D490094A71F /* Document.swift */; };
 		37883CC726770D4C0094A71F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37883CC626770D4C0094A71F /* Assets.xcassets */; };
 		37883CCA26770D4C0094A71F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 37883CC826770D4C0094A71F /* Main.storyboard */; };
-		37883CD726770DEB0094A71F /* FileObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37883CD626770DEB0094A71F /* FileObject.swift */; };
+		37883CD726770DEB0094A71F /* Content.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37883CD626770DEB0094A71F /* Content.swift */; };
 		37883CDB26770E670094A71F /* KatexMathView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37883CDA26770E670094A71F /* KatexMathView.swift */; };
 		37883CE126770EA90094A71F /* katex in Resources */ = {isa = PBXBuildFile; fileRef = 37883CE026770EA90094A71F /* katex */; };
 		37883CE726770EC50094A71F /* Editor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37883CE326770EC50094A71F /* Editor.swift */; };
@@ -30,6 +30,7 @@
 		37883CE926770EC50094A71F /* DocumentWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37883CE526770EC50094A71F /* DocumentWindow.swift */; };
 		37883CEA26770EC50094A71F /* Sidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37883CE626770EC50094A71F /* Sidebar.swift */; };
 		3794D94227F5F364005870E3 /* ErrorPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3794D94127F5F364005870E3 /* ErrorPane.swift */; };
+		37AFEBA2288768BC00283CEB /* StandardError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37AFEBA1288768BC00283CEB /* StandardError.swift */; };
 		37BADE72287D126E008DAF3E /* BookmarkEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BADE71287D126E008DAF3E /* BookmarkEntry.swift */; };
 		37BADE74287D3119008DAF3E /* BookmarksPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BADE73287D3119008DAF3E /* BookmarksPane.swift */; };
 		37C2BEED287BBC0100D3569E /* LoopLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C2BEEC287BBC0100D3569E /* LoopLock.swift */; };
@@ -59,12 +60,12 @@
 		376DD60D28821C16008B4CA0 /* SymbolPicker */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SymbolPicker; path = "Scratch Paper/Frameworks/SymbolPicker"; sourceTree = "<group>"; };
 		37883CBD26770D490094A71F /* Scratch Paper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Scratch Paper.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		37883CC026770D490094A71F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		37883CC426770D490094A71F /* ScratchPaper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScratchPaper.swift; sourceTree = "<group>"; };
+		37883CC426770D490094A71F /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
 		37883CC626770D4C0094A71F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		37883CC926770D4C0094A71F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		37883CCB26770D4C0094A71F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		37883CCC26770D4C0094A71F /* Scratch Paper.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Scratch Paper.entitlements"; sourceTree = "<group>"; };
-		37883CD626770DEB0094A71F /* FileObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileObject.swift; sourceTree = "<group>"; };
+		37883CD626770DEB0094A71F /* Content.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Content.swift; sourceTree = "<group>"; };
 		37883CDA26770E670094A71F /* KatexMathView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KatexMathView.swift; sourceTree = "<group>"; };
 		37883CE026770EA90094A71F /* katex */ = {isa = PBXFileReference; lastKnownFileType = folder; path = katex; sourceTree = "<group>"; };
 		37883CE326770EC50094A71F /* Editor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Editor.swift; sourceTree = "<group>"; };
@@ -72,6 +73,7 @@
 		37883CE526770EC50094A71F /* DocumentWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentWindow.swift; sourceTree = "<group>"; };
 		37883CE626770EC50094A71F /* Sidebar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sidebar.swift; sourceTree = "<group>"; };
 		3794D94127F5F364005870E3 /* ErrorPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorPane.swift; sourceTree = "<group>"; };
+		37AFEBA1288768BC00283CEB /* StandardError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StandardError.swift; sourceTree = "<group>"; };
 		37BADE71287D126E008DAF3E /* BookmarkEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkEntry.swift; sourceTree = "<group>"; };
 		37BADE73287D3119008DAF3E /* BookmarksPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksPane.swift; sourceTree = "<group>"; };
 		37C2BEEC287BBC0100D3569E /* LoopLock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopLock.swift; sourceTree = "<group>"; };
@@ -101,7 +103,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		371B20CD28764D2800812767 /* Generic */ = {
+		37059E88288A7F0100010708 /* Generic */ = {
 			isa = PBXGroup;
 			children = (
 				371B20CB28764D1C00812767 /* DocumentController.swift */,
@@ -138,6 +140,7 @@
 			isa = PBXGroup;
 			children = (
 				37883CC026770D490094A71F /* AppDelegate.swift */,
+				37AFEBA1288768BC00283CEB /* StandardError.swift */,
 				37DF0366287409BD006051FF /* Global.swift */,
 				37883CED26770F070094A71F /* Resources */,
 				37DF035928740444006051FF /* Views */,
@@ -185,13 +188,13 @@
 			children = (
 				37C6E910287A54BC00149D37 /* AppSettings.swift */,
 				37075EB72878142C00152326 /* Configuration.swift */,
-				37883CC426770D490094A71F /* ScratchPaper.swift */,
-				37883CD626770DEB0094A71F /* FileObject.swift */,
+				37883CC426770D490094A71F /* Document.swift */,
+				37883CD626770DEB0094A71F /* Content.swift */,
 				37DF03562874040A006051FF /* OutlineEntry.swift */,
 				37DF035A287405F7006051FF /* ErrorEntry.swift */,
 				37BADE71287D126E008DAF3E /* BookmarkEntry.swift */,
 				37C6E912287A6C1D00149D37 /* TeXCommand.swift */,
-				371B20CD28764D2800812767 /* Generic */,
+				37059E88288A7F0100010708 /* Generic */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
@@ -211,8 +214,8 @@
 			isa = PBXGroup;
 			children = (
 				376DD6022880E513008B4CA0 /* GlobalChannel.swift */,
-				37C2BEEC287BBC0100D3569E /* LoopLock.swift */,
 				37D11AE5287A79CD0036E122 /* Reflectable.swift */,
+				37C2BEEC287BBC0100D3569E /* LoopLock.swift */,
 				374B919E27FCAA0400342439 /* OrderedDictionary.swift */,
 			);
 			path = "Data Structure";
@@ -315,6 +318,7 @@
 				37EAD0E627F67AA20039BBD6 /* LineNumberRulerView.swift in Sources */,
 				371B20D12876528700812767 /* WelcomeView.swift in Sources */,
 				37075EB82878142C00152326 /* Configuration.swift in Sources */,
+				37AFEBA2288768BC00283CEB /* StandardError.swift in Sources */,
 				37883CEA26770EC50094A71F /* Sidebar.swift in Sources */,
 				37F675892876AB27004F0247 /* ConfigView.swift in Sources */,
 				371B20C82874D82B00812767 /* ExportAccessoryView.swift in Sources */,
@@ -326,12 +330,12 @@
 				37DF036128740779006051FF /* ATextView.swift in Sources */,
 				37C2BEED287BBC0100D3569E /* LoopLock.swift in Sources */,
 				37BADE72287D126E008DAF3E /* BookmarkEntry.swift in Sources */,
-				37883CC526770D490094A71F /* ScratchPaper.swift in Sources */,
+				37883CC526770D490094A71F /* Document.swift in Sources */,
 				3794D94227F5F364005870E3 /* ErrorPane.swift in Sources */,
 				374B919F27FCAA0400342439 /* OrderedDictionary.swift in Sources */,
 				37883CE926770EC50094A71F /* DocumentWindow.swift in Sources */,
 				37278D80287CE14D00FA73CC /* PreferencesView.swift in Sources */,
-				37883CD726770DEB0094A71F /* FileObject.swift in Sources */,
+				37883CD726770DEB0094A71F /* Content.swift in Sources */,
 				37C6E911287A54BC00149D37 /* AppSettings.swift in Sources */,
 				37BADE74287D3119008DAF3E /* BookmarksPane.swift in Sources */,
 				37DF035B287405F7006051FF /* ErrorEntry.swift in Sources */,
@@ -492,7 +496,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 0.1a;
+				MARKETING_VERSION = 0.1.0a;
 				PRODUCT_BUNDLE_IDENTIFIER = "app.personal.Scratch-Paper";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -520,7 +524,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 0.1a;
+				MARKETING_VERSION = 0.1.0a;
 				PRODUCT_BUNDLE_IDENTIFIER = "app.personal.Scratch-Paper";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

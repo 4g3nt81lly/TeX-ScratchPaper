@@ -20,13 +20,44 @@ import Cocoa
 class ATextView: NSTextView {
     
     /**
-     Reference to the associated document object.
+     A weak reference to the associated document object.
      
      Implicitly unwrapped optional is used rather than creating a dummy document object to avoid redundant calls.
      
      - Note: This is set by its superview `Editor` as it initializes the KaTeX view from `viewDidAppear()`.
      */
-    var document: ScratchPaper!
+    weak var document: Document!
+    
+    /// The text view's line number ruler view.
+    var lineNumberView: LineNumberRulerView!
+    
+    /// Initializes the line number view.
+    func setupLineNumberView() {
+        self.lineNumberView = LineNumberRulerView(textView: self)
+        if self.font == nil {
+            self.font = .systemFont(ofSize: NSFont.systemFontSize)
+        }
+        let scrollView = self.enclosingScrollView!
+        scrollView.verticalRulerView = lineNumberView
+        scrollView.hasVerticalRuler = true
+        scrollView.rulersVisible = true
+        
+        self.postsFrameChangedNotifications = true
+        scrollView.contentView.postsBoundsChangedNotifications = true
+        
+        notificationCenter.addObserver(self, selector: #selector(refreshLineNumberView), name: NSView.boundsDidChangeNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(refreshLineNumberView), name: NSView.frameDidChangeNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(refreshLineNumberView), name: NSText.didChangeNotification, object: nil)
+    }
+    
+    /**
+     Sets the line number view as needing display to redraw its view.
+     
+     This method is marked Objective-C as it is used as the target for the text view's bound, frame, and text-changing notifications.
+     */
+    @objc func refreshLineNumberView() {
+        self.lineNumberView.needsDisplay = true
+    }
     
     /// Contextual menu for text view.
     override func menu(for event: NSEvent) -> NSMenu? {
@@ -111,6 +142,11 @@ class ATextView: NSTextView {
         if let delegate = self.delegate as? TextViewDelegate {
             delegate.textView(self, didInteract: self.selectedRange())
         }
+    }
+    
+    deinit {
+        // removes all observers upon release
+        notificationCenter.removeObserver(self)
     }
     
 }

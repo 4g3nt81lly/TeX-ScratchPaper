@@ -22,7 +22,7 @@ struct BookmarksPane: View {
      
      Changes made to bookmarks are published and observed by the `BookmarksPane` view, which make changes to the bookmarks via this reference.
      */
-    @ObservedObject var fileObject: FileObject
+    @ObservedObject var fileObject: Content
     
     /**
      Set this state property to `true` to present the bookmark editor and edit a selected bookmark.
@@ -296,7 +296,7 @@ struct BookmarkEditor: View {
      
      `BookmarkEditor` makes changes to the bookmarks via this reference.
      */
-    @ObservedObject var fileObject: FileObject
+    @ObservedObject var fileObject: Content
     
     /**
      A cancellable new/edited entry.

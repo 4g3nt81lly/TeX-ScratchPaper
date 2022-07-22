@@ -11,7 +11,8 @@ import UniformTypeIdentifiers
 /// SwiftUI view for the export panel's accessory view.
 struct ExportAccessoryView: View {
     
-    var window: DocumentWindow
+    /// An unowned reference to the main document window controller.
+    unowned var window: DocumentWindow!
     
     /// Supported export file type.
     enum ExportFileType: String, Identifiable {

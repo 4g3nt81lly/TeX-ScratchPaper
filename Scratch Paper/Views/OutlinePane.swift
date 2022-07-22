@@ -23,12 +23,12 @@ class OutlinePane: NSViewController {
      
      A computed property that gets and downcasts document object on-demand from its `representedObject`.
      
-     - Note: This is set by its superview `Sidebar` after `MainSplitViewController` set them the reference, which is after the document created a window controller via the `makeWindowControllers()` method.
+     - Note: This is set by its superview `Sidebar` after `MainSplitViewController` set them the reference, which is after the document created a window controller via the `makeWindowControllers()` method. The reference retained by `representedObject` is released when `Editor` deallocates.
      
      - Warning: Do NOT use `representedObject` for other purposes. This property forcibly downcasts its `representedObject` as the document object which will fail if the `representedObject` is set to other data.
      */
-    var document: ScratchPaper {
-        return self.representedObject as! ScratchPaper
+    var document: Document {
+        return self.representedObject as! Document
     }
     
     /**

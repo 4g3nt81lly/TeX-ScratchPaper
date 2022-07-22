@@ -30,20 +30,13 @@ class BookmarksController: NSHostingController<BookmarksPane>, NSGestureRecogniz
      */
     var gestureTimer: Timer?
     
-    /// Required initializer.
-    @MainActor required dynamic init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     /**
      Sets click gesture recognizers' delegate to `self` and attaches them to the controller's view.
      
      This is implemented here because the hosting controller does not invoke `viewDidLoad()`.
-     
-     - Note: It does, however, invoke `viewDidAppear()`.
      */
-    override init(rootView: BookmarksPane) {
-        super.init(rootView: rootView)
+    override func viewDidAppear() {
+        super.viewDidAppear()
         self.clickGestureRecognizer.delegate = self
         self.view.addGestureRecognizer(self.clickGestureRecognizer)
     }
@@ -77,9 +70,19 @@ class BookmarksController: NSHostingController<BookmarksPane>, NSGestureRecogniz
         return false
     }
     
-    // invalidate timer and deregister globally registered function
-    deinit {
+    /**
+     Detaches the gesture recognizer from the view and invalidates the gesture timer.
+     
+     The gesture recognizer and timer are detached to release the memory.
+     */
+    override func viewWillDisappear() {
+        super.viewWillDisappear()
+        self.view.removeGestureRecognizer(self.clickGestureRecognizer)
         self.gestureTimer?.invalidate()
+    }
+    
+    deinit {
+        // deregister functions
         global.deregisterFunction(ofName: "editSelectedBookmark")
         global.deregisterFunction(ofName: "deleteSelectedBookmark")
         global.deregisterFunction(ofName: "bookmarksListClicked")

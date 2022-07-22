@@ -1,5 +1,5 @@
 //
-//  FileObject.swift
+//  Content.swift
 //  Scratch Paper
 //
 //  Created by Bingyi Billy Li on 2021/6/14.
@@ -14,10 +14,15 @@ import Cocoa
  
  - Note: Each document object should have no more than one instance of this object.
  */
-class FileObject: NSObject, NSSecureCoding, ObservableObject {
+class Content: NSObject, NSSecureCoding, ObservableObject {
     
-    /// A strong reference to its own document object.
-    var document: ScratchPaper!
+    /// Debug description with memory address and content string.
+    override var description: String {
+        return "\(Unmanaged.passUnretained(self).toOpaque()): '\(self.contentString)'"
+    }
+    
+    /// An unowned reference to its own document object.
+    unowned var document: Document!
     
     /// The textual content of the document.
     @objc dynamic var contentString: String
@@ -59,9 +64,9 @@ class FileObject: NSObject, NSSecureCoding, ObservableObject {
     @Published var selectedBookmark: BookmarkEntry?
     
     /// The document's configuration object.
-    @objc dynamic var configuration: Configuration {
+    @objc dynamic var configuration = appSettings.configuration() {
         didSet {
-            guard let undoManager = self.document?.undoManager else { return }
+            guard let undoManager = self.document.undoManager else { return }
             undoManager.registerUndo(withTarget: self,
                                      selector: #selector(undoChangeConfig),
                                      object: oldValue)
@@ -72,16 +77,17 @@ class FileObject: NSObject, NSSecureCoding, ObservableObject {
     // MARK: Initializers & Protocol Stubs
     
     /// An empty instance of the object.
-    static var newFile = FileObject()
+    static func newFile() -> Content {
+        return Content()
+    }
     
     /**
      Convenient initializer for instantiating a new/empty file.
      
      - Parameter string: The initial content of the document.
      */
-    public init(contentString string: String = "") {
+    init(contentString string: String = "") {
         self.contentString = string
-        self.configuration = appDelegate.settings.configuration()
     }
     
     /**
@@ -152,7 +158,6 @@ class FileObject: NSObject, NSSecureCoding, ObservableObject {
         }
         
         self.contentString = string
-        self.configuration = appDelegate.settings.configuration()
         
         self.configuration.cursorPosition = coder.decodeObject(of: NSNumber.self, forKey: "cursorPosition")?.intValue ?? 0
         

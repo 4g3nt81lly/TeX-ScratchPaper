@@ -16,14 +16,14 @@ import Cocoa
 class MainSplitView: NSSplitViewController {
     
     /**
-     References its associated document object.
+     A weak reference to its associated document object.
      
      Implicitly unwrapped optional is used rather than creating a dummy document object to avoid redundant calls.
      It passes down reference to the same document object to its child view controllers (sidebar and editor), giving them direct access.
      
      - Note: This is set when the document creates a window controller for the document via the `makeWindowControllers()` method. The children immediately receives the reference to the document object.
      */
-    var document: ScratchPaper! {
+    weak var document: Document! {
         didSet {
             for child in self.children {
                 if let sidebar = child as? Sidebar {

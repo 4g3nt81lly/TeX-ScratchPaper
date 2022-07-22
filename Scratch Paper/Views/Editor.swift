@@ -44,18 +44,18 @@ class Editor: NSViewController {
     /**
      View controller for bookmark editor.
      
-     This property is always nil except when the user invokes `addBookmark()` via clicking the "Add Bookmark..." menu item from the `contentTextView`'s contextual menu.
+     This property is always `nil` except when the user invokes `addBookmark()` via clicking the "Add Bookmark..." menu item from the `contentTextView`'s contextual menu.
      */
     var bookmarkEditor: NSViewController!
     
     /**
-     Reference to the associated document object.
+     A weak reference to the associated document object.
      
      Implicitly unwrapped optional is used rather than creating a dummy document object to avoid redundant calls.
      
      - Note: This is set by its superview `MainSplitViewController` when the document object creates a window controller via the `makeWindowControllers()` method.
      */
-    @objc dynamic var document: ScratchPaper!
+    @objc dynamic weak var document: Document!
     
     /**
      Reference to its coexisting `Sidebar` object.
@@ -95,9 +95,7 @@ class Editor: NSViewController {
         self.contentTextView.isAutomaticDashSubstitutionEnabled = false
         self.contentTextView.isAutomaticLinkDetectionEnabled = false
         
-        self.contentTextView.setUpLineNumberView()
-        
-        self.contentTextView.textStorage?.delegate = self
+        self.contentTextView.setupLineNumberView()
     }
     
     /**
@@ -122,6 +120,18 @@ class Editor: NSViewController {
         self.view.window?.makeFirstResponder(self.contentTextView)
     }
     
+    override func viewDidDisappear() {
+        super.viewDidDisappear()
+        // print("[Editor \(self)] View did disappear.")
+        self.katexView.configuration.websiteDataStore.fetchDataRecords(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+            records.forEach { record in
+                self.katexView.configuration.websiteDataStore.removeData(ofTypes: record.dataTypes, for: [record]) {
+                    NSLog("[Web Cache] Record \(record) purged.")
+                }
+            }
+        }
+    }
+    
     /**
      Action invoked by menu items to insert certain TeX command/syntax.
      
@@ -137,16 +147,21 @@ class Editor: NSViewController {
         // get selected ranges sorted by their location
         let selectedRanges = (self.contentTextView.selectedRanges as! [NSRange]).sorted(by: { $0.location < $1.location })
         
+        var temporaryRange = selectedRanges.first!
+        temporaryRange.length = 0
+        
+        self.contentTextView.setSelectedRange(temporaryRange)
+        
         // utility function for text insertion
         func insertItem(_ item: String, _ range: NSRange, _ backspace: Int, _ length: Int = 0) {
             var selectedRange = range
             // replace text range
             self.contentTextView.insertText(item, replacementRange: selectedRange)
             
-            selectedRange.location -= backspace
+            selectedRange.location = selectedRange.location + (item as NSString).length - backspace
             selectedRange.length = length
             
-            self.contentTextView.selectedRanges.append(selectedRange as NSValue)
+            self.contentTextView.setSelectedRange(selectedRange)
         }
         
         if let menuItemTag = (sender as? NSMenuItem)?.tag, menuItemTag == 24 {
@@ -158,128 +173,189 @@ class Editor: NSViewController {
         }
         
         // utility function for text wrapping
-        func wrapItem(_ left: String, _ right: String, _ range: NSRange, _ backspace: Int? = nil, _ forwardspace: Int = 0) {
-            // right insertion
-            var insertRange = NSRange(location: range.upperBound, length: 0)
-            self.contentTextView.insertText(right, replacementRange: insertRange)
-            // left insertion
-            insertRange.location = range.location
-            self.contentTextView.insertText(left, replacementRange: insertRange)
-            
-            if let count = backspace {
-                insertRange.location += left.count + range.length + right.count - count
-            } else {
-                insertRange.location += left.count + forwardspace
-                insertRange.length = forwardspace == 0 ? range.length : 0
+        func wrapItem(_ left: String, _ right: String, _ range: NSRange, offset: Int? = nil) {
+            let text = self.contentTextView.string as NSString
+            let selectedText = text.substring(with: range)
+            // if within entire range
+            let (leftLength, rightLength) = ((left as NSString).length, (right as NSString).length)
+            if (range.location > leftLength - 1) && (range.upperBound < text.length - rightLength + 1) {
+                // check if the selected text is already wrapped with the pattern
+                let checkRange = NSRange(location: range.location - leftLength, length: range.length + leftLength + rightLength)
+                let checkString = text.substring(with: checkRange)
+                
+                if checkString == left + selectedText + right {
+                    // unwrap the item
+                    self.contentTextView.insertText(selectedText, replacementRange: checkRange)
+                    
+                    self.contentTextView.selectedRanges.append(checkRange as NSValue)
+                    return
+                }
             }
-            self.contentTextView.selectedRanges.append(insertRange as NSValue)
+            // entire replacement rather than individual right/left insertion
+            let replacementText = left + selectedText + right
+            
+            self.contentTextView.insertText(replacementText, replacementRange: range)
+            
+            var selectedRange = range
+            selectedRange.location += (left as NSString).length
+            selectedRange.length = range.length
+            
+            if let offset = offset, offset != 0 {
+                if offset > 0 {
+                    // positive offset
+                    selectedRange.location = selectedRange.upperBound + offset
+                } else {
+                    // negative offset
+                    selectedRange.location += offset
+                }
+                selectedRange.length = 0
+            }
+            
+            self.contentTextView.selectedRanges.append(selectedRange as NSValue)
         }
         
         // heuristic function for handling text insertion/wrapping
-        func smartInsert(_ pattern: String, range: NSRange, smartMode: Bool = true, override: (String?, String?) = (nil, nil), insertBackspace: Int, insertSelectionLength: Int = 0, encapsulateBackspace: Int? = nil, encapsulateForwardspace: Int = 0) {
-            let components = pattern.components(separatedBy: .whitespaces)
+        func smartInsert(_ pattern: String, range: NSRange, smartMode: Bool = true, override: (String?, String?) = (nil, nil), insertSelectionLength: Int = 0, wrappingOffset: Int? = nil) {
+            let components = pattern.components(separatedBy: "#")
+            
+            let overriddenWrapping = override.1?.components(separatedBy: "#")
+            let left = overriddenWrapping?.first ?? components[0]
+            let right = overriddenWrapping?.last ?? components[1]
+            
+            let rightLength = (right as NSString).length
+            let overriddenRightLength = (override.0?.components(separatedBy: "#").last as? NSString)?.length
+            
+            let overriddenInsertion = override.0?.replacingOccurrences(of: "#", with: "")
             
             // auto-decides only when smart mode is on
             guard smartMode else {
                 // just insert item regardless
-                insertItem(override.0 ?? components.joined(), range, insertBackspace, insertSelectionLength)
+                insertItem(overriddenInsertion ?? components.joined(), range,
+                           overriddenRightLength ?? rightLength, insertSelectionLength)
                 return
             }
             guard range.length > 0 else {
                 // insert item
-                insertItem(override.0 ?? components.joined(), range, insertBackspace, insertSelectionLength)
+                insertItem(overriddenInsertion ?? components.joined(), range,
+                           overriddenRightLength ?? rightLength, insertSelectionLength)
                 return
             }
             // wrap item
-            let overrideComponents = override.1?.components(separatedBy: .whitespaces)
-            let left = overrideComponents?.first ?? components[0]
-            let right = overrideComponents?.last ?? components[1]
-            wrapItem(left, right, range, encapsulateBackspace, encapsulateForwardspace)
+            wrapItem(left, right, range, offset: wrappingOffset)
         }
         
         // perform text insertion/wrapping for selected ranges starting at the furthest
         for selectedRange in selectedRanges.reversed() {
             switch command {
             case "Fraction":
-                smartInsert("\\frac{ }{}", range: selectedRange, insertBackspace: 3, encapsulateBackspace: 1)
+                smartInsert("\\frac{#}{}",
+                            range: selectedRange)
             case "Exponent":
-                smartInsert("", range: selectedRange, override: ("^{}", "{ }^{}"), insertBackspace: 1, encapsulateBackspace: 1)
+                smartInsert("", range: selectedRange, override: ("^{#}", "{#}^{}"), wrappingOffset: 3)
             case "Square Root":
-                smartInsert("\\sqrt{ }", range: selectedRange, insertBackspace: 1)
+                smartInsert("\\sqrt{#}",
+                            range: selectedRange)
             case "Root":
-                smartInsert("\\sqrt[]{ }", range: selectedRange, insertBackspace: 3, encapsulateForwardspace: -2)
+                smartInsert("\\sqrt[]{#}",
+                            range: selectedRange, wrappingOffset: -2)
             case "Smart Parentheses":
-                smartInsert("\\left( \\right)", range: selectedRange, insertBackspace: 7)
+                smartInsert("\\left(#\\right)",
+                            range: selectedRange)
             case "Indefinite Integral":
-                smartInsert("\\int{ }", range: selectedRange, insertBackspace: 1)
+                smartInsert("\\int{#}",
+                            range: selectedRange)
             case "Definite Integral":
-                smartInsert("\\int_{ }^{}", range: selectedRange, insertBackspace: 4, encapsulateBackspace: 1)
+                smartInsert("\\int_{#}^{}",
+                            range: selectedRange, wrappingOffset: 3)
             case "Sum":
-                smartInsert("\\sum_{ }^{}", range: selectedRange, insertBackspace: 4, encapsulateBackspace: 1)
+                smartInsert("\\sum_{#}^{}",
+                            range: selectedRange, wrappingOffset: 3)
             case "Product":
-                smartInsert("\\prod_{ }^{}", range: selectedRange, insertBackspace: 4, encapsulateBackspace: 1)
+                smartInsert("\\prod_{#}^{}",
+                            range: selectedRange, wrappingOffset: 3)
             case "Limit":
-                smartInsert("\\lim_{ }", range: selectedRange, insertBackspace: 1, encapsulateBackspace: 1)
+                smartInsert("\\lim_{#}",
+                            range: selectedRange)
             case "Binomial":
-                smartInsert("\\binom_{ }{}", range: selectedRange, insertBackspace: 3, encapsulateBackspace: 1)
+                smartInsert("\\binom_{#}{}",
+                            range: selectedRange, wrappingOffset: 2)
             case "Aligned":
-                smartInsert("\\begin{aligned}\n\t \n\\end{aligned}", range: selectedRange, insertBackspace: 14)
+                smartInsert("\\begin{aligned}\n\t#\n\\end{aligned}",
+                            range: selectedRange)
             case "Array":
-                smartInsert("\\begin{array}{cc}\n\t \n\\end{array}", range: selectedRange, insertBackspace: 12)
+                smartInsert("\\begin{array}{cc}\n\t#\n\\end{array}",
+                            range: selectedRange)
             case "Matrix":
-                smartInsert("\\begin{matrix}\n\t \n\\end{matrix}", range: selectedRange, insertBackspace: 13)
+                smartInsert("\\begin{matrix}\n\t#\n\\end{matrix}",
+                            range: selectedRange)
             case "Parenthesis Matrix":
-                smartInsert("\\begin{pmatrix}\n\t \n\\end{pmatrix}", range: selectedRange, insertBackspace: 14)
+                smartInsert("\\begin{pmatrix}\n\t#\n\\end{pmatrix}",
+                            range: selectedRange)
             case "Bracket Matrix":
-                smartInsert("\\begin{bmatrix}\n\t \n\\end{bmatrix}", range: selectedRange, insertBackspace: 14)
+                smartInsert("\\begin{bmatrix}\n\t#\n\\end{bmatrix}",
+                            range: selectedRange)
             case "Braces Matrix":
-                smartInsert("\\begin{Bmatrix}\n\t \n\\end{Bmatrix}", range: selectedRange, insertBackspace: 14)
+                smartInsert("\\begin{Bmatrix}\n\t#\n\\end{Bmatrix}",
+                            range: selectedRange)
             case "Vertical Matrix":
-                smartInsert("\\begin{vmatrix}\n\t \n\\end{vmatrix}", range: selectedRange, insertBackspace: 14)
+                smartInsert("\\begin{vmatrix}\n\t#\n\\end{vmatrix}",
+                            range: selectedRange)
             case "Double-Vertical Matrix":
-                smartInsert("\\begin{Vmatrix}\n\t \n\\end{Vmatrix}", range: selectedRange, insertBackspace: 14)
+                smartInsert("\\begin{Vmatrix}\n\t#\n\\end{Vmatrix}",
+                            range: selectedRange)
             case "Cases":
-                smartInsert("\\begin{cases}\n\ta & \\text{if } b \\\\\n\tc & \\text{if } d\n\\end{cases}", range: selectedRange, smartMode: false, insertBackspace: 50, insertSelectionLength: 38)
+                smartInsert("\\begin{cases}\n\t#a & \\text{if } b \\\\\n\tc & \\text{if } d\n\\end{cases}",
+                            range: selectedRange, smartMode: false, insertSelectionLength: 38)
             case "Table":
-                smartInsert("\\def\\arraystretch{1.5}\n\\begin{array}{c|c:c}\n\ta & b & c \\\\ \\hline\n\td & e & f \\\\ \\hdashline\n\tg & h & i\n\\end{array}", range: selectedRange, smartMode: false, insertBackspace: 69, insertSelectionLength: 57)
+                smartInsert("\\def\\arraystretch{1.5}\n\\begin{array}{c|c:c}\n\t#a & b & c \\\\ \\hline\n\td & e & f \\\\ \\hdashline\n\tg & h & i\n\\end{array}",
+                            range: selectedRange, smartMode: false, insertSelectionLength: 57)
             case "Cancel (Left)":
-                smartInsert("\\cancel{ }", range: selectedRange, insertBackspace: 1)
+                smartInsert("\\cancel{#}",
+                            range: selectedRange)
             case "Cancel (Right)":
-                smartInsert("\\bcancel{ }", range: selectedRange, insertBackspace: 1)
+                smartInsert("\\bcancel{#}",
+                            range: selectedRange)
             case "Cancel (X)":
-                smartInsert("\\xcancel{ }", range: selectedRange, insertBackspace: 1)
+                smartInsert("\\xcancel{#}",
+                            range: selectedRange)
             case "Strike Through":
-                smartInsert("\\sout{ }", range: selectedRange, insertBackspace: 1)
+                smartInsert("\\sout{#}",
+                            range: selectedRange)
             case "Overline":
-                smartInsert("\\overline{ }", range: selectedRange, insertBackspace: 1)
+                smartInsert("\\overline{#}",
+                            range: selectedRange)
             case "Underline":
-                smartInsert("\\underline{ }", range: selectedRange, insertBackspace: 1)
+                smartInsert("\\underline{#}",
+                            range: selectedRange)
             case "Overbrace":
-                smartInsert("\\overbrace{ }^{}", range: selectedRange, insertBackspace: 4, encapsulateBackspace: 1)
+                smartInsert("\\overbrace{#}^{}",
+                            range: selectedRange, wrappingOffset: 3)
             case "Underbrace":
-                smartInsert("\\underbrace{ }^{}", range: selectedRange, insertBackspace: 4, encapsulateBackspace: 1)
+                smartInsert("\\underbrace{#}^{}",
+                            range: selectedRange, wrappingOffset: 3)
             case "Over Left Arrow":
-                smartInsert("\\overleftarrow{ }", range: selectedRange, insertBackspace: 1)
+                smartInsert("\\overleftarrow{#}",
+                            range: selectedRange)
             case "Over Right Arrow":
-                smartInsert("\\overrightarrow{ }", range: selectedRange, insertBackspace: 1)
+                smartInsert("\\overrightarrow{#}",
+                            range: selectedRange)
             case "Vector":
-                smartInsert("\\vec{ }", range: selectedRange, insertBackspace: 1)
+                smartInsert("\\vec{#}",
+                            range: selectedRange)
             case "Hat":
-                smartInsert("\\hat{ }", range: selectedRange, insertBackspace: 1)
+                smartInsert("\\hat{#}",
+                            range: selectedRange)
             case "Bar":
-                smartInsert("\\bar{ }", range: selectedRange, insertBackspace: 1)
+                smartInsert("\\bar{#}",
+                            range: selectedRange)
             case "Box":
-                smartInsert("\\boxed{ }", range: selectedRange, insertBackspace: 1)
+                smartInsert("\\boxed{#}",
+                            range: selectedRange)
             case "Toggle Mode":
-                let selectedText = (self.contentTextView.string as NSString).substring(with: selectedRange)
-                let entireRange = NSRange(location: selectedRange.location - 1, length: selectedRange.length + 2)
-                if (self.contentTextView.string as NSString).substring(with: entireRange) == "$\(selectedText)$" {
-                    self.contentTextView.insertText(selectedText, replacementRange: entireRange)
-                } else {
-                    smartInsert("$ $", range: selectedRange, insertBackspace: 1)
-                }
+                smartInsert("$#$",
+                            range: selectedRange)
             default:
-                print("Unknown command.")
+                NSLog("Unknown command.")
                 return
             }
         }
@@ -297,7 +373,7 @@ class Editor: NSViewController {
     /**
      Action sent when the user interacts with the controls in the bar.
      
-     Marks the document as "edited" (change done) and renders the content.
+     Marks the document as "edited" (change done) and renders the content. The content is rendered regardless of the live render option.
      */
     @IBAction func barConfigChanged(_ sender: Any) {
         self.document.updateChangeCount(.changeDone)
@@ -387,6 +463,13 @@ class Editor: NSViewController {
         let bookmarkEditor = BookmarkEditor(editor: self, fileObject: self.document.content, newEntry: newEntry)
         self.bookmarkEditor = NSHostingController(rootView: bookmarkEditor)
         self.presentAsSheet(self.bookmarkEditor)
+    }
+    
+    deinit {
+        // release reference passed to representedObject
+        for child in self.children {
+            child.representedObject = nil
+        }
     }
     
 }

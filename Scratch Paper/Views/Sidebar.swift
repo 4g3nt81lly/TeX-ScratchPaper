@@ -33,14 +33,14 @@ class Sidebar: NSViewController {
     @IBOutlet weak var sidebarView: NSView!
     
     /**
-     Reference to the associated document object.
+     A weak reference to the associated document object.
      
      Implicitly unwrapped optional is used rather than creating a dummy document object to avoid redundant calls.
      It passes down the reference to the associated coument object down the hierarchy to its child view controllers by setting it to their `representedObject` property, which is readily available for any non-subclass view controllers.
      
      - Note: This is set by its superview `MainSplitViewController` when the document object creates a window controller via the `makeWindowControllers()` method.
      */
-    var document: ScratchPaper! {
+    weak var document: Document! {
         didSet {
             for child in self.children {
                 child.representedObject = self.document

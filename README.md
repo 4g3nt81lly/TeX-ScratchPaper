@@ -2,32 +2,35 @@
 KaTeX powered scratch paper for live TeX-style math equations editing.
 
 ## 🤩&ensp;Motivation
-Back then in one of my math lectures, I forgot to bring my math notebook to the class and wanted but couldn't finish a class assignment. Luckily, I happened to be writing a math paper in LaTeX and learning to develop macOS apps at the time, and had this great idea of writing a light-weighted text-editor-like app that specifically focuses on editing TeX-style math equations. I quickly developed a prototype so I can write math or jot down some notes and ideas when I don't have access to a physical scratch paper. This is, to a great extent, inspired by [Texpad](https://www.texpad.com) and [Notion](https://www.notion.so) that I used to write my math paper and take math notes.
+This, at its heart, is a personal passion project for both learning and exploration purposes. Back then in one of my math lectures, I forgot to bring my math notebook to the class and I couldn't finish a class assignment because of it. Luckily, I happened to be writing a math paper in LaTeX and learning to develop macOS apps at the time, so I came up with this great idea of writing a light-weighted text-editor-like app that specifically focuses on live editing TeX-style math equations. I quickly developed a prototype so I could write math or jot down some notes and ideas when I didn't have access to a scratch paper.
+
+This is also, to a great extent, inspired by [Texpad](https://www.texpad.com) and [Notion](https://www.notion.so) that I used to write my math paper and take math notes.
 
 ## 🤔&ensp;Why use it?
-I personally find it quite efficient and even grew dependent of it after some time. If you are a mathematician or learner who knows a little about writing TeX-style math equations and is in need of a scratch paper, this app is just as light-weighted as those used in printers.
+I personally find it quite efficient and even grew dependent of it after some time. If you are a mathematician or learner who knows a little about writing TeX-style math equations and is in need of an eco-friendly scratch paper, "Scratch Paper" is just as light-weighted as those stapled to your notebooks.
 
 You can use it to do so many things:
 
-1. Take notes, especially math notes with math notations.
-2. Do math practices: Paste your math assignments and get it done fast and with styles!
-3. Need a quick proof or demo to someone (if you are a peer-mentor or a teacher)? You got it!
-4. Share math snippets you've written with people.
-5. Practice and explore writing TeX-style math equations: no more writing 3/5, x^2, or √x.
-6. And so much more...
+1. Take notes 📔, especially math notes with math notations ➕➖✖️➗🟰 ♾️.
+2. Do math exercises: Paste your math assignments and get it done fast and with style 😎!
+3. Need a quick proof or demo to someone (if you are a peer-mentor or a teacher 🧑‍🏫)? You got it!
+4. Share math snippets you've written with people. 📤
+5. Practice and explore writing TeX-style math equations: no more writing 3/5, x^2, S_n, or √x 🔚.
+6. And so much more... Just imagine the possibilities... 💭
 
 ## 🧩&ensp;Features
 1. Light-weighted and portable.
 2. Fast and beautiful live math equation rendering with KaTeX, a powerful TeX renderer written in JavaScript.
-3. Text-based or math-based rendering modes.
-4. Line-to-line editing mode supports synchronized editing.
+3. Text-based and math-based rendering modes.
+4. Line-to-line editing mode that supports synchronized editing.
 5. Elegantly displays an outline that can be used to clearly and quickly navigate your content.
 6. Shows what and where the errors are.
 7. Fast and easy commands and syntax insertion.
 8. Adding bookmarks for your content.
 9. Customizing the renderer.
-10. Export rendered content to various file formats (JPEG, PNG, PDF, TIFF, Web Archive, HTML, TeX, and more is coming).
-11. More features are coming...
+10. Import or start as simple as a text file.
+11. Export rendered content to various file formats (JPEG, PNG, PDF, TIFF, Web Archive, HTML, TeX, and more is coming).
+12. More features are coming...
 
 ## 🖍&ensp;To Dos
 - [ ] A nice looking icon.
@@ -37,7 +40,7 @@ You can use it to do so many things:
 - [ ] Smart indentation.
 - [ ] A web view for KaTeX documentation showing supported functions.
 - [ ] A viewer for read-only mode.
-- [ ] Dynamic ranging for bookmarks.
+- [ ] Dynamic range support for bookmarks.
 
 ## 🔧&ensp;How to use?
 (Note: The app is at its early stage, download is provided for testing purposes.)
