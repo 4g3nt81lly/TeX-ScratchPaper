@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SymbolPicker
 import Introspect
 
 /**
@@ -354,6 +353,7 @@ struct BookmarkEditor: View {
         // conditionally dismiss the editor
         if let editor = editor {
             editor.bookmarkEditor.dismiss(nil)
+            editor.sidebar.navigate(to: .bookmarks)
             editor.bookmarkEditor = nil
         } else {
             dismiss()

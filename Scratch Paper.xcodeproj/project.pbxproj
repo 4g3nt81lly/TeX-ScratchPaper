@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		37075EB82878142C00152326 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37075EB72878142C00152326 /* Configuration.swift */; };
+		37082AA5288BC1B600C668DD /* SymbolPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37082AA4288BC1B600C668DD /* SymbolPicker.swift */; };
+		37082AA8288BC3C500C668DD /* symbols.txt in Resources */ = {isa = PBXBuildFile; fileRef = 37082AA7288BC29000C668DD /* symbols.txt */; };
 		371B20C82874D82B00812767 /* ExportAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371B20C72874D82B00812767 /* ExportAccessoryView.swift */; };
 		371B20CC28764D1C00812767 /* DocumentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371B20CB28764D1C00812767 /* DocumentController.swift */; };
 		371B20D12876528700812767 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 371B20D02876528700812767 /* WelcomeView.swift */; };
@@ -17,7 +19,6 @@
 		376DD6012880B786008B4CA0 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = 376DD6002880B786008B4CA0 /* Introspect */; };
 		376DD6032880E513008B4CA0 /* GlobalChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376DD6022880E513008B4CA0 /* GlobalChannel.swift */; };
 		376DD608288153D8008B4CA0 /* BookmarksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376DD607288153D8008B4CA0 /* BookmarksController.swift */; };
-		376DD61028821C26008B4CA0 /* SymbolPicker in Frameworks */ = {isa = PBXBuildFile; productRef = 376DD60F28821C26008B4CA0 /* SymbolPicker */; };
 		37883CC126770D490094A71F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37883CC026770D490094A71F /* AppDelegate.swift */; };
 		37883CC526770D490094A71F /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37883CC426770D490094A71F /* Document.swift */; };
 		37883CC726770D4C0094A71F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37883CC626770D4C0094A71F /* Assets.xcassets */; };
@@ -49,6 +50,8 @@
 
 /* Begin PBXFileReference section */
 		37075EB72878142C00152326 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
+		37082AA4288BC1B600C668DD /* SymbolPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SymbolPicker.swift; sourceTree = "<group>"; };
+		37082AA7288BC29000C668DD /* symbols.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = symbols.txt; sourceTree = "<group>"; };
 		371B20C72874D82B00812767 /* ExportAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExportAccessoryView.swift; sourceTree = "<group>"; };
 		371B20CB28764D1C00812767 /* DocumentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentController.swift; sourceTree = "<group>"; };
 		371B20D02876528700812767 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
@@ -57,7 +60,6 @@
 		374B91A027FE931E00342439 /* AScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AScrollView.swift; sourceTree = "<group>"; };
 		376DD6022880E513008B4CA0 /* GlobalChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalChannel.swift; sourceTree = "<group>"; };
 		376DD607288153D8008B4CA0 /* BookmarksController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksController.swift; sourceTree = "<group>"; };
-		376DD60D28821C16008B4CA0 /* SymbolPicker */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = SymbolPicker; path = "Scratch Paper/Frameworks/SymbolPicker"; sourceTree = "<group>"; };
 		37883CBD26770D490094A71F /* Scratch Paper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Scratch Paper.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		37883CC026770D490094A71F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		37883CC426770D490094A71F /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
@@ -95,7 +97,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				376DD61028821C26008B4CA0 /* SymbolPicker in Frameworks */,
 				376DD6012880B786008B4CA0 /* Introspect in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -111,18 +112,9 @@
 			name = Generic;
 			sourceTree = "<group>";
 		};
-		376DD60C28821C16008B4CA0 /* Packages */ = {
-			isa = PBXGroup;
-			children = (
-				376DD60D28821C16008B4CA0 /* SymbolPicker */,
-			);
-			name = Packages;
-			sourceTree = "<group>";
-		};
 		37883CB426770D490094A71F = {
 			isa = PBXGroup;
 			children = (
-				376DD60C28821C16008B4CA0 /* Packages */,
 				37883CBF26770D490094A71F /* Scratch Paper */,
 				37883CBE26770D490094A71F /* Products */,
 			);
@@ -146,7 +138,7 @@
 				37DF035928740444006051FF /* Views */,
 				37DF035C2874063E006051FF /* Objects */,
 				37DF0364287408EC006051FF /* Data Structure */,
-				37DF036528740947006051FF /* Frameworks */,
+				37DF036528740947006051FF /* Resources */,
 			);
 			path = "Scratch Paper";
 			sourceTree = "<group>";
@@ -178,6 +170,7 @@
 				37F675882876AB27004F0247 /* ConfigView.swift */,
 				37278D7F287CE14D00FA73CC /* PreferencesView.swift */,
 				371B20C72874D82B00812767 /* ExportAccessoryView.swift */,
+				37082AA4288BC1B600C668DD /* SymbolPicker.swift */,
 				37DF035F2874074D006051FF /* Generic */,
 			);
 			path = Views;
@@ -221,12 +214,13 @@
 			path = "Data Structure";
 			sourceTree = "<group>";
 		};
-		37DF036528740947006051FF /* Frameworks */ = {
+		37DF036528740947006051FF /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				37082AA7288BC29000C668DD /* symbols.txt */,
 				37883CE026770EA90094A71F /* katex */,
 			);
-			path = Frameworks;
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -247,7 +241,6 @@
 			name = "Scratch Paper";
 			packageProductDependencies = (
 				376DD6002880B786008B4CA0 /* Introspect */,
-				376DD60F28821C26008B4CA0 /* SymbolPicker */,
 			);
 			productName = Scribble;
 			productReference = 37883CBD26770D490094A71F /* Scratch Paper.app */;
@@ -293,6 +286,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37082AA8288BC3C500C668DD /* symbols.txt in Resources */,
 				37883CE126770EA90094A71F /* katex in Resources */,
 				37883CC726770D4C0094A71F /* Assets.xcassets in Resources */,
 				37883CCA26770D4C0094A71F /* Main.storyboard in Resources */,
@@ -329,6 +323,7 @@
 				374B91A127FE931E00342439 /* AScrollView.swift in Sources */,
 				37DF036128740779006051FF /* ATextView.swift in Sources */,
 				37C2BEED287BBC0100D3569E /* LoopLock.swift in Sources */,
+				37082AA5288BC1B600C668DD /* SymbolPicker.swift in Sources */,
 				37BADE72287D126E008DAF3E /* BookmarkEntry.swift in Sources */,
 				37883CC526770D490094A71F /* Document.swift in Sources */,
 				3794D94227F5F364005870E3 /* ErrorPane.swift in Sources */,
@@ -570,10 +565,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 376DD5FF2880B786008B4CA0 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
 			productName = Introspect;
-		};
-		376DD60F28821C26008B4CA0 /* SymbolPicker */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = SymbolPicker;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

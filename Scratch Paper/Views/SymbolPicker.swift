@@ -3,84 +3,61 @@
 //  SymbolPicker
 //
 //  Created by Yubo Qin on 2/14/22.
+//  https://github.com/xnth97/SymbolPicker
 //
 
+import Cocoa
 import SwiftUI
 
-import AppKit
-
-public struct SymbolPicker: View {
+struct SymbolPicker: View {
 
     // MARK: - Static constants
 
-    private static let symbols: [String] = {
-        guard let path = Bundle.module.path(forResource: "sfsymbols", ofType: "txt"),
-              let content = try? String(contentsOfFile: path)
-        else {
+    static let symbols: [String] = {
+        guard let path = Bundle.main.path(forResource: "symbols", ofType: "txt"),
+              let content = try? String(contentsOfFile: path) else {
             return []
         }
-        return content
-            .split(separator: "\n")
-            .map { String($0) }
+        return content.split(separator: "\n").map({ String($0) })
     }()
 
-    private static var gridDimension: CGFloat {
-        return 30
-    }
+    static var gridDimension: CGFloat = 30
 
-    private static var symbolSize: CGFloat {
-        return 14
-    }
+    static var symbolSize: CGFloat = 14
 
-    private static var symbolCornerRadius: CGFloat {
-        return 4
-    }
+    static var symbolCornerRadius: CGFloat = 4
 
-    public static var systemGray5: Color {
-        dynamicColor(
-            light: .init(red: 0.9, green: 0.9, blue: 0.92, alpha: 1.0),
-            dark: .init(red: 0.17, green: 0.17, blue: 0.18, alpha: 1.0)
-        )
-    }
-
-    public static var systemBackground: Color {
+    static var systemBackground: Color {
         dynamicColor(
             light: .init(red: 1, green: 1, blue: 1, alpha: 1.0),
             dark: .init(red: 0.125, green: 0.125, blue: 0.125, alpha: 1.0)
         )
     }
 
-    public static var secondarySystemBackground: Color {
-        dynamicColor(
-            light: .init(red: 0.95, green: 0.95, blue: 1, alpha: 1.0),
-            dark: .controlBackgroundColor
-        )
-    }
-
     // MARK: - Properties
 
-    @Binding public var symbol: String
-    @State private var searchText = ""
-    @Environment(\.presentationMode) private var presentationMode
+    @Binding var symbol: String
+    @State var searchText = ""
+    @Environment(\.presentationMode) var presentationMode
 
-    // MARK: - Public Init
+    // MARK: - Init
 
-    public init(symbol: Binding<String>) {
+    init(symbol: Binding<String>) {
         _symbol = symbol
     }
 
     // MARK: - View Components
 
     @ViewBuilder
-    private var searchableSymbolGrid: some View {
+    var searchableSymbolGrid: some View {
         VStack(spacing: 10) {
-            TextField(LocalizedString("search_placeholder"), text: $searchText)
+            TextField("Search", text: $searchText)
                 .disableAutocorrection(true)
             symbolGrid
         }
     }
 
-    private var symbolGrid: some View {
+    var symbolGrid: some View {
         ScrollView {
             LazyVGrid(columns: [GridItem(.adaptive(minimum: Self.gridDimension, maximum: Self.gridDimension))]) {
                 ForEach(Self.symbols.filter { searchText.isEmpty ? true : $0.localizedCaseInsensitiveContains(searchText) }, id: \.self) { thisSymbol in
@@ -109,9 +86,9 @@ public struct SymbolPicker: View {
         }
     }
 
-    public var body: some View {
+    var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text(LocalizedString("sf_symbol_picker"))
+            Text("Select a symbol:")
                 .font(.headline)
             searchableSymbolGrid
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -121,7 +98,7 @@ public struct SymbolPicker: View {
                 Button {
                     presentationMode.wrappedValue.dismiss()
                 } label: {
-                    Text(LocalizedString("cancel"))
+                    Text("Cancel")
                         .padding(.horizontal, 5)
                 }
                 .keyboardShortcut(.cancelAction)
@@ -130,7 +107,7 @@ public struct SymbolPicker: View {
                 Button {
                     presentationMode.wrappedValue.dismiss()
                 } label: {
-                    Text(LocalizedString("done"))
+                    Text("Done")
                         .padding(.horizontal, 8)
                 }
                 .keyboardShortcut(.defaultAction)
@@ -141,9 +118,9 @@ public struct SymbolPicker: View {
         .frame(width: 520, height: 300, alignment: .center)
     }
 
-    // MARK: - Private helpers
+    // MARK: - helpers
 
-    private static func dynamicColor(light: NSColor, dark: NSColor) -> Color {
+    static func dynamicColor(light: NSColor, dark: NSColor) -> Color {
         let color = NSColor(name: nil) { $0.name == .darkAqua ? dark : light }
         if #available(macOS 12.0, *) {
             return Color(nsColor: color)
@@ -151,20 +128,4 @@ public struct SymbolPicker: View {
         return Color(color)
     }
 
-}
-
-private func LocalizedString(_ key: String) -> String {
-    NSLocalizedString(key, bundle: .module, comment: "")
-}
-
-struct SymbolPicker_Previews: PreviewProvider {
-    @State static var symbol: String = "square.and.arrow.up"
-
-    static var previews: some View {
-        Group {
-            SymbolPicker(symbol: Self.$symbol)
-            SymbolPicker(symbol: Self.$symbol)
-                .preferredColorScheme(.dark)
-        }
-    }
 }

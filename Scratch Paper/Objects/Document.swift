@@ -60,6 +60,8 @@ class Document: NSDocument {
      */
     override func makeWindowControllers() {
         // Swift.print("[Document \(self)] Making window controllers for document with content \(self.content).")
+        self.content.document = self
+        
         let wc = mainStoryboard.instantiateController(withIdentifier: "documentWC") as! DocumentWindow
         wc.window!.delegate = wc
         wc.window!.setFrame(.init(x: 0, y: 0, width: 1000, height: 600), display: false)
