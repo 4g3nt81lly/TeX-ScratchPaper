@@ -25,7 +25,7 @@ class Content: NSObject, NSSecureCoding, ObservableObject {
     unowned var document: Document!
     
     /// The textual content of the document.
-    @objc dynamic var contentString: String
+    var contentString: String
     
     /// The document's saved bookmarks.
     @Published var bookmarks: Bookmarks = [] {

@@ -17,8 +17,6 @@ class LineNumberRulerView: NSRulerView {
     init(textView: NSTextView) {
         super.init(scrollView: textView.enclosingScrollView!, orientation: .verticalRuler)
         self.clientView = textView
-        
-        // self.ruleThickness = 35
     }
     
     required init(coder: NSCoder) {
@@ -26,13 +24,14 @@ class LineNumberRulerView: NSRulerView {
     }
     
     override func drawHashMarksAndLabels(in rect: NSRect) {
-        guard let textView = self.clientView as? NSTextView else {
+        guard let textView = self.clientView as? ATextView else {
             return
         }
+        let string = textView.attributedString().string
         textView.backgroundColor.setFill()
         rect.fill()
         
-        let lineCountDigit = "\(textView.string.components(separatedBy: "\n").count)".count
+        let lineCountDigit = "\(string.components(separatedBy: "\n").count)".count
         self.ruleThickness = CGFloat(lineCountDigit * 8 + 10)
         
         if let layoutManager = textView.layoutManager {
@@ -43,7 +42,6 @@ class LineNumberRulerView: NSRulerView {
             
             let drawLineNumber = { (lineNumberString: String, y: CGFloat) -> Void in
                 let attString = NSAttributedString(string: lineNumberString, attributes: lineNumberAttributes)
-                // let x = self.ruleThickness - attString.size().width
                 let x = self.ruleThickness - attString.size().width - 5
                 attString.draw(at: NSPoint(x: x, y: relativePoint.y + y))
             }
@@ -52,16 +50,16 @@ class LineNumberRulerView: NSRulerView {
             let firstVisibleGlyphCharacterIndex = layoutManager.characterIndexForGlyph(at: visibleGlyphRange.location)
             
             let newLineRegex = try! NSRegularExpression(pattern: "\n", options: [])
-            // The line number for the first visible line
-            var lineNumber = newLineRegex.numberOfMatches(in: textView.string, options: [], range: NSMakeRange(0, firstVisibleGlyphCharacterIndex)) + 1
+            // the line number for the first visible line
+            var lineNumber = newLineRegex.numberOfMatches(in: string, range: NSMakeRange(0, firstVisibleGlyphCharacterIndex)) + 1
             
             var glyphIndexForStringLine = visibleGlyphRange.location
             
             // Go through each line in the string.
-            while glyphIndexForStringLine < NSMaxRange(visibleGlyphRange) {
+            while glyphIndexForStringLine < visibleGlyphRange.upperBound {
                 
                 // Range of current line in the string.
-                let characterRangeForStringLine = (textView.string as NSString).lineRange(
+                let characterRangeForStringLine = (string as NSString).lineRange(
                     for: NSMakeRange(layoutManager.characterIndexForGlyph(at: glyphIndexForStringLine), 0)
                 )
                 let glyphRangeForStringLine = layoutManager.glyphRange(forCharacterRange: characterRangeForStringLine, actualCharacterRange: nil)
@@ -69,7 +67,7 @@ class LineNumberRulerView: NSRulerView {
                 var glyphIndexForGlyphLine = glyphIndexForStringLine
                 var glyphLineCount = 0
                 
-                while ( glyphIndexForGlyphLine < NSMaxRange(glyphRangeForStringLine) ) {
+                while glyphIndexForGlyphLine < glyphRangeForStringLine.upperBound {
                     
                     // See if the current line in the string spread across
                     // several lines of glyphs
@@ -87,10 +85,10 @@ class LineNumberRulerView: NSRulerView {
                     
                     // Move to next glyph line
                     glyphLineCount += 1
-                    glyphIndexForGlyphLine = NSMaxRange(effectiveRange)
+                    glyphIndexForGlyphLine = effectiveRange.upperBound
                 }
                 
-                glyphIndexForStringLine = NSMaxRange(glyphRangeForStringLine)
+                glyphIndexForStringLine = glyphRangeForStringLine.upperBound
                 lineNumber += 1
             }
             

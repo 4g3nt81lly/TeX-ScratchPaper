@@ -76,7 +76,8 @@ class KatexMathView: WKWebView {
      */
     @discardableResult
     func preprocess() -> String {
-        let katexString = self.document.content.contentString
+        let katexString = NSMutableAttributedString(attributedString: self.document.editor.contentTextView.textStorage!)
+        
         let config = self.document.content.configuration
         
         let delimiter = "$"
@@ -94,8 +95,8 @@ class KatexMathView: WKWebView {
         if config.renderMode == 0 {
             // text-based mode
             var firstLine = 0
-            var searchRange = NSRange(location: 0, length: (katexString as NSString).length)
-            for component in katexString.components(separatedBy: "\n\n") {
+            var searchRange = NSMakeRange(0, katexString.length)
+            for component in katexString.string.components(separatedBy: "\n\n") {
                 defer {
                     // update search range
                     let step = (component as NSString).length + 2
@@ -113,11 +114,11 @@ class KatexMathView: WKWebView {
                 
                 // create selectable range mapping
                 guard component != "" else {
-                    let range = NSRange(location: searchRange.location, length: 0)
+                    let range = NSMakeRange(searchRange.location, 0)
                     self.rangeMap[range] = ""
                     continue
                 }
-                let range = (katexString as NSString).range(of: component, range: searchRange)
+                let range = katexString.mutableString.range(of: component, range: searchRange)
                 self.rangeMap[range] = component
             }
             // remove last line break
@@ -135,18 +136,28 @@ class KatexMathView: WKWebView {
                 }
                 formattedKatex = formattedKatex.replacingOccurrences(of: "@", with: "$")
             }
+            
+            var first = true
+            
+            while formattedKatex.contains(delimiter) {
+                let tag = first ? startTexTag : endTexTag
+                if let range = formattedKatex.range(of: delimiter) {
+                    formattedKatex = formattedKatex.replacingOccurrences(of: delimiter, with: tag, options: .literal, range: range)
+                }
+                first.toggle()
+            }
         } else {
             // math mode
             var firstLine = 0
-            var searchRange = NSRange(location: 0, length: (katexString as NSString).length)
-            for component in katexString.components(separatedBy: "\n\n") {
+            var searchRange = NSMakeRange(0, katexString.length)
+            for component in katexString.string.components(separatedBy: "\n\n") {
                 defer {
                     // update search range
                     let step = (component as NSString).length + 2
                     searchRange.location += step
                     searchRange.length -= step
                     
-                    formattedKatex += "\(startLineTag)$\(displayStylePrefix)\(component)$\(endLineTag)"
+                    formattedKatex += startLineTag + startTexTag + displayStylePrefix + component + endTexTag + endLineTag
                 }
                 
                 // create line mapping
@@ -157,23 +168,13 @@ class KatexMathView: WKWebView {
                 
                 // create selectable range mapping
                 guard component != "" else {
-                    let range = NSRange(location: searchRange.location, length: 0)
+                    let range = NSMakeRange(searchRange.location, 0)
                     self.rangeMap[range] = ""
                     continue
                 }
-                let range = (katexString as NSString).range(of: component, range: searchRange)
+                let range = katexString.mutableString.range(of: component, range: searchRange)
                 self.rangeMap[range] = component
             }
-        }
-        
-        var first = true
-        
-        while formattedKatex.contains(delimiter) {
-            let tag: String = first ? startTexTag : endTexTag
-            if let range = formattedKatex.range(of: delimiter) {
-                formattedKatex = formattedKatex.replacingOccurrences(of: delimiter, with: tag, options: .literal, range: range)
-            }
-            first.toggle()
         }
         
         return formattedKatex

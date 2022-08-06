@@ -17,6 +17,8 @@ import Cocoa
 @objcMembers
 class AppSettings: NSObject, NSSecureCoding, Reflectable {
     
+    static var editorFont: NSFont = .monospacedSystemFont(ofSize: 14.0, weight: .regular)
+    
     /**
      Default KaTeX render mode.
      

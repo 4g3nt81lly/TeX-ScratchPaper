@@ -76,6 +76,8 @@ class Editor: NSViewController {
     /// A flag to keep track of whether the KaTeX view is properly initialized.
     var isKatexViewInitialized = false
     
+    var timer: Timer?
+    
     /**
      Custom behavior after the view is loaded.
      
@@ -88,14 +90,6 @@ class Editor: NSViewController {
      */
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.contentTextView.font = .monospacedSystemFont(ofSize: 14.0, weight: .regular)
-        self.contentTextView.isAutomaticTextCompletionEnabled = false
-        self.contentTextView.isAutomaticTextReplacementEnabled = false
-        self.contentTextView.isAutomaticQuoteSubstitutionEnabled = false
-        self.contentTextView.isAutomaticDashSubstitutionEnabled = false
-        self.contentTextView.isAutomaticLinkDetectionEnabled = false
-        
-        self.contentTextView.setupLineNumberView()
     }
     
     /**
@@ -118,6 +112,8 @@ class Editor: NSViewController {
             self.isKatexViewInitialized = true
         }
         self.view.window?.makeFirstResponder(self.contentTextView)
+        self.contentTextView.string = self.document.content.contentString
+        self.contentTextView.initializePlaceholders()
     }
     
     override func viewDidDisappear() {
@@ -143,6 +139,9 @@ class Editor: NSViewController {
         guard let command = (sender as? NSPopUpButton)?.titleOfSelectedItem ?? (sender as? NSMenuItem)?.title else {
             return
         }
+        if self.contentTextView.isCoalescingUndo {
+            self.contentTextView.breakUndoCoalescing()
+        }
         
         // get selected ranges sorted by their location
         let selectedRanges = (self.contentTextView.selectedRanges as! [NSRange]).sorted(by: { $0.location < $1.location })
@@ -154,14 +153,34 @@ class Editor: NSViewController {
         
         // utility function for text insertion
         func insertItem(_ item: String, _ range: NSRange, _ backspace: Int, _ length: Int = 0) {
-            var selectedRange = range
+            let text = item.replacingOccurrences(of: "!", with: "")
             // replace text range
-            self.contentTextView.insertText(item, replacementRange: selectedRange)
+            let attrString = NSMutableAttributedString(string: text, attributes: [.font : AppSettings.editorFont,
+                                                                                  .foregroundColor : NSColor.controlTextColor])
+            let pattern = try! NSRegularExpression(pattern: "<@(.*?)@>")
+            var placeholders: OrderedDictionary<TextPlaceholder, NSRange> = [:]
+            pattern.enumerateMatches(in: text, range: attrString.range) { (result, _, _) in
+                let capturedRange = result!.range(at: 1)
+                let placeholderText = attrString.attributedSubstring(from: capturedRange).string
+                let placeholder = TextPlaceholder(placeholderText)
+                placeholders[placeholder] = result!.range
+            }
+            placeholders.reversed().forEach { (placeholder, range) in
+                attrString.replaceCharacters(in: range, with: placeholder.attributedString)
+            }
+            self.contentTextView.insertText(attrString, replacementRange: range)
             
-            selectedRange.location = selectedRange.location + (item as NSString).length - backspace
-            selectedRange.length = length
-            
+            var selectedRange = range
+            if placeholders.isEmpty {
+                // select proper range
+                selectedRange.location = selectedRange.location + attrString.length - backspace
+                selectedRange.length = length
+                
+                return self.contentTextView.setSelectedRange(selectedRange)
+            }
+            selectedRange.length = 0
             self.contentTextView.setSelectedRange(selectedRange)
+            self.contentTextView.insertTab(sender)
         }
         
         if let menuItemTag = (sender as? NSMenuItem)?.tag, menuItemTag == 24 {
@@ -176,14 +195,27 @@ class Editor: NSViewController {
         func wrapItem(_ left: String, _ right: String, _ range: NSRange, offset: Int? = nil) {
             let text = self.contentTextView.string as NSString
             let selectedText = text.substring(with: range)
+            
+            let placeholderRegex = try! NSRegularExpression(pattern: "<@(.*?)@>")
+            let replaceableRegex = try! NSRegularExpression(pattern: "<@(.*?)@>!")
+            
+            let leftStripped = NSMutableString(string: left)
+            let leftRange = NSMakeRange(0, leftStripped.length)
+            placeholderRegex.replaceMatches(in: leftStripped, range: leftRange, withTemplate: "")
+            let rightStripped = NSMutableString(string: right)
+            var rightRange = NSMakeRange(0, rightStripped.length)
+            replaceableRegex.replaceMatches(in: rightStripped, range: rightRange, withTemplate: "")
+            rightRange.length = rightStripped.length
+            placeholderRegex.replaceMatches(in: rightStripped, range: rightRange, withTemplate: "")
+            
             // if within entire range
-            let (leftLength, rightLength) = ((left as NSString).length, (right as NSString).length)
+            let (leftLength, rightLength) = (leftStripped.length, rightStripped.length)
             if (range.location > leftLength - 1) && (range.upperBound < text.length - rightLength + 1) {
                 // check if the selected text is already wrapped with the pattern
-                let checkRange = NSRange(location: range.location - leftLength, length: range.length + leftLength + rightLength)
+                let checkRange = NSMakeRange(range.location - leftLength, range.length + leftLength + rightLength)
                 let checkString = text.substring(with: checkRange)
                 
-                if checkString == left + selectedText + right {
+                if checkString == leftStripped.string + selectedText + rightStripped.string {
                     // unwrap the item
                     self.contentTextView.insertText(selectedText, replacementRange: checkRange)
                     
@@ -191,27 +223,85 @@ class Editor: NSViewController {
                     return
                 }
             }
+            
             // entire replacement rather than individual right/left insertion
-            let replacementText = left + selectedText + right
+            let leftText = NSMutableAttributedString(string: left)
+            var leftPlaceholders: OrderedDictionary<TextPlaceholder, NSRange> = [:]
+            placeholderRegex.enumerateMatches(in: leftText.string, range: leftText.range) { (result, _, _) in
+                let capturedRange = result!.range(at: 1)
+                let placeholderText = leftText.attributedSubstring(from: capturedRange).string
+                let placeholder = TextPlaceholder(placeholderText)
+                leftPlaceholders[placeholder] = result!.range
+            }
+            leftPlaceholders.reversed().forEach { (placeholder, range) in
+                leftText.replaceCharacters(in: range, with: placeholder.attributedString)
+            }
+            let rightText = NSMutableAttributedString(string: right)
+            let matches = replaceableRegex.matches(in: rightText.string, range: rightText.range)
+            if !matches.isEmpty {
+                matches.reversed().forEach { result in
+                    rightText.deleteCharacters(in: result.range)
+                }
+            }
+            var rightPlaceholders: OrderedDictionary<TextPlaceholder, NSRange> = [:]
+            placeholderRegex.enumerateMatches(in: rightText.string, range: rightText.range) { (result, _, _) in
+                let capturedRange = result!.range(at: 1)
+                let placeholderText = rightText.attributedSubstring(from: capturedRange).string
+                let placeholder = TextPlaceholder(placeholderText)
+                rightPlaceholders[placeholder] = result!.range
+            }
+            rightPlaceholders.reversed().forEach { (placeholder, range) in
+                rightText.replaceCharacters(in: range, with: placeholder.attributedString)
+            }
+            
+            let replacementText = NSMutableAttributedString(string: selectedText)
+            replacementText.insert(leftText, at: 0)
+            replacementText.append(rightText)
             
             self.contentTextView.insertText(replacementText, replacementRange: range)
             
-            var selectedRange = range
-            selectedRange.location += (left as NSString).length
-            selectedRange.length = range.length
-            
-            if let offset = offset, offset != 0 {
-                if offset > 0 {
-                    // positive offset
-                    selectedRange.location = selectedRange.upperBound + offset
-                } else {
-                    // negative offset
-                    selectedRange.location += offset
+            var newRange = NSMakeRange(range.location, replacementText.length)
+            if !leftPlaceholders.isEmpty {
+                self.contentTextView.textStorage!.enumerateAttribute(.attachment, in: newRange) { (attachment, attachmentRange, shouldAbort) in
+                    if let _ = attachment as? TextPlaceholder {
+                        if selectedRanges.count == 1 {
+                            newRange.length = 0
+                            self.contentTextView.setSelectedRange(newRange)
+                            self.contentTextView.insertTab(nil)
+                        } else {
+                            self.contentTextView.selectedRanges.append(attachmentRange as NSValue)
+                        }
+                        shouldAbort.pointee = true
+                    }
                 }
-                selectedRange.length = 0
+            } else if !rightPlaceholders.isEmpty {
+                newRange.location += leftText.length
+                newRange.length -= leftText.length
+                self.contentTextView.textStorage!.enumerateAttribute(.attachment, in: newRange) { (attachment, attachmentRange, shouldAbort) in
+                    if let _ = attachment as? TextPlaceholder {
+                        if selectedRanges.count == 1 {
+                            newRange.length = 0
+                            self.contentTextView.setSelectedRange(newRange)
+                            self.contentTextView.insertTab(nil)
+                        } else {
+                            self.contentTextView.selectedRanges.append(attachmentRange as NSValue)
+                        }
+                        shouldAbort.pointee = true
+                    }
+                }
+            } else {
+                newRange.length = 0
+                if let offset = offset, offset != 0 {
+                    if offset > 0 {
+                        // positive offset
+                        newRange.location += leftText.length + offset
+                    } else {
+                        // negative offset
+                        newRange.location = newRange.lowerBound + offset
+                    }
+                }
+                return self.contentTextView.selectedRanges.append(newRange as NSValue)
             }
-            
-            self.contentTextView.selectedRanges.append(selectedRange as NSValue)
         }
         
         // heuristic function for handling text insertion/wrapping
@@ -248,111 +338,111 @@ class Editor: NSViewController {
         for selectedRange in selectedRanges.reversed() {
             switch command {
             case "Fraction":
-                smartInsert("\\frac{#}{}",
+                smartInsert("\\frac{#<@numerator@>!}{<@denominator@>}",
                             range: selectedRange)
             case "Exponent":
-                smartInsert("", range: selectedRange, override: ("^{#}", "{#}^{}"), wrappingOffset: 3)
+                smartInsert("", range: selectedRange, override: ("^{#<@exponent@>}", "{#}^{<@exponent@>}"), wrappingOffset: 3)
             case "Square Root":
-                smartInsert("\\sqrt{#}",
+                smartInsert("\\sqrt{#<@radicand@>!}",
                             range: selectedRange)
             case "Root":
-                smartInsert("\\sqrt[]{#}",
+                smartInsert("\\sqrt[<@degree@>]{#<@radicand@>!}",
                             range: selectedRange, wrappingOffset: -2)
             case "Smart Parentheses":
-                smartInsert("\\left(#\\right)",
+                smartInsert("\\left(#<@expression@>!\\right)",
                             range: selectedRange)
             case "Indefinite Integral":
-                smartInsert("\\int{#}",
+                smartInsert("\\int{#<@integrand@>!}",
                             range: selectedRange)
             case "Definite Integral":
-                smartInsert("\\int_{#}^{}",
+                smartInsert("\\int_{#<@lower bound@>!}^{<@upper bound@>}<integrand>",
                             range: selectedRange, wrappingOffset: 3)
             case "Sum":
-                smartInsert("\\sum_{#}^{}",
+                smartInsert("\\sum_{#<@index@>!}^{<@upper bound@>}<expression>",
                             range: selectedRange, wrappingOffset: 3)
             case "Product":
-                smartInsert("\\prod_{#}^{}",
+                smartInsert("\\prod_{#<@index@>!}^{<@upper bound@>}<expression>",
                             range: selectedRange, wrappingOffset: 3)
             case "Limit":
-                smartInsert("\\lim_{#}",
+                smartInsert("\\lim_{#<@limit@>!}",
                             range: selectedRange)
             case "Binomial":
-                smartInsert("\\binom_{#}{}",
+                smartInsert("\\binom_{#<@n@>!}{<@k@>}",
                             range: selectedRange, wrappingOffset: 2)
             case "Aligned":
-                smartInsert("\\begin{aligned}\n\t#\n\\end{aligned}",
+                smartInsert("\\begin{aligned}\n\t#<@expression@>!\n\\end{aligned}",
                             range: selectedRange)
             case "Array":
-                smartInsert("\\begin{array}{cc}\n\t#\n\\end{array}",
+                smartInsert("\\begin{array}{cc}\n\t#<@expression@>!\n\\end{array}",
                             range: selectedRange)
             case "Matrix":
-                smartInsert("\\begin{matrix}\n\t#\n\\end{matrix}",
+                smartInsert("\\begin{matrix}\n\t#<@expression@>!\n\\end{matrix}",
                             range: selectedRange)
             case "Parenthesis Matrix":
-                smartInsert("\\begin{pmatrix}\n\t#\n\\end{pmatrix}",
+                smartInsert("\\begin{pmatrix}\n\t#<@expression@>!\n\\end{pmatrix}",
                             range: selectedRange)
             case "Bracket Matrix":
-                smartInsert("\\begin{bmatrix}\n\t#\n\\end{bmatrix}",
+                smartInsert("\\begin{bmatrix}\n\t#<@expression@>!\n\\end{bmatrix}",
                             range: selectedRange)
             case "Braces Matrix":
-                smartInsert("\\begin{Bmatrix}\n\t#\n\\end{Bmatrix}",
+                smartInsert("\\begin{Bmatrix}\n\t#<@expression@>!\n\\end{Bmatrix}",
                             range: selectedRange)
             case "Vertical Matrix":
-                smartInsert("\\begin{vmatrix}\n\t#\n\\end{vmatrix}",
+                smartInsert("\\begin{vmatrix}\n\t#<@expression@>!\n\\end{vmatrix}",
                             range: selectedRange)
             case "Double-Vertical Matrix":
-                smartInsert("\\begin{Vmatrix}\n\t#\n\\end{Vmatrix}",
+                smartInsert("\\begin{Vmatrix}\n\t#<@expression@>!\n\\end{Vmatrix}",
                             range: selectedRange)
             case "Cases":
-                smartInsert("\\begin{cases}\n\t#a & \\text{if } b \\\\\n\tc & \\text{if } d\n\\end{cases}",
+                smartInsert("\\begin{cases}\n\t#<@expression@>!a & \\text{if } b \\\\\n\tc & \\text{if } d\n\\end{cases}",
                             range: selectedRange, smartMode: false, insertSelectionLength: 38)
             case "Table":
-                smartInsert("\\def\\arraystretch{1.5}\n\\begin{array}{c|c:c}\n\t#a & b & c \\\\ \\hline\n\td & e & f \\\\ \\hdashline\n\tg & h & i\n\\end{array}",
+                smartInsert("\\def\\arraystretch{1.5}\n\\begin{array}{c|c:c}\n\t#<@expression@>!a & b & c \\\\ \\hline\n\td & e & f \\\\ \\hdashline\n\tg & h & i\n\\end{array}",
                             range: selectedRange, smartMode: false, insertSelectionLength: 57)
             case "Cancel (Left)":
-                smartInsert("\\cancel{#}",
+                smartInsert("\\cancel{#<@expression@>!}",
                             range: selectedRange)
             case "Cancel (Right)":
-                smartInsert("\\bcancel{#}",
+                smartInsert("\\bcancel{#<@expression@>!}",
                             range: selectedRange)
             case "Cancel (X)":
-                smartInsert("\\xcancel{#}",
+                smartInsert("\\xcancel{#<@expression@>!}",
                             range: selectedRange)
             case "Strike Through":
-                smartInsert("\\sout{#}",
+                smartInsert("\\sout{#<@expression@>!}",
                             range: selectedRange)
             case "Overline":
-                smartInsert("\\overline{#}",
+                smartInsert("\\overline{#<@expression@>!}",
                             range: selectedRange)
             case "Underline":
-                smartInsert("\\underline{#}",
+                smartInsert("\\underline{#<@expression@>!}",
                             range: selectedRange)
             case "Overbrace":
-                smartInsert("\\overbrace{#}^{}",
+                smartInsert("\\overbrace{#<@expression@>!}^{<@expression@>}",
                             range: selectedRange, wrappingOffset: 3)
             case "Underbrace":
-                smartInsert("\\underbrace{#}^{}",
+                smartInsert("\\underbrace{#<@expression@>!}^{<@expression@>}",
                             range: selectedRange, wrappingOffset: 3)
             case "Over Left Arrow":
-                smartInsert("\\overleftarrow{#}",
+                smartInsert("\\overleftarrow{#<@expression@>!}",
                             range: selectedRange)
             case "Over Right Arrow":
-                smartInsert("\\overrightarrow{#}",
+                smartInsert("\\overrightarrow{#<@expression@>!}",
                             range: selectedRange)
             case "Vector":
-                smartInsert("\\vec{#}",
+                smartInsert("\\vec{#<@v@>!}",
                             range: selectedRange)
             case "Hat":
-                smartInsert("\\hat{#}",
+                smartInsert("\\hat{#<@h@>!}",
                             range: selectedRange)
             case "Bar":
-                smartInsert("\\bar{#}",
+                smartInsert("\\bar{#<@b@>!}",
                             range: selectedRange)
             case "Box":
-                smartInsert("\\boxed{#}",
+                smartInsert("\\boxed{#<@expression@>!}",
                             range: selectedRange)
             case "Toggle Mode":
-                smartInsert("$#$",
+                smartInsert("$#<@expression@>!$",
                             range: selectedRange)
             default:
                 NSLog("Unknown command.")
@@ -487,12 +577,12 @@ extension Editor: WKNavigationDelegate {
      */
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         let cursorPosition = self.document.content.configuration.cursorPosition
-        let cursorRange = NSRange(location: cursorPosition, length: 0)
+        let cursorRange = NSMakeRange(cursorPosition, 0)
         self.contentTextView.setSelectedRange(cursorRange)
         
         // simulate user interaction: select matching outline entry
         // and scroll to corresponding section if line-to-line is enabled
-        (self.contentTextView.delegate as? TextViewDelegate)?.textView(self.contentTextView, didInteract: cursorRange)
+        (self.contentTextView.delegate as? ATextViewDelegate)?.textView(self.contentTextView, didInteract: cursorRange)
         
         // render for the first time
         self.renderText()
@@ -511,7 +601,7 @@ extension Editor: WKNavigationDelegate {
     
 }
 
-extension Editor: TextViewDelegate {
+extension Editor: ATextViewDelegate {
     
     /**
      Custom behavior upon the text changing.
@@ -522,11 +612,18 @@ extension Editor: TextViewDelegate {
      3. Conditionally renders the content.
      */
     func textDidChange(_ notification: Notification) {
-        if self.document.content.contentString.last != "\n" {
-            let previousRange = self.contentTextView.selectedRange()
-            self.document.content.contentString += "\n"
+        let contentString = self.contentTextView.plainText
+        var previousRange = self.contentTextView.selectedRange()
+        defer {
+            if previousRange.location >= self.contentTextView.textLength {
+                previousRange.location = self.contentTextView.textLength - 1
+            }
             self.contentTextView.setSelectedRange(previousRange)
         }
+        if contentString.last != "\n" {
+            self.contentTextView.textStorage!.mutableString.append("\n")
+        }
+        self.document.content.contentString = contentString
         
         // refresh outline
         self.sidebar.updateOutline(preprocessText: true)
@@ -538,7 +635,7 @@ extension Editor: TextViewDelegate {
     }
     
     /**
-     Inherited from `TextViewDelegate` - Custom behavior upon user interaction with the text view.
+     Inherited from `ATextViewDelegate` - Custom behavior upon user interaction with the text view.
      
      It does the following:
      1. Selects (without highlighting) row that matches the current editing range from outline.

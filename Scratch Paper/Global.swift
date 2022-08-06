@@ -153,6 +153,30 @@ extension NSString {
     
 }
 
+extension NSAttributedString {
+    
+    var range: NSRange {
+        return NSMakeRange(0, self.length)
+    }
+    
+}
+
+extension NSMutableAttributedString {
+    
+    func addAttributes(_ attributes: [NSAttributedString.Key : Any]) {
+        self.addAttributes(attributes, range: self.range)
+    }
+    
+    func addAttribute(_ name: NSAttributedString.Key, value: Any) {
+        self.addAttribute(name, value: value, range: self.range)
+    }
+    
+    func removeAttribute(_ name: NSAttributedString.Key) {
+        self.removeAttribute(name, range: self.range)
+    }
+    
+}
+
 extension Array {
     
     /**

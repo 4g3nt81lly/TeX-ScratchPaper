@@ -101,11 +101,16 @@ extension AppDelegate: NSMenuDelegate {
         }
         if menuIdentifier == "edit" {
             let toggleModeItem = menu.item(withTitle: "Toggle Mode")!
-            toggleModeItem.action = Selector(("insertCommand:"))
+            if let renderMode = self.currentDocumentWindow?.editor.document.content.configuration.renderMode,
+               renderMode == 0 {
+                toggleModeItem.action = Selector(("insertCommand:"))
+            } else {
+                toggleModeItem.action = nil
+            }
             
             let addBookmarkItem = menu.item(withTitle: "Add Bookmark...")!
-            if let selectedRange = self.currentDocumentWindow?.editor.contentTextView.selectedRange(),
-               selectedRange.length > 0 {
+            if let selectedRanges = self.currentDocumentWindow?.editor.contentTextView.selectedRanges as? [NSRange],
+               selectedRanges.count == 1, selectedRanges.first!.length > 0 {
                 addBookmarkItem.action = Selector(("addBookmark"))
             } else {
                 addBookmarkItem.action = nil

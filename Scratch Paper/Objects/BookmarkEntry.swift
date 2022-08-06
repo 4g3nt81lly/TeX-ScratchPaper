@@ -103,14 +103,14 @@ extension Array where Element == NSRange {
      - Returns: The aggregate range containing all the containing ranges of the receiver array, or the only range.
      */
     func aggregateRange() -> NSRange {
-        assert(self.count > 0)
+        assert(!self.isEmpty)
         if self.count == 1 {
             return self.first!
         }
         let firstLocation = self.map({ $0.location }).min()!
         let furthestRange = self.max(by: { $0.location < $1.location })!
         let aggregateLength = furthestRange.upperBound - firstLocation
-        return NSRange(location: firstLocation, length: aggregateLength)
+        return NSMakeRange(firstLocation, aggregateLength)
     }
     
 }

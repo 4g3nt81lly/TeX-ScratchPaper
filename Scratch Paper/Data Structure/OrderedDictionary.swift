@@ -8,9 +8,11 @@
 import Cocoa
 
 /// An ordered collection of key-value pairs in the form of a dictionary.
-struct OrderedDictionary<Key: Hashable, Value> : ExpressibleByDictionaryLiteral & Sequence & IteratorProtocol {
+struct OrderedDictionary<Key: Hashable, Value> : Sequence, IteratorProtocol, ExpressibleByDictionaryLiteral, ExpressibleByArrayLiteral, CustomStringConvertible {
     
     typealias Element = (Key, Value)
+    
+    typealias ArrayLiteralElement = Element
     
     /// An array of key-value pairs.
     private var orderedPairs: [(Key, Value)]
@@ -18,6 +20,22 @@ struct OrderedDictionary<Key: Hashable, Value> : ExpressibleByDictionaryLiteral 
     /// An array of the keys of the dictionary.
     var keys: [Key] {
         return self.orderedPairs.map({ $0.0 })
+    }
+    
+    public var count: Int {
+        return self.orderedPairs.count
+    }
+    
+    public var isEmpty: Bool {
+        return self.orderedPairs.isEmpty
+    }
+    
+    var description: String {
+        return "\(self.orderedPairs)"
+    }
+    
+    public func reversed() -> [Element] {
+        return self.orderedPairs.reversed()
     }
     
     /// A counter for the iterator.
@@ -74,6 +92,10 @@ struct OrderedDictionary<Key: Hashable, Value> : ExpressibleByDictionaryLiteral 
     }
     
     init(dictionaryLiteral elements: (Key, Value)...) {
+        self.init(keyValuePairs: elements)
+    }
+    
+    init(arrayLiteral elements: Element...) {
         self.init(keyValuePairs: elements)
     }
     

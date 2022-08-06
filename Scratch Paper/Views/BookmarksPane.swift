@@ -263,7 +263,7 @@ struct BookmarksPane: View {
                 Spacer()
                 HStack {
                     Spacer()
-                    Text("No bookmarks")
+                    Text("No bookmark")
                     Spacer()
                 }
                 Spacer()

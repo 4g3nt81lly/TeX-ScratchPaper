@@ -6,7 +6,6 @@
 //
 
 import Cocoa
-import SwiftUI
 
 /**
  A custom subclass of `NSTableView`.
@@ -40,7 +39,7 @@ protocol TableViewDelegate: NSTableViewDelegate {
      
      - Parameters:
         - tableView: The table view.
-        - row: The
+        - row: The row number that is clicked.
      */
     func tableView(_ tableView: ATableView, didClickRow row: Int)
     
