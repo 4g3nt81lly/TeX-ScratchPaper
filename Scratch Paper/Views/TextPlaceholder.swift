@@ -1,13 +1,11 @@
-//
-//  TextPlaceholder.swift
-//  Scratch Paper
-//
-//  Created by Bingyi Billy Li on 2022/8/1.
-//
-
 import Cocoa
 
 class TextPlaceholder: NSTextAttachment {
+    
+    static let prefix = "<#"
+    static let suffix = "#>"
+    
+    static let pattern = try! NSRegularExpression(pattern: "\(prefix)(.*?)\(suffix)")
     
     /// A type of action the user performed on a selected placeholder.
     enum UserAction {
@@ -45,7 +43,7 @@ class TextPlaceholder: NSTextAttachment {
         return self.cell.attributedString.string
     }
     
-    var contentString: String?
+    var replacementString: String?
     
     var attributedString: NSAttributedString {
         return NSAttributedString(attachment: self)
@@ -59,15 +57,15 @@ class TextPlaceholder: NSTextAttachment {
         return self.cell.isHighlighted
     }
     
-    init(_ string: String, placeholderContent: String? = nil) {
-        self.contentString = placeholderContent
+    init(_ placeholderString: String, replacementString: String? = nil) {
+        self.replacementString = replacementString
         super.init(data: nil, ofType: nil)
-        self.attachmentCell = TextPlaceholderCell(textCell: string)
-        self.contents = string.data(using: .unicode)
+        self.attachmentCell = TextPlaceholderCell(textCell: placeholderString)
+        self.contents = placeholderString.data(using: .unicode)
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        super.init(coder: coder)
     }
     
     func addAttribute(_ name: NSAttributedString.Key, value: Any) {

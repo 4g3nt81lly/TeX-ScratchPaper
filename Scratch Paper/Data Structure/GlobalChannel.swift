@@ -1,10 +1,3 @@
-//
-//  GlobalChannel.swift
-//  Scratch Paper
-//
-//  Created by Bingyi Billy Li on 2022/7/14.
-//
-
 import Cocoa
 
 /// Any reusable closure with custom arguments and return types.

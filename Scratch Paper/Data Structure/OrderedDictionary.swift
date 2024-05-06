@@ -1,26 +1,23 @@
-//
-//  OrderedDictionary.swift
-//  Scratch Paper
-//
-//  Created by Bingyi Billy Li on 2022/2/14.
-//
-
 import Cocoa
 
 /// An ordered collection of key-value pairs in the form of a dictionary.
-struct OrderedDictionary<Key: Hashable, Value> : Sequence, IteratorProtocol, ExpressibleByDictionaryLiteral, ExpressibleByArrayLiteral, CustomStringConvertible {
+struct OrderedDictionary<Key: Hashable, Value> : Sequence, IteratorProtocol,
+                                                 ExpressibleByDictionaryLiteral, ExpressibleByArrayLiteral, CustomStringConvertible {
     
-    typealias Element = (Key, Value)
+    typealias Element = (key: Key, value: Value)
     
     typealias ArrayLiteralElement = Element
     
     /// An array of key-value pairs.
-    private var orderedPairs: [(Key, Value)]
+    private var orderedPairs: [Element] = []
     
-    /// An array of the keys of the dictionary.
-    var keys: [Key] {
-        return self.orderedPairs.map({ $0.0 })
-    }
+    private var map: [Key : (index: Int, value: Value)] = [:]
+    
+    /// An ordered array of keys of the dictionary.
+    public var keys: [Key] = []
+    
+    /// A counter for the iterator.
+    private var counter = 0
     
     public var count: Int {
         return self.orderedPairs.count
@@ -34,15 +31,24 @@ struct OrderedDictionary<Key: Hashable, Value> : Sequence, IteratorProtocol, Exp
         return "\(self.orderedPairs)"
     }
     
-    public func reversed() -> [Element] {
-        return self.orderedPairs.reversed()
+    init(keyValuePairs pairs: [Element]) {
+        for (index, (key, value)) in pairs.enumerated() {
+            self.orderedPairs.append((key, value))
+            self.keys.append(key)
+            self.map[key] = (index, value)
+        }
     }
     
-    /// A counter for the iterator.
-    private var counter = 0
+    init(dictionaryLiteral elements: (Key, Value)...) {
+        self.init(keyValuePairs: elements)
+    }
     
-    mutating func next() -> (Key, Value)? {
-        guard self.counter < self.orderedPairs.count else {
+    init(arrayLiteral elements: Element...) {
+        self.init(keyValuePairs: elements)
+    }
+    
+    mutating func next() -> Element? {
+        guard self.counter < self.count else {
             return nil
         }
         let element = self.orderedPairs[self.counter]
@@ -54,15 +60,51 @@ struct OrderedDictionary<Key: Hashable, Value> : Sequence, IteratorProtocol, Exp
         return Self(keyValuePairs: self.orderedPairs)
     }
     
-    subscript(key: Key, default: Key? = nil) -> Value? {
+    public func reversed() -> [Element] {
+        return self.orderedPairs.reversed()
+    }
+    
+    subscript(key: Key, default defaultKey: Key? = nil) -> Value? {
         get {
-            return self.orderedPairs.first(where: { $0.0 == key })?.1 ?? self.orderedPairs.first(where: { $0.0 == `default` })?.1
+            if let defaultKey {
+                return (self.map[key] ?? self.map[defaultKey])?.value
+            }
+            return self.map[key]?.value
         }
         set {
-            if let index = self.orderedPairs.firstIndex(where: { $0.0 == key }) {
-                self.orderedPairs[index].1 = newValue!
+            if let (index, _) = self.map[key] {
+                self.orderedPairs[index].value = newValue!
+                self.map[key]!.value = newValue!
             } else {
-                self.orderedPairs += [(key, newValue!)]
+                self.map[key] = (self.count, newValue!)
+                self.orderedPairs.append((key, newValue!))
+                self.keys.append(key)
+            }
+        }
+    }
+    
+    subscript(index: Int) -> Element? {
+        get {
+            return self.orderedPairs.indices.contains(index) ? self.orderedPairs[index] : nil
+        }
+        set {
+            guard index >= 0 && index < self.count else {
+                fatalError("subscript setter index out of bound")
+            }
+            if let (newKey, newValue) = newValue {
+                self.orderedPairs[index] = (newKey, newValue)
+                let oldKey = self.keys[index]
+                if newKey != oldKey {
+                    // update key
+                    self.keys[index] = newKey
+                    self.map.removeValue(forKey: oldKey)
+                }
+                self.map[newKey] = (index, newValue)
+            } else {
+                // the new value is nil, remove key-value pair
+                self.orderedPairs.remove(at: index)
+                let removedKey = self.keys.remove(at: index)
+                self.map.removeValue(forKey: removedKey)
             }
         }
     }
@@ -84,19 +126,10 @@ struct OrderedDictionary<Key: Hashable, Value> : Sequence, IteratorProtocol, Exp
      - Parameter key: The key of the value to be removed.
      */
     mutating func remove(byKey key: Key) {
-        self.orderedPairs.removeAll(where: { $0.0 == key })
-    }
-    
-    init(keyValuePairs pairs: [(Key, Value)]) {
-        self.orderedPairs = pairs
-    }
-    
-    init(dictionaryLiteral elements: (Key, Value)...) {
-        self.init(keyValuePairs: elements)
-    }
-    
-    init(arrayLiteral elements: Element...) {
-        self.init(keyValuePairs: elements)
+        if let (index, _) = self.map.removeValue(forKey: key) {
+            self.keys.remove(at: index)
+            self.orderedPairs.remove(at: index)
+        }
     }
     
 }

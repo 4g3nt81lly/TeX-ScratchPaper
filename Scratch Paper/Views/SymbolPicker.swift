@@ -1,10 +1,4 @@
-//
-//  SymbolPicker.swift
-//  SymbolPicker
-//
-//  Created by Yubo Qin on 2/14/22.
-//  https://github.com/xnth97/SymbolPicker
-//
+// Reference: https://github.com/xnth97/SymbolPicker
 
 import Cocoa
 import SwiftUI

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="21219" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21219"/>
-        <plugIn identifier="com.apple.WebKit2IBPlugin" version="21219"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22689"/>
+        <plugIn identifier="com.apple.WebKit2IBPlugin" version="22689"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="System colors introduced in macOS 10.14" minToolsVersion="10.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -103,7 +103,7 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="SAq-aM-lVj"/>
-                                        <menuItem title="Export..." id="knM-cD-cSx">
+                                        <menuItem title="Export…" id="knM-cD-cSx">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="nC4-xI-YFs"/>
@@ -114,7 +114,7 @@
                                         </menuItem>
                                     </items>
                                     <connections>
-                                        <outlet property="delegate" destination="Voe-Tx-rLC" id="jQa-YU-sc9"/>
+                                        <outlet property="delegate" destination="Voe-Tx-rLC" id="xfq-xx-kyE"/>
                                     </connections>
                                 </menu>
                             </menuItem>
@@ -160,10 +160,16 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="uyl-h8-XO2"/>
+                                        <menuItem title="Bold" keyEquivalent="b" id="n52-l2-YoM"/>
+                                        <menuItem title="Italic" keyEquivalent="i" id="M6L-O5-IZf"/>
+                                        <menuItem title="Underlined" keyEquivalent="u" id="xNQ-wZ-Xmp"/>
+                                        <menuItem title="Strikethrough" keyEquivalent="-" id="7za-dq-TYJ">
+                                            <modifierMask key="keyEquivalentModifierMask" shift="YES" option="YES" command="YES"/>
+                                        </menuItem>
                                         <menuItem title="Toggle Mode" keyEquivalent="E" id="JBa-Qw-2Lk"/>
                                         <menuItem isSeparatorItem="YES" id="Siw-yr-lee"/>
-                                        <menuItem title="Add Bookmark..." keyEquivalent="d" id="qwk-fd-6jd"/>
-                                        <menuItem title="Edit Bookmark..." id="es3-4p-pw2">
+                                        <menuItem title="Add Bookmark…" keyEquivalent="d" id="qwk-fd-6jd"/>
+                                        <menuItem title="Edit Bookmark…" id="es3-4p-pw2">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                         </menuItem>
                                         <menuItem title="Delete Bookmark" id="ytu-uu-cQh">
@@ -235,42 +241,46 @@
                                         </menuItem>
                                     </items>
                                     <connections>
-                                        <outlet property="delegate" destination="Voe-Tx-rLC" id="yEd-QO-J5R"/>
+                                        <outlet property="delegate" destination="Voe-Tx-rLC" id="gZm-OE-gkL"/>
                                     </connections>
                                 </menu>
                             </menuItem>
                             <menuItem title="Insert" id="jxT-CU-nIS">
                                 <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Insert" id="09N-25-5bE">
+                                <menu key="submenu" title="Insert" identifier="insert" id="09N-25-5bE">
                                     <items>
+                                        <menuItem title="Scan TeX…" id="lA4-1X-QZg">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="5ZE-9e-KsT"/>
                                         <menuItem title="Basics" id="EQ2-zH-mSG">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <menu key="submenu" title="Basics" showsStateColumn="NO" identifier="insertBasics" id="kOt-7i-BkF">
                                                 <items>
-                                                    <menuItem title="Fraction" keyEquivalent="/" id="eHv-dm-8Na"/>
+                                                    <menuItem title="Fraction" keyEquivalent="/" identifier="frac" id="eHv-dm-8Na"/>
                                                     <menuItem title="Exponent" keyEquivalent="6" id="7Ej-XQ-rDY">
                                                         <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
                                                     </menuItem>
-                                                    <menuItem title="Square Root" keyEquivalent="V" id="DSj-L1-4Qq"/>
+                                                    <menuItem title="Square Root" keyEquivalent="V" identifier="sqrt" id="DSj-L1-4Qq"/>
                                                     <menuItem title="Root" keyEquivalent="v" id="dTG-KJ-PKV">
                                                         <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
                                                     </menuItem>
                                                     <menuItem title="Smart Parentheses" keyEquivalent="9" id="7a7-Sc-90h">
                                                         <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
                                                     </menuItem>
-                                                    <menuItem title="Indefinite Integral" id="a38-k5-cAh"/>
-                                                    <menuItem title="Definite Integral" id="RDZ-2O-qpl"/>
-                                                    <menuItem title="Sum" keyEquivalent="=" id="bCu-v9-v6y">
+                                                    <menuItem title="Indefinite Integral" identifier="int" id="a38-k5-cAh"/>
+                                                    <menuItem title="Definite Integral" identifier="int_" id="RDZ-2O-qpl"/>
+                                                    <menuItem title="Sum" keyEquivalent="=" identifier="sum" id="bCu-v9-v6y">
                                                         <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
                                                     </menuItem>
-                                                    <menuItem title="Product" keyEquivalent="8" id="oa0-gj-coC">
+                                                    <menuItem title="Product" keyEquivalent="8" identifier="prod" id="oa0-gj-coC">
                                                         <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
                                                     </menuItem>
-                                                    <menuItem title="Limit" id="0Vp-DX-FOX"/>
-                                                    <menuItem title="Binomial" id="2BR-gt-cRE"/>
+                                                    <menuItem title="Limit" identifier="lim" id="0Vp-DX-FOX"/>
+                                                    <menuItem title="Binomial" identifier="binom" id="2BR-gt-cRE"/>
                                                 </items>
                                                 <connections>
-                                                    <outlet property="delegate" destination="Voe-Tx-rLC" id="bBk-P2-n14"/>
+                                                    <outlet property="delegate" destination="Voe-Tx-rLC" id="pWX-dl-9KO"/>
                                                 </connections>
                                             </menu>
                                         </menuItem>
@@ -278,36 +288,36 @@
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <menu key="submenu" title="Environments" showsStateColumn="NO" identifier="insertEnvironments" id="OUR-qZ-PMU">
                                                 <items>
-                                                    <menuItem title="Aligned" id="HEY-D1-ate"/>
-                                                    <menuItem title="Array" id="GiB-6x-yxf"/>
-                                                    <menuItem title="Matrix" id="Tde-eK-tNu">
+                                                    <menuItem title="Aligned" identifier="aligned" id="HEY-D1-ate"/>
+                                                    <menuItem title="Array" identifier="array" id="GiB-6x-yxf"/>
+                                                    <menuItem title="Matrix" identifier="matrix" id="Tde-eK-tNu">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                     </menuItem>
                                                     <menuItem title="Small Matrix" id="6sI-Ht-YWQ">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                     </menuItem>
-                                                    <menuItem title="Parenthesis Matrix" id="kLP-0Z-SI2">
+                                                    <menuItem title="Parenthesis Matrix" identifier="pmatrix" id="kLP-0Z-SI2">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                     </menuItem>
-                                                    <menuItem title="Bracket Matrix" id="dIJ-ea-91E">
+                                                    <menuItem title="Bracket Matrix" identifier="bmatrix" id="dIJ-ea-91E">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                     </menuItem>
-                                                    <menuItem title="Braces Matrix" id="Bgh-fa-uWn">
+                                                    <menuItem title="Braces Matrix" identifier="Bmatrix" id="Bgh-fa-uWn">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                     </menuItem>
-                                                    <menuItem title="Vertical Matrix" id="g7p-9f-gez">
+                                                    <menuItem title="Vertical Matrix" identifier="vmatrix" id="g7p-9f-gez">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                     </menuItem>
-                                                    <menuItem title="Double-Vertical Matrix" id="W5Q-jX-Nxl">
+                                                    <menuItem title="Double-Vertical Matrix" identifier="Vmatrix" id="W5Q-jX-Nxl">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                     </menuItem>
-                                                    <menuItem title="Cases" id="16q-Pe-nwj"/>
+                                                    <menuItem title="Cases" identifier="cases" id="16q-Pe-nwj"/>
                                                     <menuItem title="Table" id="gMy-Kb-LEj">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                     </menuItem>
                                                 </items>
                                                 <connections>
-                                                    <outlet property="delegate" destination="Voe-Tx-rLC" id="vIZ-aO-Ubs"/>
+                                                    <outlet property="delegate" destination="Voe-Tx-rLC" id="pPZ-qE-eVF"/>
                                                 </connections>
                                             </menu>
                                         </menuItem>
@@ -315,45 +325,45 @@
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <menu key="submenu" title="Annotations" showsStateColumn="NO" identifier="insertAnnotations" id="8e3-IK-MkT">
                                                 <items>
-                                                    <menuItem title="Cancel (Left)" id="PU0-Bt-ewy"/>
-                                                    <menuItem title="Cancel (Right)" id="mNr-nG-5SG"/>
-                                                    <menuItem title="Cancel (X)" keyEquivalent="X" id="AGe-dh-hyW"/>
-                                                    <menuItem title="Strike Through" keyEquivalent="-" id="7Mc-18-tbE">
+                                                    <menuItem title="Cancel (Left)" identifier="cancel" id="PU0-Bt-ewy"/>
+                                                    <menuItem title="Cancel (Right)" identifier="bcancel" id="mNr-nG-5SG"/>
+                                                    <menuItem title="Cancel (X)" keyEquivalent="X" identifier="xcancel" id="AGe-dh-hyW"/>
+                                                    <menuItem title="Strike Through" keyEquivalent="-" identifier="sout" id="7Mc-18-tbE">
                                                         <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
                                                     </menuItem>
-                                                    <menuItem title="Overline" id="hv6-No-Zfx">
+                                                    <menuItem title="Overline" identifier="overline" id="hv6-No-Zfx">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                     </menuItem>
-                                                    <menuItem title="Underline" id="4vE-oZ-5sF">
+                                                    <menuItem title="Underline" identifier="underline" id="4vE-oZ-5sF">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                     </menuItem>
-                                                    <menuItem title="Overbrace" id="61r-HF-bRu">
+                                                    <menuItem title="Overbrace" identifier="overbrace" id="61r-HF-bRu">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                     </menuItem>
-                                                    <menuItem title="Underbrace" id="Fuj-cq-76a">
+                                                    <menuItem title="Underbrace" identifier="underbrace" id="Fuj-cq-76a">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                     </menuItem>
-                                                    <menuItem title="Over Left Arrow" id="wgH-7u-Wz9">
+                                                    <menuItem title="Over Left Arrow" identifier="overleftarrow" id="wgH-7u-Wz9">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                     </menuItem>
-                                                    <menuItem title="Over Right Arrow" id="nsq-SJ-lYs">
+                                                    <menuItem title="Over Right Arrow" identifier="overrightarrow" id="nsq-SJ-lYs">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                     </menuItem>
-                                                    <menuItem title="Vector" id="iH3-aC-fc2">
+                                                    <menuItem title="Vector" identifier="vec" id="iH3-aC-fc2">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                     </menuItem>
-                                                    <menuItem title="Hat" id="ObL-oj-SuB">
+                                                    <menuItem title="Hat" identifier="hat" id="ObL-oj-SuB">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                     </menuItem>
-                                                    <menuItem title="Bar" id="eUe-OH-z8i">
+                                                    <menuItem title="Bar" identifier="bar" id="eUe-OH-z8i">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                     </menuItem>
-                                                    <menuItem title="Box" id="IoL-pm-8UT">
+                                                    <menuItem title="Box" identifier="boxed" id="IoL-pm-8UT">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                     </menuItem>
                                                 </items>
                                                 <connections>
-                                                    <outlet property="delegate" destination="Voe-Tx-rLC" id="e85-yv-UjE"/>
+                                                    <outlet property="delegate" destination="Voe-Tx-rLC" id="swM-GX-AJu"/>
                                                 </connections>
                                             </menu>
                                         </menuItem>
@@ -365,81 +375,81 @@
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                         <menu key="submenu" title="Capitalized" showsStateColumn="NO" identifier="insertSymbolsCapitalized" id="oay-61-1fC">
                                                             <items>
-                                                                <menuItem title="A (Alpha)" tag="24" id="DhO-wj-T5f">
+                                                                <menuItem title="A (Alpha)" tag="24" identifier="Alpha" id="DhO-wj-T5f">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="B (Beta)" tag="24" id="vES-nG-Cj2">
+                                                                <menuItem title="B (Beta)" tag="24" identifier="Beta" id="vES-nG-Cj2">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="Γ (Gamma)" tag="24" id="nBY-Qf-Rft">
+                                                                <menuItem title="Γ (Gamma)" tag="24" identifier="Gamma" id="nBY-Qf-Rft">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="Δ (Delta)" tag="24" id="c1q-LZ-6Rt">
+                                                                <menuItem title="Δ (Delta)" tag="24" identifier="Delta" id="c1q-LZ-6Rt">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="E (Epsilon)" tag="24" id="4vI-e8-uVW">
+                                                                <menuItem title="E (Epsilon)" tag="24" identifier="Epsilon" id="4vI-e8-uVW">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="Z (Zeta)" tag="24" id="eSY-aD-dOP">
+                                                                <menuItem title="Z (Zeta)" tag="24" identifier="Zeta" id="eSY-aD-dOP">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="H (Eta)" tag="24" id="vaL-Zb-nHW">
+                                                                <menuItem title="H (Eta)" tag="24" identifier="Eta" id="vaL-Zb-nHW">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="Θ (Theta)" tag="24" id="z4g-Lx-Ych">
+                                                                <menuItem title="Θ (Theta)" tag="24" identifier="Theta" id="z4g-Lx-Ych">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="I (Iota)" tag="24" id="5AE-6m-sXV">
+                                                                <menuItem title="I (Iota)" tag="24" identifier="Iota" id="5AE-6m-sXV">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="K (Kappa)" tag="24" id="wC3-1C-kUs">
+                                                                <menuItem title="K (Kappa)" tag="24" identifier="Kappa" id="wC3-1C-kUs">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="Λ (Lambda)" tag="24" id="Q7e-o1-K1S">
+                                                                <menuItem title="Λ (Lambda)" tag="24" identifier="Lambda" id="Q7e-o1-K1S">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="M (Mu)" tag="24" id="uPj-v3-KW9">
+                                                                <menuItem title="M (Mu)" tag="24" identifier="Mu" id="uPj-v3-KW9">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="N (Nu)" tag="24" id="j9f-a1-lyN">
+                                                                <menuItem title="N (Nu)" tag="24" identifier="Nu" id="j9f-a1-lyN">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="Ξ (Xi)" tag="24" id="PjP-dn-pso">
+                                                                <menuItem title="Ξ (Xi)" tag="24" identifier="Xi" id="PjP-dn-pso">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="O (Omicron)" tag="24" id="kWl-vd-G26">
+                                                                <menuItem title="O (Omicron)" tag="24" identifier="Omicron" id="kWl-vd-G26">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="Π (Pi)" tag="24" id="NBN-MD-Mhb">
+                                                                <menuItem title="Π (Pi)" tag="24" identifier="Pi" id="NBN-MD-Mhb">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="P (Rho)" tag="24" id="yCF-AX-Bos">
+                                                                <menuItem title="P (Rho)" tag="24" identifier="Rho" id="yCF-AX-Bos">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="Σ (Sigma)" tag="24" id="0LQ-Pe-oQu">
+                                                                <menuItem title="Σ (Sigma)" tag="24" identifier="Sigma" id="0LQ-Pe-oQu">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="T (Tau)" tag="24" id="xWA-FA-FuY">
+                                                                <menuItem title="T (Tau)" tag="24" identifier="Tau" id="xWA-FA-FuY">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="Υ (Upsilon)" tag="24" id="j2v-Nv-Wu4">
+                                                                <menuItem title="Υ (Upsilon)" tag="24" identifier="Upsilon" id="j2v-Nv-Wu4">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="Φ (Phi)" tag="24" id="gdi-dS-lei">
+                                                                <menuItem title="Φ (Phi)" tag="24" identifier="Phi" id="gdi-dS-lei">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="X (Chi)" tag="24" id="uHn-zy-jWa">
+                                                                <menuItem title="X (Chi)" tag="24" identifier="Chi" id="uHn-zy-jWa">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="Ψ (Psi)" tag="24" id="CaY-qf-0KI">
+                                                                <menuItem title="Ψ (Psi)" tag="24" identifier="Psi" id="CaY-qf-0KI">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="Ω (Omega)" tag="24" id="D2i-AU-jBU">
+                                                                <menuItem title="Ω (Omega)" tag="24" identifier="Omega" id="D2i-AU-jBU">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
                                                             </items>
                                                             <connections>
-                                                                <outlet property="delegate" destination="Voe-Tx-rLC" id="sYz-2z-Z2J"/>
+                                                                <outlet property="delegate" destination="Voe-Tx-rLC" id="Krf-uf-g0J"/>
                                                             </connections>
                                                         </menu>
                                                     </menuItem>
@@ -447,81 +457,81 @@
                                                         <modifierMask key="keyEquivalentModifierMask"/>
                                                         <menu key="submenu" title="Lowercased" showsStateColumn="NO" identifier="insertSymbolsLowercased" id="phh-sc-Ryu">
                                                             <items>
-                                                                <menuItem title="α (alpha)" tag="24" id="uhY-ww-gWb">
+                                                                <menuItem title="α (alpha)" tag="24" identifier="alpha" id="uhY-ww-gWb">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="β (beta)" tag="24" id="WRt-63-Ru1">
+                                                                <menuItem title="β (beta)" tag="24" identifier="beta" id="WRt-63-Ru1">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="γ (gamma)" tag="24" id="PjM-kv-c1a">
+                                                                <menuItem title="γ (gamma)" tag="24" identifier="gamma" id="PjM-kv-c1a">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="δ (delta)" tag="24" id="BYv-Nh-2Qc">
+                                                                <menuItem title="δ (delta)" tag="24" identifier="delta" id="BYv-Nh-2Qc">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="ϵ (epsilon)" tag="24" id="Cqb-2x-X1k">
+                                                                <menuItem title="ϵ (epsilon)" tag="24" identifier="epsilon" id="Cqb-2x-X1k">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="ζ (zeta)" tag="24" id="ZyJ-QN-hjZ">
+                                                                <menuItem title="ζ (zeta)" tag="24" identifier="zeta" id="ZyJ-QN-hjZ">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="η (eta)" tag="24" id="Chc-av-rIv">
+                                                                <menuItem title="η (eta)" tag="24" identifier="eta" id="Chc-av-rIv">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="θ (theta)" tag="24" id="dNU-Uk-pF3">
+                                                                <menuItem title="θ (theta)" tag="24" identifier="theta" id="dNU-Uk-pF3">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="ι (iota)" tag="24" id="PNJ-yZ-vPp">
+                                                                <menuItem title="ι (iota)" tag="24" identifier="iota" id="PNJ-yZ-vPp">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="κ (kappa)" tag="24" id="FQP-ca-afS">
+                                                                <menuItem title="κ (kappa)" tag="24" identifier="kappa" id="FQP-ca-afS">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="λ (lambda)" tag="24" id="GSt-mL-2NN">
+                                                                <menuItem title="λ (lambda)" tag="24" identifier="lambda" id="GSt-mL-2NN">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="μ (mu)" tag="24" id="8Df-MW-LaL">
+                                                                <menuItem title="μ (mu)" tag="24" identifier="mu" id="8Df-MW-LaL">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="ν (nu)" tag="24" id="5zB-JL-rTj">
+                                                                <menuItem title="ν (nu)" tag="24" identifier="nu" id="5zB-JL-rTj">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="ξ (xi)" tag="24" id="MUD-bd-MyD">
+                                                                <menuItem title="ξ (xi)" tag="24" identifier="xi" id="MUD-bd-MyD">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="ο (omicron)" tag="24" id="QP0-Yq-Sf3">
+                                                                <menuItem title="ο (omicron)" tag="24" identifier="omicron" id="QP0-Yq-Sf3">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="π (pi)" tag="24" id="LtI-91-2Wc">
+                                                                <menuItem title="π (pi)" tag="24" identifier="pi" id="LtI-91-2Wc">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="ρ (rho)" tag="24" id="Yi0-7y-0SK">
+                                                                <menuItem title="ρ (rho)" tag="24" identifier="rho" id="Yi0-7y-0SK">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="σ (sigma)" tag="24" id="HGb-Df-3Yz">
+                                                                <menuItem title="σ (sigma)" tag="24" identifier="sigma" id="HGb-Df-3Yz">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="τ (tau)" tag="24" id="hwJ-Kk-moS">
+                                                                <menuItem title="τ (tau)" tag="24" identifier="tau" id="hwJ-Kk-moS">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="υ (Upsilon)" tag="24" id="SIh-pK-BwJ">
+                                                                <menuItem title="υ (upsilon)" tag="24" identifier="upsilon" id="SIh-pK-BwJ">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="ϕ (phi)" tag="24" id="mzv-ks-eH1">
+                                                                <menuItem title="ϕ (phi)" tag="24" identifier="phi" id="mzv-ks-eH1">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="χ (chi)" tag="24" id="gBM-VI-vKT">
+                                                                <menuItem title="χ (chi)" tag="24" identifier="chi" id="gBM-VI-vKT">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="ψ (psi)" tag="24" id="uel-Me-118">
+                                                                <menuItem title="ψ (psi)" tag="24" identifier="psi" id="uel-Me-118">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
-                                                                <menuItem title="ω (omega)" tag="24" id="717-JJ-Jl3">
+                                                                <menuItem title="ω (omega)" tag="24" identifier="omega" id="717-JJ-Jl3">
                                                                     <modifierMask key="keyEquivalentModifierMask"/>
                                                                 </menuItem>
                                                             </items>
                                                             <connections>
-                                                                <outlet property="delegate" destination="Voe-Tx-rLC" id="e7N-DZ-sk5"/>
+                                                                <outlet property="delegate" destination="Voe-Tx-rLC" id="c0K-BW-yTV"/>
                                                             </connections>
                                                         </menu>
                                                     </menuItem>
@@ -529,6 +539,9 @@
                                             </menu>
                                         </menuItem>
                                     </items>
+                                    <connections>
+                                        <outlet property="delegate" destination="Voe-Tx-rLC" id="4vQ-OM-hbR"/>
+                                    </connections>
                                 </menu>
                             </menuItem>
                             <menuItem title="View" id="H8h-7b-M4v">
@@ -603,7 +616,7 @@
                 <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Scratch_Paper" customModuleProvider="target"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="64" y="-70"/>
+            <point key="canvasLocation" x="59" y="-70"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="df2-R5-XSS">
@@ -698,10 +711,10 @@
             </objects>
             <point key="canvasLocation" x="239" y="319"/>
         </scene>
-        <!--Main Split View-->
+        <!--Split View Controller-->
         <scene sceneID="bZH-xa-ZHF">
             <objects>
-                <splitViewController storyboardIdentifier="mainSplitVC" id="Ybf-2M-iiP" customClass="MainSplitView" customModule="Scratch_Paper" customModuleProvider="target" sceneMemberID="viewController">
+                <splitViewController id="Ybf-2M-iiP" sceneMemberID="viewController">
                     <splitViewItems>
                         <splitViewItem canCollapse="YES" holdingPriority="260" behavior="sidebar" separatorStyle="line" id="n74-SE-3hE"/>
                         <splitViewItem separatorStyle="line" id="i6U-ql-v3F"/>
@@ -722,10 +735,10 @@
             </objects>
             <point key="canvasLocation" x="64" y="861"/>
         </scene>
-        <!--Editor-->
+        <!--EditorVC-->
         <scene sceneID="KQs-2z-oh6">
             <objects>
-                <viewController storyboardIdentifier="editorVC" id="rnH-qv-OTz" customClass="Editor" customModule="Scratch_Paper" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="editorVC" id="rnH-qv-OTz" customClass="EditorVC" customModule="Scratch_Paper" customModuleProvider="target" sceneMemberID="viewController">
                     <splitView key="view" arrangesAllSubviews="NO" dividerStyle="thin" vertical="YES" id="sAw-s9-TuJ">
                         <rect key="frame" x="0.0" y="0.0" width="800" height="460"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -740,7 +753,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="400" height="460"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
-                                                <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" selectionGranularity="word" findStyle="bar" allowsCharacterPickerTouchBarItem="NO" allowsUndo="YES" allowsNonContiguousLayout="YES" textCompletion="NO" id="aYi-hb-SPx" customClass="ATextView" customModule="Scratch_Paper" customModuleProvider="target">
+                                                <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" selectionGranularity="word" findStyle="bar" allowsCharacterPickerTouchBarItem="NO" allowsUndo="YES" allowsNonContiguousLayout="YES" textCompletion="NO" id="aYi-hb-SPx" customClass="MainTextView" customModule="Scratch_Paper" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="0.0" width="400" height="460"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -777,7 +790,7 @@
                                 <rect key="frame" x="401" y="0.0" width="399" height="460"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <wkWebView wantsLayer="YES" allowsLinkPreview="NO" allowsMagnification="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZHV-S3-S2k" customClass="KatexMathView" customModule="Scratch_Paper" customModuleProvider="target">
+                                    <wkWebView clipsToBounds="YES" wantsLayer="YES" allowsLinkPreview="NO" allowsMagnification="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZHV-S3-S2k" customClass="OutputView" customModule="Scratch_Paper" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="399" height="430"/>
                                         <wkWebViewConfiguration key="configuration" allowsAirPlayForMediaPlayback="NO" suppressesIncrementalRendering="YES">
                                             <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
@@ -791,24 +804,18 @@
                                         <rect key="frame" x="0.0" y="428" width="399" height="5"/>
                                     </box>
                                     <button toolTip="Lock to Bottom" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="blq-8R-fcl">
-                                        <rect key="frame" x="346" y="432" width="18.5" height="28"/>
+                                        <rect key="frame" x="346" y="430.5" width="18.5" height="30"/>
+                                        <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="arrow.down.to.line" catalog="system" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="kGW-2B-LmM">
+                                            <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <symbolConfiguration key="symbolConfiguration" scale="large" weight="regular">
+                                            <nil key="locale"/>
+                                        </symbolConfiguration>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="19" id="2hF-nH-5Et"/>
                                             <constraint firstAttribute="width" constant="18" id="m9I-Ju-SQV"/>
                                         </constraints>
-                                        <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="kGW-2B-LmM">
-                                            <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
-                                            <font key="font" metaFont="system"/>
-                                            <imageReference key="image" image="arrow.down.to.line.compact" catalog="system" symbolScale="large" renderingMode="hierarchical">
-                                                <hierarchicalColors>
-                                                    <color name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
-                                                    <color name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
-                                                    <color name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
-                                                </hierarchicalColors>
-                                            </imageReference>
-                                            <imageReference key="alternateImage" image="arrow.down.to.line.compact" catalog="system" symbolScale="large" renderingMode="original"/>
-                                        </buttonCell>
-                                        <color key="contentTintColor" name="controlAccentColor" catalog="System" colorSpace="catalog"/>
                                         <connections>
                                             <action selector="barConfigChanged:" target="rnH-qv-OTz" id="nue-oV-JEu"/>
                                             <binding destination="rnH-qv-OTz" name="enabled" keyPath="self.document.content.configuration.lineToLine" id="qW9-TW-xPi">
@@ -834,25 +841,19 @@
                                             </binding>
                                         </connections>
                                     </button>
-                                    <button toolTip="Lock to Bottom" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bMB-L3-GxW">
-                                        <rect key="frame" x="371" y="433" width="18.5" height="26"/>
+                                    <button toolTip="Lock to Right" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bMB-L3-GxW">
+                                        <rect key="frame" x="371" y="433" width="18" height="26"/>
+                                        <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="arrow.right.to.line" catalog="system" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="ARE-kw-Gos">
+                                            <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <symbolConfiguration key="symbolConfiguration" scale="large" weight="regular">
+                                            <nil key="locale"/>
+                                        </symbolConfiguration>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="19" id="2LE-cv-C8o"/>
                                             <constraint firstAttribute="width" constant="18" id="aLB-7w-iuR"/>
                                         </constraints>
-                                        <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="ARE-kw-Gos">
-                                            <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
-                                            <font key="font" metaFont="system"/>
-                                            <imageReference key="image" image="arrow.right.to.line.compact" catalog="system" symbolScale="large" renderingMode="hierarchical">
-                                                <hierarchicalColors>
-                                                    <color name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
-                                                    <color name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
-                                                    <color name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
-                                                </hierarchicalColors>
-                                            </imageReference>
-                                            <imageReference key="alternateImage" image="arrow.right.to.line.compact" catalog="system" symbolScale="large" renderingMode="original"/>
-                                        </buttonCell>
-                                        <color key="contentTintColor" name="controlAccentColor" catalog="System" colorSpace="catalog"/>
                                         <connections>
                                             <action selector="barConfigChanged:" target="rnH-qv-OTz" id="wRT-Kx-PTN"/>
                                             <binding destination="rnH-qv-OTz" name="value" keyPath="self.document.content.configuration.lockToRight" id="svb-9M-mDY">
@@ -870,10 +871,6 @@
                                     </button>
                                     <button toolTip="Line to Line" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="JEc-JB-bCX">
                                         <rect key="frame" x="10" y="430.5" width="19" height="29"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="19" id="2Ze-ut-xhf"/>
-                                            <constraint firstAttribute="height" constant="15" id="6ls-Ag-I70"/>
-                                        </constraints>
                                         <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="XqZ-9F-Fmw">
                                             <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
                                             <font key="font" metaFont="system"/>
@@ -892,6 +889,10 @@
                                                 </hierarchicalColors>
                                             </imageReference>
                                         </buttonCell>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="19" id="2Ze-ut-xhf"/>
+                                            <constraint firstAttribute="height" constant="15" id="6ls-Ag-I70"/>
+                                        </constraints>
                                         <connections>
                                             <action selector="barConfigChanged:" target="rnH-qv-OTz" id="R9l-Wd-vFo"/>
                                             <binding destination="rnH-qv-OTz" name="value" keyPath="self.document.content.configuration.lineToLine" id="wLI-cI-5ug">
@@ -916,28 +917,17 @@
                                     </box>
                                     <button toolTip="Display Style" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9dF-Xw-qtF">
                                         <rect key="frame" x="305" y="431.5" width="18.5" height="29"/>
+                                        <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="sum" catalog="system" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="nDA-pO-tbL">
+                                            <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <symbolConfiguration key="symbolConfiguration" scale="large" weight="regular">
+                                            <nil key="locale"/>
+                                        </symbolConfiguration>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="19" id="UPN-fO-tcI"/>
                                             <constraint firstAttribute="width" constant="18" id="aux-6S-TaW"/>
                                         </constraints>
-                                        <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="nDA-pO-tbL">
-                                            <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
-                                            <font key="font" metaFont="system"/>
-                                            <imageReference key="image" image="sum" catalog="system" symbolScale="large" renderingMode="hierarchical">
-                                                <hierarchicalColors>
-                                                    <color name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
-                                                    <color name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
-                                                    <color name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
-                                                </hierarchicalColors>
-                                            </imageReference>
-                                            <imageReference key="alternateImage" image="sum" catalog="system" symbolScale="large" renderingMode="hierarchical">
-                                                <hierarchicalColors>
-                                                    <color name="controlAccentColor" catalog="System" colorSpace="catalog"/>
-                                                    <color name="controlAccentColor" catalog="System" colorSpace="catalog"/>
-                                                    <color name="controlAccentColor" catalog="System" colorSpace="catalog"/>
-                                                </hierarchicalColors>
-                                            </imageReference>
-                                        </buttonCell>
                                         <connections>
                                             <action selector="barConfigChanged:" target="rnH-qv-OTz" id="0oA-CP-Mq9"/>
                                             <binding destination="rnH-qv-OTz" name="value" keyPath="self.document.content.configuration.displayStyle" id="RzT-Bq-k9t">
@@ -988,17 +978,17 @@
                     </splitView>
                     <connections>
                         <outlet property="contentTextView" destination="aYi-hb-SPx" id="HZg-u9-gq6"/>
-                        <outlet property="katexView" destination="ZHV-S3-S2k" id="4eO-b9-2On"/>
+                        <outlet property="outputView" destination="ZHV-S3-S2k" id="4eO-b9-2On"/>
                     </connections>
                 </viewController>
                 <customObject id="6IX-ue-RrP" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="794" y="861"/>
         </scene>
-        <!--Sidebar-->
+        <!--SidebarVC-->
         <scene sceneID="X3P-E9-CNj">
             <objects>
-                <viewController storyboardIdentifier="navigatorVC" id="OUk-dc-Xgr" customClass="Sidebar" customModule="Scratch_Paper" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="navigatorVC" id="OUk-dc-Xgr" customClass="SidebarVC" customModule="Scratch_Paper" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="FSd-rB-2i5">
                         <rect key="frame" x="0.0" y="0.0" width="179" height="460"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1011,63 +1001,63 @@
                             </customView>
                             <button identifier="bookmarks" toolTip="Bookmarks" translatesAutoresizingMaskIntoConstraints="NO" id="gca-vb-Ia3">
                                 <rect key="frame" x="109" y="433" width="18" height="23"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="18" id="5hR-KF-hg8"/>
-                                    <constraint firstAttribute="height" constant="17" id="Ums-lJ-iMT"/>
-                                </constraints>
                                 <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="bookmark.circle" catalog="system" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="CKe-KE-0MR">
                                     <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                     <imageReference key="alternateImage" image="bookmark.circle.fill" catalog="system" symbolScale="default" renderingMode="hierarchical">
                                         <hierarchicalColors>
-                                            <color name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <color name="windowBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color name="controlAccentColor" catalog="System" colorSpace="catalog"/>
                                             <color name="controlAccentColor" catalog="System" colorSpace="catalog"/>
                                         </hierarchicalColors>
                                     </imageReference>
                                 </buttonCell>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="18" id="5hR-KF-hg8"/>
+                                    <constraint firstAttribute="height" constant="17" id="Ums-lJ-iMT"/>
+                                </constraints>
                                 <connections>
                                     <action selector="navigate:" target="OUk-dc-Xgr" id="aHh-XP-WhZ"/>
                                 </connections>
                             </button>
                             <button identifier="outline" toolTip="Outline" translatesAutoresizingMaskIntoConstraints="NO" id="Sq5-hp-ePN">
                                 <rect key="frame" x="50" y="432.5" width="20" height="25"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="20" id="KxK-h0-e9d"/>
-                                    <constraint firstAttribute="height" constant="20" id="gRQ-Nh-Nts"/>
-                                </constraints>
-                                <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="list.bullet.rectangle" catalog="system" imagePosition="only" alignment="center" state="on" imageScaling="proportionallyUpOrDown" inset="2" id="aN0-xS-d8B">
+                                <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="list.bullet.rectangle" catalog="system" imagePosition="only" alignment="center" state="on" imageScaling="proportionallyUpOrDown" inset="2" id="aN0-xS-d8B">
                                     <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
-                                    <imageReference key="alternateImage" image="list.bullet.rectangle.fill" catalog="system" symbolScale="default" renderingMode="hierarchical">
+                                    <imageReference key="alternateImage" image="list.bullet.rectangle.fill" catalog="system" symbolScale="default" renderingMode="hierarchical" variableValue="5.5511151231257827e-17">
                                         <hierarchicalColors>
-                                            <color name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <color name="windowBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color name="controlAccentColor" catalog="System" colorSpace="catalog"/>
                                             <color name="controlAccentColor" catalog="System" colorSpace="catalog"/>
                                         </hierarchicalColors>
                                     </imageReference>
                                 </buttonCell>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="20" id="KxK-h0-e9d"/>
+                                    <constraint firstAttribute="height" constant="20" id="gRQ-Nh-Nts"/>
+                                </constraints>
                                 <connections>
                                     <action selector="navigate:" target="OUk-dc-Xgr" id="m2T-fA-lTO"/>
                                 </connections>
                             </button>
                             <button identifier="error" toolTip="Error" translatesAutoresizingMaskIntoConstraints="NO" id="1rG-FJ-ivy">
                                 <rect key="frame" x="80" y="437.5" width="19.5" height="15"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="19" id="7r5-Dz-cow"/>
-                                    <constraint firstAttribute="height" constant="9" id="YuZ-Ef-yl7"/>
-                                </constraints>
                                 <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="exclamationmark.triangle" catalog="system" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="e4t-eM-q0a">
                                     <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
                                     <imageReference key="alternateImage" image="exclamationmark.triangle.fill" catalog="system" symbolScale="default" renderingMode="hierarchical">
                                         <hierarchicalColors>
-                                            <color name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <color name="windowBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color name="controlAccentColor" catalog="System" colorSpace="catalog"/>
                                             <color name="controlAccentColor" catalog="System" colorSpace="catalog"/>
                                         </hierarchicalColors>
                                     </imageReference>
                                 </buttonCell>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="19" id="7r5-Dz-cow"/>
+                                    <constraint firstAttribute="height" constant="9" id="YuZ-Ef-yl7"/>
+                                </constraints>
                                 <connections>
                                     <action selector="navigate:" target="OUk-dc-Xgr" id="QDK-Pp-KqO"/>
                                 </connections>
@@ -1100,76 +1090,86 @@
             </objects>
             <point key="canvasLocation" x="-406.5" y="861"/>
         </scene>
-        <!--Outline Pane-->
+        <!--Outline PaneVC-->
         <scene sceneID="24N-3I-mFc">
             <objects>
-                <viewController storyboardIdentifier="outlinePane" id="M5a-JF-Tfv" customClass="OutlinePane" customModule="Scratch_Paper" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="RIE-SI-hcK">
+                <viewController storyboardIdentifier="outlinePane" id="M5a-JF-Tfv" customClass="OutlinePaneVC" customModule="Scratch_Paper" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" clipsToBounds="YES" id="RIE-SI-hcK">
                         <rect key="frame" x="0.0" y="0.0" width="160" height="421"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="26" horizontalPageScroll="10" verticalLineScroll="26" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ydz-Pr-w7M" customClass="AScrollView" customModule="Scratch_Paper" customModuleProvider="target">
+                            <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="27" horizontalPageScroll="10" verticalLineScroll="27" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T2s-Kh-FTX">
                                 <rect key="frame" x="0.0" y="0.0" width="160" height="421"/>
-                                <clipView key="contentView" drawsBackground="NO" id="8eE-t1-AlM">
+                                <clipView key="contentView" drawsBackground="NO" id="bgT-Pn-rei">
                                     <rect key="frame" x="0.0" y="0.0" width="160" height="421"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" tableStyle="sourceList" selectionHighlightStyle="sourceList" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowHeight="26" rowSizeStyle="automatic" viewBased="YES" id="v3Q-ho-gQ3" customClass="ATableView" customModule="Scratch_Paper" customModuleProvider="target">
+                                        <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" rowHeight="27" rowSizeStyle="automatic" viewBased="YES" indentationPerLevel="8" outlineTableColumn="pjZ-eZ-wzp" id="dLQ-XC-Vos" customClass="AnOutlineView" customModule="Scratch_Paper" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="160" height="421"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                            <size key="intercellSpacing" width="5" height="0.0"/>
-                                            <color key="backgroundColor" name="_sourceListBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <size key="intercellSpacing" width="17" height="0.0"/>
+                                            <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
-                                                <tableColumn width="128" minWidth="40" maxWidth="1000" id="erL-GL-xWM">
-                                                    <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border">
+                                                <tableColumn identifier="AutomaticTableColumnIdentifier.0" width="128" minWidth="40" maxWidth="1000" id="pjZ-eZ-wzp">
+                                                    <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Outline">
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
-                                                    <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" title="Text Cell" id="6GU-wD-eAG">
+                                                    <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" title="Text Cell" id="mwJ-BF-Twm">
                                                         <font key="font" metaFont="system"/>
                                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                     </textFieldCell>
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
-                                                        <tableCellView id="hry-r4-azq">
-                                                            <rect key="frame" x="12" y="0.0" width="135" height="26"/>
+                                                        <tableCellView id="rVb-sM-Q1n">
+                                                            <rect key="frame" x="18" y="0.0" width="123" height="27"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
-                                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U8B-d9-SDo">
-                                                                    <rect key="frame" x="1" y="5" width="133" height="16"/>
-                                                                    <constraints>
-                                                                        <constraint firstAttribute="height" constant="16" id="ynR-xV-HmQ"/>
-                                                                    </constraints>
-                                                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" title="Table View Cell" id="DA2-61-BZB">
-                                                                        <font key="font" metaFont="system"/>
-                                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                                    </textFieldCell>
+                                                                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pJW-m5-mU4">
+                                                                    <rect key="frame" x="3" y="1" width="17" height="28"/>
+                                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSActionTemplate" id="diz-zk-Cbk"/>
                                                                     <connections>
-                                                                        <binding destination="hry-r4-azq" name="value" keyPath="objectValue.content" id="QnX-d3-YUN">
+                                                                        <binding destination="rVb-sM-Q1n" name="value" keyPath="objectValue.icon" id="G3d-Rg-iYa">
                                                                             <dictionary key="options">
                                                                                 <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
+                                                                                <bool key="NSAlwaysPresentsApplicationModalAlerts" value="YES"/>
+                                                                                <bool key="NSConditionallySetsEnabled" value="NO"/>
+                                                                            </dictionary>
+                                                                        </binding>
+                                                                    </connections>
+                                                                </imageView>
+                                                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="I4L-9m-tkq">
+                                                                    <rect key="frame" x="26" y="6" width="98" height="17"/>
+                                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                                                    <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="bbQ-je-cxt">
+                                                                        <font key="font" metaFont="system"/>
+                                                                        <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                    </textFieldCell>
+                                                                    <connections>
+                                                                        <binding destination="rVb-sM-Q1n" name="value" keyPath="objectValue.preview" id="HNh-vZ-7sX">
+                                                                            <dictionary key="options">
+                                                                                <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
+                                                                                <bool key="NSAlwaysPresentsApplicationModalAlerts" value="YES"/>
                                                                             </dictionary>
                                                                         </binding>
                                                                     </connections>
                                                                 </textField>
                                                             </subviews>
-                                                            <constraints>
-                                                                <constraint firstAttribute="trailing" secondItem="U8B-d9-SDo" secondAttribute="trailing" constant="3" id="HO8-vS-xPo"/>
-                                                                <constraint firstItem="U8B-d9-SDo" firstAttribute="centerY" secondItem="hry-r4-azq" secondAttribute="centerY" id="mA4-y8-cSl"/>
-                                                                <constraint firstItem="U8B-d9-SDo" firstAttribute="leading" secondItem="hry-r4-azq" secondAttribute="leading" constant="3" id="te5-2G-mxf"/>
-                                                            </constraints>
                                                             <connections>
-                                                                <outlet property="textField" destination="U8B-d9-SDo" id="3do-bb-RU3"/>
+                                                                <outlet property="imageView" destination="pJW-m5-mU4" id="qzB-9c-Npo"/>
+                                                                <outlet property="textField" destination="I4L-9m-tkq" id="ZIp-Pq-LMm"/>
                                                             </connections>
                                                         </tableCellView>
                                                     </prototypeCellViews>
                                                     <connections>
-                                                        <binding destination="ale-jE-f1m" name="value" keyPath="arrangedObjects" id="6Y5-QY-gHi">
+                                                        <binding destination="EWO-Lb-2mt" name="value" keyPath="arrangedObjects" id="V26-Np-DM2">
                                                             <dictionary key="options">
                                                                 <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
+                                                                <bool key="NSAlwaysPresentsApplicationModalAlerts" value="YES"/>
                                                                 <bool key="NSConditionallySetsEditable" value="NO"/>
                                                                 <bool key="NSCreatesSortDescriptor" value="NO"/>
                                                             </dictionary>
@@ -1178,51 +1178,51 @@
                                                 </tableColumn>
                                             </tableColumns>
                                             <connections>
-                                                <binding destination="ale-jE-f1m" name="content" keyPath="arrangedObjects" id="kTN-cn-uCH"/>
-                                                <outlet property="delegate" destination="M5a-JF-Tfv" id="dQl-3l-5ue"/>
+                                                <outlet property="delegate" destination="M5a-JF-Tfv" id="ezW-G4-y0k"/>
                                             </connections>
-                                        </tableView>
+                                        </outlineView>
                                     </subviews>
                                     <nil key="backgroundColor"/>
                                 </clipView>
-                                <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="qBe-UP-OmI">
-                                    <rect key="frame" x="0.0" y="404" width="160" height="16"/>
+                                <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="5SK-Bw-qAE">
+                                    <rect key="frame" x="1" y="404" width="158" height="16"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
-                                <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="EjK-hr-75M">
+                                <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="7CM-Y3-yjX">
                                     <rect key="frame" x="224" y="17" width="15" height="102"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
                         </subviews>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="Ydz-Pr-w7M" secondAttribute="bottom" id="UIs-Mf-aoX"/>
-                            <constraint firstItem="Ydz-Pr-w7M" firstAttribute="leading" secondItem="RIE-SI-hcK" secondAttribute="leading" id="afM-Dq-FbH"/>
-                            <constraint firstItem="Ydz-Pr-w7M" firstAttribute="top" secondItem="RIE-SI-hcK" secondAttribute="top" id="wLO-nd-v6e"/>
-                            <constraint firstAttribute="trailing" secondItem="Ydz-Pr-w7M" secondAttribute="trailing" id="yp1-R2-vJZ"/>
+                            <constraint firstAttribute="trailing" secondItem="T2s-Kh-FTX" secondAttribute="trailing" id="N0A-yQ-qqD"/>
+                            <constraint firstItem="T2s-Kh-FTX" firstAttribute="leading" secondItem="RIE-SI-hcK" secondAttribute="leading" id="WGi-T6-5CI"/>
+                            <constraint firstItem="T2s-Kh-FTX" firstAttribute="top" secondItem="RIE-SI-hcK" secondAttribute="top" id="iLF-hd-5Yc"/>
+                            <constraint firstAttribute="bottom" secondItem="T2s-Kh-FTX" secondAttribute="bottom" id="uPw-Fd-tq1"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="outlineTableView" destination="v3Q-ho-gQ3" id="rmD-1g-nbn"/>
+                        <outlet property="outlineView" destination="dLQ-XC-Vos" id="2Je-tN-pPB"/>
                     </connections>
                 </viewController>
                 <customObject id="dEW-dx-hJw" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-                <arrayController editable="NO" selectsInsertedObjects="NO" avoidsEmptySelection="NO" clearsFilterPredicateOnInsertion="NO" id="ale-jE-f1m">
+                <treeController childrenKeyPath="subnodes" countKeyPath="count" leafKeyPath="isLeaf" avoidsEmptySelection="NO" preservesSelection="NO" selectsInsertedObjects="NO" id="EWO-Lb-2mt">
                     <connections>
-                        <binding destination="M5a-JF-Tfv" name="contentArray" keyPath="self.entries" id="Mnu-lO-Amz">
+                        <binding destination="M5a-JF-Tfv" name="contentArray" keyPath="self.outline.entries" id="hNf-34-7n8">
                             <dictionary key="options">
+                                <bool key="NSAlwaysPresentsApplicationModalAlerts" value="YES"/>
                                 <bool key="NSConditionallySetsEditable" value="NO"/>
                             </dictionary>
                         </binding>
                     </connections>
-                </arrayController>
+                </treeController>
             </objects>
-            <point key="canvasLocation" x="-397" y="299"/>
+            <point key="canvasLocation" x="-629" y="298.5"/>
         </scene>
-        <!--Error Pane-->
+        <!--Error PaneVC-->
         <scene sceneID="L2p-Rm-dNa">
             <objects>
-                <viewController storyboardIdentifier="errorPane" id="O26-2e-84j" customClass="ErrorPane" customModule="Scratch_Paper" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="errorPane" id="O26-2e-84j" customClass="ErrorPaneVC" customModule="Scratch_Paper" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="fLS-e6-Lff">
                         <rect key="frame" x="0.0" y="0.0" width="160" height="420"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1341,19 +1341,20 @@
                     </view>
                 </viewController>
                 <customObject id="Uro-h8-ygu" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-                <arrayController selectsInsertedObjects="NO" avoidsEmptySelection="NO" clearsFilterPredicateOnInsertion="NO" id="KU3-2a-364">
+                <arrayController editable="NO" selectsInsertedObjects="NO" avoidsEmptySelection="NO" clearsFilterPredicateOnInsertion="NO" id="KU3-2a-364">
                     <connections>
                         <binding destination="O26-2e-84j" name="contentArray" keyPath="self.entries" id="ogt-6z-1Ys"/>
                     </connections>
                 </arrayController>
             </objects>
-            <point key="canvasLocation" x="-612" y="299"/>
+            <point key="canvasLocation" x="-407" y="299"/>
         </scene>
     </scenes>
     <resources>
-        <image name="arrow.down.to.line.compact" catalog="system" width="17" height="18"/>
+        <image name="NSActionTemplate" width="20" height="20"/>
+        <image name="arrow.down.to.line" catalog="system" width="13" height="16"/>
         <image name="arrow.left.arrow.right" catalog="system" width="20" height="23"/>
-        <image name="arrow.right.to.line.compact" catalog="system" width="19" height="16"/>
+        <image name="arrow.right.to.line" catalog="system" width="17" height="12"/>
         <image name="bookmark.circle" catalog="system" width="15" height="15"/>
         <image name="bookmark.circle.fill" catalog="system" width="15" height="15"/>
         <image name="exclamationmark.triangle" catalog="system" width="17" height="15"/>
@@ -1362,7 +1363,7 @@
         <image name="list.bullet.rectangle" catalog="system" width="18" height="14"/>
         <image name="list.bullet.rectangle.fill" catalog="system" width="18" height="14"/>
         <image name="sidebar.left" catalog="system" width="18" height="14"/>
-        <image name="sum" catalog="system" width="14" height="19"/>
+        <image name="sum" catalog="system" width="11" height="14"/>
         <image name="textformat.alt" catalog="system" width="18" height="12"/>
     </resources>
 </document>

@@ -1,10 +1,3 @@
-//
-//  DocumentWindow.swift
-//  Scratch Paper
-//
-//  Created by Bingyi Billy Li on 2021/3/5.
-//
-
 import Cocoa
 import SwiftUI
 import WebKit
@@ -20,11 +13,11 @@ import UniformTypeIdentifiers
 class DocumentWindow: NSWindowController {
     
     /**
-     Reference to its `Editor` object.
+     Reference to its `EditorVC` object.
      
      A computed property that gets editor object on-demand.
      */
-    var editor: Editor {
+    var editor: EditorVC {
         return (self.document as! Document).editor
     }
     
@@ -69,13 +62,16 @@ class DocumentWindow: NSWindowController {
         exportAccessoryView.topAnchor.constraint(equalTo: customView.topAnchor).isActive = true
         exportAccessoryView.bottomAnchor.constraint(equalTo: customView.bottomAnchor).isActive = true
         
-        exportAccessoryView.leadingAnchor.constraint(greaterThanOrEqualTo: customView.leadingAnchor).isActive = true
-        exportAccessoryView.trailingAnchor.constraint(greaterThanOrEqualTo: customView.trailingAnchor).isActive = true
+        exportAccessoryView.leadingAnchor
+            .constraint(greaterThanOrEqualTo: customView.leadingAnchor).isActive = true
+        exportAccessoryView.trailingAnchor
+            .constraint(greaterThanOrEqualTo: customView.trailingAnchor).isActive = true
         
         exportAccessoryView.centerXAnchor.constraint(equalTo: customView.centerXAnchor).isActive = true
         
         exportAccessoryView.widthAnchor.constraint(equalTo: customView.widthAnchor).isActive = true
-        exportAccessoryView.heightAnchor.constraint(greaterThanOrEqualTo: customView.heightAnchor).isActive = true
+        exportAccessoryView.heightAnchor
+            .constraint(greaterThanOrEqualTo: customView.heightAnchor).isActive = true
         
         savePanel.accessoryView = customView
         
@@ -90,14 +86,15 @@ class DocumentWindow: NSWindowController {
      Marks the document as "edited" (change done) and renders the content.
      */
     @IBAction func toolbarConfigChanged(_ sender: Any) {
-        self.editor.document.updateChangeCount(.changeDone)
+        self.document!.updateChangeCount(.changeDone)
         self.editor.renderText()
     }
     
     /**
      Opens the `exportPanel` for file export.
      
-     It loads and opens up the `exportPanel` as a sheel modal, and handles export logic for various file formats case by case.
+     It loads and opens up the `exportPanel` as a sheel modal, and handles export logic for various
+     file formats case by case.
      */
     @objc func export() {
         self.exportPanel.beginSheetModal(for: self.window!) { response in
@@ -106,7 +103,7 @@ class DocumentWindow: NSWindowController {
                 
                 switch self.exportFileType {
                 case .pdf:
-                    self.editor.katexView.createPDF { result in
+                    self.editor.outputView.createPDF { result in
                         switch result {
                         case .success(let pdfData):
                             do {
@@ -124,7 +121,7 @@ class DocumentWindow: NSWindowController {
                     let configuration = WKSnapshotConfiguration()
                     configuration.snapshotWidth = self.resolution as NSNumber
                     
-                    self.editor.katexView.takeSnapshot(with: configuration) { image, error in
+                    self.editor.outputView.takeSnapshot(with: configuration) { image, error in
                         guard error == nil, let img = image else {
                             let alert = NSAlert(error: error!)
                             alert.beginSheetModal(for: self.window!)
@@ -144,7 +141,7 @@ class DocumentWindow: NSWindowController {
                     let configuration = WKSnapshotConfiguration()
                     configuration.snapshotWidth = self.resolution as NSNumber
                     
-                    self.editor.katexView.takeSnapshot(with: configuration) { image, error in
+                    self.editor.outputView.takeSnapshot(with: configuration) { image, error in
                         guard error == nil, let img = image else {
                             let alert = NSAlert(error: error!)
                             alert.beginSheetModal(for: self.window!)
@@ -164,7 +161,7 @@ class DocumentWindow: NSWindowController {
                     let configuration = WKSnapshotConfiguration()
                     configuration.snapshotWidth = self.resolution as NSNumber
                     
-                    self.editor.katexView.takeSnapshot(with: configuration) { image, error in
+                    self.editor.outputView.takeSnapshot(with: configuration) { image, error in
                         guard error == nil, let img = image else {
                             let alert = NSAlert(error: error!)
                             alert.beginSheetModal(for: self.window!)
@@ -181,7 +178,7 @@ class DocumentWindow: NSWindowController {
                         }
                     }
                 case .webArchive:
-                    self.editor.katexView.createWebArchiveData { result in
+                    self.editor.outputView.createWebArchiveData { result in
                         switch result {
                         case .success(let webArchiveData):
                             do {
@@ -196,7 +193,7 @@ class DocumentWindow: NSWindowController {
                         }
                     }
                 case .html:
-                    self.editor.katexView.evaluateJavaScript("document.documentElement.outerHTML;") { output, _ in
+                    self.editor.outputView.evaluateJavaScript("document.documentElement.outerHTML;") { output, _ in
                         let htmlString = output as! String
                         do {
                             try htmlString.write(to: saveURL, atomically: true, encoding: .unicode)
@@ -208,7 +205,8 @@ class DocumentWindow: NSWindowController {
                     break
                 case .tex, .txt:
                     do {
-                        try self.editor.document.content.contentString.write(to: saveURL, atomically: true, encoding: .unicode)
+                        try self.editor.document.content.contentString
+                            .write(to: saveURL, atomically: true, encoding: .unicode)
                     } catch {
                         let alert = NSAlert(error: error)
                         alert.beginSheetModal(for: self.window!)
@@ -219,7 +217,7 @@ class DocumentWindow: NSWindowController {
     }
     
     deinit {
-        self.window?.toolbar?.items.forEach({ item in
+        self.window!.toolbar!.items.forEach({ item in
             if item.itemIdentifier.rawValue == "displayMode" {
                 item.unbind(.value)
             } else if item.itemIdentifier.rawValue == "renderMode" {
@@ -244,7 +242,8 @@ extension DocumentWindow: NSToolbarDelegate {
     /// Specifies default visible toolbar items.
     func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
         return [NSToolbarItem.Identifier("sidebar"),
-                NSToolbarItem.Identifier("render"), .flexibleSpace,
+                NSToolbarItem.Identifier("render"),
+                .flexibleSpace,
                 NSToolbarItem.Identifier("displayMode"),
                 NSToolbarItem.Identifier("renderMode")]
     }
@@ -281,11 +280,11 @@ extension DocumentWindow: NSToolbarDelegate {
     }
     
     /**
-     An intermediate method that receives action from the "Configuration" menu item and calls `Editor.presentConfigView()`.
+     An intermediate method that receives action from the "Configuration" menu item and calls `EditorVC.presentConfigView()`.
      
      This method is defined here and marked Objective-C to serve as an action selector for the "Configuration" menu item that is always available regardless.
      
-     - Note: The reason why the "Configuration" menu item's action selector is not pointing directly to the destination method (`Editor.presentConfigView()`) is because in doing so, the menu item becomes actionable only when the first responder is the main text view _(somehow for reasons not yet understood)_.
+     - Note: The reason why the "Configuration" menu item's action selector is not pointing directly to the destination method (`EditorVC.presentConfigView()`) is because in doing so, the menu item becomes actionable only when the first responder is the main text view _(somehow for reasons not yet understood)_.
      */
     @objc func presentConfigView() {
         self.editor.presentConfigView()
@@ -303,6 +302,16 @@ extension DocumentWindow: NSWindowDelegate {
             } else if item.itemIdentifier.rawValue == "renderMode" {
                 (item.view as! NSSegmentedControl).unbind(.selectedIndex)
             }
+        }
+    }
+    
+    func windowDidDeminiaturize(_ notification: Notification) {
+        // this document window was miniaturized before the application terminated previously, which
+        //   is then restored, since in this case deminiaturizing does not trigger EditorVC's
+        //   viewDidAppear (weirdly enough), the editor view has not been initialized, which leaves
+        //   one no better option but to do so manually
+        if !self.editor.isInitialized {
+            self.editor.viewDidAppear()
         }
     }
     

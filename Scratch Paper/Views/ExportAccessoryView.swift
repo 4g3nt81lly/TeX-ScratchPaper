@@ -1,10 +1,3 @@
-//
-//  ExportAccessoryView.swift
-//  Scratch Paper
-//
-//  Created by Bingyi Billy Li on 2022/7/5.
-//
-
 import SwiftUI
 import UniformTypeIdentifiers
 

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+        <link rel="stylesheet" type="text/css" href="katex.min.css" />
+        <script src="katex.min.js" type="text/javascript"></script>
+        <script src="marked.min.js" type="text/javascript"></script>
+        <script src="jquery.min.js" type="text/javascript"></script>
+        <script src="jquery-ui.min.js" type="text/javascript"></script>
+    </head>
+    <body style="STYLE">
+        <div id="error" hidden></div>
+        <div id="log" hidden></div>
+        <div id="output" style="font-size:16px;"></div>
+        <script type="text/javascript">
+            var errorMessages = {};
+            const logContainer = document.querySelector('div#log');
+            const outputContainer = document.querySelector('div#output');
+            
+            function renderText(displayMode = false,
+                                renderError = true, errorColor = '#CC0000',
+                                minRuleThickness = -1,
+                                leqno = false,
+                                maxSize = Infinity,
+                                maxExpand = 1000,
+                                trust = false) {
+                // reset error messages
+                errorMessages = {};
+                // reset logs
+                logContainer.textContent = '';
+                // get all line elements and render all
+                var lines = outputContainer.querySelectorAll('div.line');
+                for (var i = 0; i < lines.length; i++) {
+                    // get a deep copy of tex elements
+                    var texes = lines[i].getElementsByClassName('tex');
+                    // extract text contents from tex elements
+                    const texContents = Array.prototype.map.call(texes, function (tex) {
+                        return tex.textContent;
+                    });
+                    // render texts as markdown
+                    lines[i].innerHTML = marked.parse(lines[i].innerHTML);
+                    // restore text contents for tex elements
+                    texContents.forEach(function (content, index) {
+                        texes[index].textContent = content;
+                    });
+                    
+                    // render tex elements
+                    var lineErrors = {};
+                    for (var j = 0; j < texes.length; j++) {
+                        const content = texes[j].textContent.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+                        // render error in place
+                        if (renderError) {
+                            const htmlString = katex.renderToString(content, {
+                                throwOnError: false,
+                                displayMode: displayMode,
+                                errorColor: errorColor,
+                                minRuleThickness: minRuleThickness,
+                                leqno: leqno,
+                                maxSize: maxSize,
+                                maxExpand: maxExpand,
+                                trust: trust
+                            });
+                            texes[j].innerHTML = htmlString;
+                        }
+                        
+                        // get error message of current closure
+                        try {
+                            const htmlString = katex.renderToString(content, {
+                                throwOnError: true,
+                                displayMode: displayMode,
+                                errorColor: errorColor,
+                                minRuleThickness: minRuleThickness,
+                                leqno: leqno,
+                                maxSize: maxSize,
+                                maxExpand: maxExpand,
+                                trust: trust
+                            });
+                            if (!renderError) {
+                                texes[j].innerHTML = htmlString;
+                            }
+                        } catch(err) {
+                            lineErrors[`Group_${j}`] = err.message;
+                        }
+                        /*
+                        var errors = texes[j].getElementsByClassName('katex-error');
+                        if (errors != null) {
+                            for (var k = 0; k < errors.length; k++) {
+                                // errorMessages[`line_${i + 1}`] = error.title;
+                                document.getElementById('log').textContent += `\n${errors[k].title}`;
+                            }
+                        }
+                        */
+                    }
+                    errorMessages[`Line_${i}`] = lineErrors;
+                }
+            }
+            
+            // scroll an element to visible
+            function scrollToVisible(element, lockToRight = false) {
+                var elementOffset = element.offset().top;
+                var elementHeight = element.height();
+                var windowHeight = $(window).height();
+                var scrollOffset;
+                
+                if (elementHeight < windowHeight) {
+                    offset = elementOffset - ((windowHeight / 2) - (elementHeight / 2));
+                } else {
+                    offset = elementOffset;
+                }
+                
+                var args = {
+                    scrollTop: offset
+                };
+                if (lockToRight) {
+                    const leftOffset = $(document).outerWidth() - $(window).width();
+                    args['scrollLeft'] = leftOffset;
+                }
+                
+                $('html, body').stop().animate(args, 250);
+            }
+            
+            // scroll specific line to visible
+            function scrollLineToVisible(line, lockToRight) {
+                const lineObject = $($('div.line')[line]);
+                scrollToVisible(lineObject, lockToRight);
+            }
+            
+            // scroll to right
+            function scrollToRight() {
+                const leftOffset = $(document).outerWidth() - $(window).width();
+                $('html, body').stop().animate({
+                    scrollLeft: leftOffset
+                }, 250);
+            }
+            
+            // scroll to bottom
+            function scrollToBottom(lockToRight) {
+                const lastLine = outputContainer.querySelectorAll('div.line').length - 1;
+                scrollLineToVisible(lastLine, lockToRight);
+            }
+            
+            function reveal(line) {
+                const lineObject = $($('div.line')[line]);
+                scrollToVisible(lineObject);
+                lineObject.css({
+                    backgroundColor: '#FFFF00'
+                });
+                lineObject.stop().animate({
+                    backgroundColor: isDarkMode ? '#202020' : ''
+                }, 1000, function() {
+                    lineObject.removeAttr('style');
+                });
+            }
+        </script>
+        <script type="text/javascript">
+            var isDarkMode = false;
+            
+            function changeAppearance(darkMode = false) {
+                isDarkMode = darkMode;
+                if (darkMode) {
+                    $('body').stop().animate({
+                        backgroundColor: '#202020',
+                        color: '#FFFFFF'
+                    }, 1000);
+                } else {
+                    $('body').stop().animate({
+                        style: ''
+                    }, 1000);
+                }
+            }
+        </script>
+    </body>
+</html>

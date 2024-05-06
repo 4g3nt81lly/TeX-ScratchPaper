@@ -1,10 +1,3 @@
-//
-//  AScrollView.swift
-//  Scratch Paper
-//
-//  Created by Bingyi Billy Li on 2022/4/7.
-//
-
 import Cocoa
 
 /**

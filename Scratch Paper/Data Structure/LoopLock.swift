@@ -1,10 +1,3 @@
-//
-//  LoopLock.swift
-//  Scratch Paper
-//
-//  Created by Bingyi Billy Li on 2022/7/10.
-//
-
 import Cocoa
 
 /// An enumeration object representing a binary state.

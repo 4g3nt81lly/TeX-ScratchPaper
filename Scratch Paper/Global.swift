@@ -1,19 +1,8 @@
-//
-//  Global.swift
-//  Scratch Paper
-//
-//  Created by Bingyi Billy Li on 2022/7/4.
-//
-
 import Cocoa
 import SwiftUI
 import Combine
 
-/**
- A strong reference to the application's delegate object `AppDelegate`.
- 
- This reference will always be available, allowing the `AppDelegate` object to be accessible at a global scope.
- */
+/// The application's delegate object.
 let appDelegate = NSApp.delegate as! AppDelegate
 
 /// The application's default notification center.
@@ -40,17 +29,10 @@ let global = GlobalChannel()
  Reads and decodes settings from application support directory within the current user domain.
  If the configuration file is not found under the target directory, it will attempt to create a new instance.
  
- - Note: This property is initialized as part of the delegate's instantiation process, which guarantees it to be readily available when one requests it.
+ - Note: This property is initialized as part of the delegate's instantiation process, which
+ guarantees it to be readily available when one requests it.
  */
-var appSettings: AppSettings = {
-    if let pathURL = Scratch_Paper.fileManager.urls(for: .applicationSupportDirectory,
-                                                    in: .userDomainMask).first?.appendingPathComponent("config"),
-       let data = try? Data(contentsOf: pathURL),
-       let appSettings = try? NSKeyedUnarchiver.unarchivedObject(ofClass: AppSettings.self, from: data) {
-        return appSettings
-    }
-    return AppSettings()
-}()
+var appSettings: AppSettings = AppSettings.shared
 
 extension String {
     
@@ -81,7 +63,9 @@ extension String {
     /**
      Get a character at an index in the receiver string as string.
      
-     Swift does not come with native support to subscript a string, this method does just that by separating the receiver string character by character by invoking `components()` and returning the string element at the given index.
+     Swift does not come with native support to subscript a string, this method does just that by
+     separating the receiver string character by character by invoking `components()` and returning
+     the string element at the given index.
      
      - Precondition: The index must be within the valid range, otherwise this will raise an exception.
      
@@ -99,7 +83,9 @@ extension String {
     /**
      Slices the receiver string with a given range.
      
-     Along with string subscript, Swift also does not come with native support to slice a string, this method does just that by separating the receiver string character by character by invoking `components()` and returning the joined array slice.
+     Along with string subscript, Swift also does not come with native support to slice a string,
+     this method does just that by separating the receiver string character by character by
+     invoking `components()` and returning the joined array slice.
      
      - Precondition: The range must be within the valid range, otherwise this will raise an exception.
      
@@ -144,11 +130,39 @@ extension NSNumber {
     
 }
 
+extension String {
+    
+    var range: NSRange {
+        return self.nsString.range
+    }
+    
+    var nsString: NSString {
+        return self as NSString
+    }
+    
+    func rangeForLines(at lineRange: Range<Int>) -> NSRange {
+        var range = NSMakeRange(0, 0)
+        let lines = self.components(separatedBy: .newlines)
+        for i in 0..<lineRange.lowerBound {
+            range.location += lines[i].nsString.length + 1
+        }
+        for i in lineRange {
+            range.length += lines[i].nsString.length + 1
+        }
+        return range
+    }
+    
+}
+
 extension NSString {
     
     /// Swift String value of the `NSString` object.
     var string: String {
         return self as String
+    }
+    
+    var range: NSRange {
+        return NSMakeRange(0, self.length)
     }
     
 }
@@ -228,8 +242,40 @@ extension NSWindow {
     /// Centers the receiver window to the screen.
     func centerInScreen() {
         if let screenSize = screen?.frame.size {
-            let origin = NSPoint(x: (screenSize.width - frame.size.width) / 2, y: (screenSize.height - frame.size.height) / 2)
+            let origin = NSPoint(x: (screenSize.width - frame.size.width) / 2,
+                                 y: (screenSize.height - frame.size.height) / 2)
             self.setFrameOrigin(origin)
+        }
+    }
+    
+}
+
+extension NSView {
+    
+    /// A boolean value indicating whether the system is in dark mode.
+    var isDarkMode: Bool {
+        return self.effectiveAppearance.name == .darkAqua
+    }
+    
+}
+
+fileprivate struct ViewDidLoadModifier: ViewModifier {
+    
+    @State private var viewDidLoad = false
+    
+    private let callback: () -> Void
+    
+    init(_ callback: @escaping () -> Void) {
+        self.callback = callback
+    }
+    
+    func body(content: Content) -> some View {
+        content.onAppear {
+            guard !self.viewDidLoad else {
+                return
+            }
+            self.callback()
+            self.viewDidLoad = true
         }
     }
     
@@ -277,6 +323,21 @@ extension View {
             self
         }
     }
+    
+    @ViewBuilder
+    func onLoad(_ callback: @escaping () -> Void) -> some View {
+        self.modifier(ViewDidLoadModifier(callback))
+    }
+    
+    @ViewBuilder
+    func noRowSeparator() -> some View {
+        if #available(macOS 13.0, *) {
+            self.listRowSeparator(.hidden)
+        } else {
+            self.padding(.bottom, 10)
+        }
+    }
+    
 }
 
 /*
@@ -307,7 +368,8 @@ extension Color {
      
      Reference: [](https://blog.eidinger.info/from-hex-to-color-and-back-in-swiftui).
      
-     - Precondition: This property is non-`nil` if and only if the receiver color uses RGB or RGBA color space.
+     - Precondition: This property is non-`nil` if and only if the receiver color uses RGB or RGBA
+     color space.
      
      */
     var hex: String? {
@@ -333,9 +395,11 @@ extension Color {
     /**
      Initializes the `Color` object using a hex string.
      
-     A failable initializer is in place to expose an error when failing to load a color using the given hex string, which, in theory, should be impossible when the hex string is valid.
+     A failable initializer is in place to expose an error when failing to load a color using the
+     given hex string, which, in theory, should be impossible when the hex string is valid.
      
-     - Precondition: This initializer will only succeed if and only if the receiver color uses RGB or RGBA color space and the given hex string is valid.
+     - Precondition: This initializer will only succeed if and only if the receiver color uses RGB
+     or RGBA color space and the given hex string is valid.
      
      */
     init?(hex: String) {

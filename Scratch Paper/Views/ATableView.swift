@@ -1,10 +1,3 @@
-//
-//  ATableView.swift
-//  Scratch Paper
-//
-//  Created by Bingyi Billy Li on 2022/7/5.
-//
-
 import Cocoa
 
 /**
@@ -21,10 +14,8 @@ class ATableView: NSTableView {
         let rowIndex = self.row(at: point)
         if rowIndex < 0 {
             self.deselectAll(nil)
-        } else {
-            if let customDelegate = self.delegate as? TableViewDelegate {
-                customDelegate.tableView(self, didClickRow: rowIndex)
-            }
+        } else if let customDelegate = self.delegate as? TableViewDelegate {
+            customDelegate.tableView(self, didClick: rowIndex)
         }
     }
     
@@ -41,7 +32,13 @@ protocol TableViewDelegate: NSTableViewDelegate {
         - tableView: The table view.
         - row: The row number that is clicked.
      */
-    func tableView(_ tableView: ATableView, didClickRow row: Int)
+    func tableView(_ tableView: ATableView, didClick row: Int)
+    
+}
+
+extension TableViewDelegate {
+    
+    func tableView(_ tableView: NSTableView, didClick row: Int) {}
     
 }
 
