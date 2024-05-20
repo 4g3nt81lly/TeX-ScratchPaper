@@ -2,8 +2,8 @@
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22689"/>
-        <plugIn identifier="com.apple.WebKit2IBPlugin" version="22689"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22690"/>
+        <plugIn identifier="com.apple.WebKit2IBPlugin" version="22690"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="System colors introduced in macOS 10.14" minToolsVersion="10.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -168,7 +168,7 @@
                                         </menuItem>
                                         <menuItem title="Toggle Mode" keyEquivalent="E" id="JBa-Qw-2Lk"/>
                                         <menuItem isSeparatorItem="YES" id="Siw-yr-lee"/>
-                                        <menuItem title="Add Bookmark…" keyEquivalent="d" id="qwk-fd-6jd"/>
+                                        <menuItem title="Create Bookmark…" keyEquivalent="d" id="qwk-fd-6jd"/>
                                         <menuItem title="Edit Bookmark…" id="es3-4p-pw2">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                         </menuItem>
@@ -554,7 +554,7 @@
                                                 <action selector="runToolbarCustomizationPalette:" target="Ady-hI-5gd" id="pQI-g3-MTW"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem isSeparatorItem="YES" id="hB3-LF-h0Y"/>
+                                        <menuItem isSeparatorItem="YES" id="F2O-3T-ERb"/>
                                         <menuItem title="Show Sidebar" keyEquivalent="s" id="kIP-vf-haE">
                                             <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
                                             <connections>
@@ -648,15 +648,14 @@
                                         </buttonCell>
                                         <connections>
                                             <action selector="toolbarConfigChanged:" target="ClL-cD-twK" id="lvO-il-IXi"/>
-                                            <binding destination="ClL-cD-twK" name="value" keyPath="self.document.content.configuration.displayMode" id="Ddb-gc-gcO">
+                                            <binding destination="ClL-cD-twK" name="value" keyPath="self.document.content.configuration.displayMode" id="jMH-eb-peW">
                                                 <dictionary key="options">
                                                     <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
-                                                    <bool key="NSAlwaysPresentsApplicationModalAlerts" value="YES"/>
-                                                    <bool key="NSConditionallySetsEnabled" value="NO"/>
                                                     <integer key="NSMultipleValuesPlaceholder" value="0"/>
                                                     <integer key="NSNoSelectionPlaceholder" value="0"/>
                                                     <integer key="NSNotApplicablePlaceholder" value="0"/>
                                                     <integer key="NSNullPlaceholder" value="0"/>
+                                                    <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                 </dictionary>
                                             </binding>
                                         </connections>
@@ -708,6 +707,7 @@
                     </connections>
                 </windowController>
                 <customObject id="4UP-IP-76X" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <userDefaultsController representsSharedInstance="YES" id="CgR-zs-Ewk"/>
             </objects>
             <point key="canvasLocation" x="239" y="319"/>
         </scene>
@@ -828,7 +828,7 @@
                                                     <string key="NSValueTransformerName">NSNegateBoolean</string>
                                                 </dictionary>
                                             </binding>
-                                            <binding destination="rnH-qv-OTz" name="value" keyPath="self.document.content.configuration.lockToBottom" id="xIG-RU-zfN">
+                                            <binding destination="rnH-qv-OTz" name="value" keyPath="self.document.content.configuration.lockToBottom" id="GHo-PU-IQz">
                                                 <dictionary key="options">
                                                     <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                                     <bool key="NSConditionallySetsEnabled" value="NO"/>
@@ -836,7 +836,6 @@
                                                     <integer key="NSNoSelectionPlaceholder" value="0"/>
                                                     <integer key="NSNotApplicablePlaceholder" value="0"/>
                                                     <integer key="NSNullPlaceholder" value="0"/>
-                                                    <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                 </dictionary>
                                             </binding>
                                         </connections>
@@ -856,7 +855,7 @@
                                         </constraints>
                                         <connections>
                                             <action selector="barConfigChanged:" target="rnH-qv-OTz" id="wRT-Kx-PTN"/>
-                                            <binding destination="rnH-qv-OTz" name="value" keyPath="self.document.content.configuration.lockToRight" id="svb-9M-mDY">
+                                            <binding destination="rnH-qv-OTz" name="value" keyPath="self.document.content.configuration.lockToRight" id="Qht-ua-u4g">
                                                 <dictionary key="options">
                                                     <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                                     <bool key="NSConditionallySetsEnabled" value="NO"/>
@@ -864,7 +863,6 @@
                                                     <integer key="NSNoSelectionPlaceholder" value="0"/>
                                                     <integer key="NSNotApplicablePlaceholder" value="0"/>
                                                     <integer key="NSNullPlaceholder" value="0"/>
-                                                    <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                 </dictionary>
                                             </binding>
                                         </connections>
@@ -895,7 +893,7 @@
                                         </constraints>
                                         <connections>
                                             <action selector="barConfigChanged:" target="rnH-qv-OTz" id="R9l-Wd-vFo"/>
-                                            <binding destination="rnH-qv-OTz" name="value" keyPath="self.document.content.configuration.lineToLine" id="wLI-cI-5ug">
+                                            <binding destination="rnH-qv-OTz" name="value" keyPath="self.document.content.configuration.lineToLine" id="ZLX-zj-f2i">
                                                 <dictionary key="options">
                                                     <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                                     <bool key="NSConditionallySetsEnabled" value="NO"/>
@@ -903,7 +901,6 @@
                                                     <integer key="NSNoSelectionPlaceholder" value="0"/>
                                                     <integer key="NSNotApplicablePlaceholder" value="0"/>
                                                     <integer key="NSNullPlaceholder" value="0"/>
-                                                    <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                 </dictionary>
                                             </binding>
                                         </connections>
@@ -930,7 +927,7 @@
                                         </constraints>
                                         <connections>
                                             <action selector="barConfigChanged:" target="rnH-qv-OTz" id="0oA-CP-Mq9"/>
-                                            <binding destination="rnH-qv-OTz" name="value" keyPath="self.document.content.configuration.displayStyle" id="RzT-Bq-k9t">
+                                            <binding destination="rnH-qv-OTz" name="value" keyPath="self.document.content.configuration.displayStyle" id="JmQ-1H-VkT">
                                                 <dictionary key="options">
                                                     <bool key="NSAllowsEditingMultipleValuesSelection" value="NO"/>
                                                     <bool key="NSConditionallySetsEnabled" value="NO"/>
@@ -938,7 +935,6 @@
                                                     <integer key="NSNoSelectionPlaceholder" value="0"/>
                                                     <integer key="NSNotApplicablePlaceholder" value="0"/>
                                                     <integer key="NSNullPlaceholder" value="0"/>
-                                                    <bool key="NSRaisesForNotApplicableKeys" value="NO"/>
                                                 </dictionary>
                                             </binding>
                                         </connections>
@@ -977,7 +973,7 @@
                         </holdingPriorities>
                     </splitView>
                     <connections>
-                        <outlet property="contentTextView" destination="aYi-hb-SPx" id="HZg-u9-gq6"/>
+                        <outlet property="mainTextView" destination="aYi-hb-SPx" id="HZg-u9-gq6"/>
                         <outlet property="outputView" destination="ZHV-S3-S2k" id="4eO-b9-2On"/>
                     </connections>
                 </viewController>
@@ -1041,7 +1037,7 @@
                                     <action selector="navigate:" target="OUk-dc-Xgr" id="m2T-fA-lTO"/>
                                 </connections>
                             </button>
-                            <button identifier="error" toolTip="Error" translatesAutoresizingMaskIntoConstraints="NO" id="1rG-FJ-ivy">
+                            <button identifier="errors" toolTip="Errors" translatesAutoresizingMaskIntoConstraints="NO" id="1rG-FJ-ivy">
                                 <rect key="frame" x="80" y="437.5" width="19.5" height="15"/>
                                 <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" image="exclamationmark.triangle" catalog="system" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="e4t-eM-q0a">
                                     <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
@@ -1083,7 +1079,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="sidebarView" destination="w1c-W2-AIZ" id="STT-d1-QJW"/>
+                        <outlet property="contentView" destination="w1c-W2-AIZ" id="STT-d1-QJW"/>
                     </connections>
                 </viewController>
                 <customObject id="fj7-iE-PvK" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -1141,7 +1137,7 @@
                                                                         </binding>
                                                                     </connections>
                                                                 </imageView>
-                                                                <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="I4L-9m-tkq">
+                                                                <textField focusRingType="none" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" allowsExpansionToolTips="YES" translatesAutoresizingMaskIntoConstraints="NO" id="I4L-9m-tkq">
                                                                     <rect key="frame" x="26" y="6" width="98" height="17"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="bbQ-je-cxt">
@@ -1208,7 +1204,7 @@
                 <customObject id="dEW-dx-hJw" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <treeController childrenKeyPath="subnodes" countKeyPath="count" leafKeyPath="isLeaf" avoidsEmptySelection="NO" preservesSelection="NO" selectsInsertedObjects="NO" id="EWO-Lb-2mt">
                     <connections>
-                        <binding destination="M5a-JF-Tfv" name="contentArray" keyPath="self.outline.entries" id="hNf-34-7n8">
+                        <binding destination="M5a-JF-Tfv" name="contentArray" keyPath="self.structure.outline" id="jGp-nu-SBs">
                             <dictionary key="options">
                                 <bool key="NSAlwaysPresentsApplicationModalAlerts" value="YES"/>
                                 <bool key="NSConditionallySetsEditable" value="NO"/>
@@ -1222,7 +1218,7 @@
         <!--Error PaneVC-->
         <scene sceneID="L2p-Rm-dNa">
             <objects>
-                <viewController storyboardIdentifier="errorPane" id="O26-2e-84j" customClass="ErrorPaneVC" customModule="Scratch_Paper" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="errorsPane" id="O26-2e-84j" customClass="ErrorPaneVC" customModule="Scratch_Paper" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="fLS-e6-Lff">
                         <rect key="frame" x="0.0" y="0.0" width="160" height="420"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1256,7 +1252,7 @@
                                                             <rect key="frame" x="12" y="0.0" width="135" height="52"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
-                                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" allowsExpansionToolTips="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L3r-pB-QjV">
+                                                                <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" allowsExpansionToolTips="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L3r-pB-QjV">
                                                                     <rect key="frame" x="1" y="3" width="133" height="46"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="46" id="ZSV-GI-Xut"/>
@@ -1314,7 +1310,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
                             </scrollView>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oCs-bA-KaN">
+                            <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="oCs-bA-KaN">
                                 <rect key="frame" x="53" y="202" width="55" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="16" id="WRw-vs-m5o"/>

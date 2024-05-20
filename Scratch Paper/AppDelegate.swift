@@ -12,6 +12,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
      */
     var documentController = DocumentController()
     
+    var currentDocument: Document? {
+        return documentController.currentDocument as? Document
+    }
+    
     /**
      The window controller for the current document.
      
@@ -23,8 +27,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
      window presented at the front.
      */
     var currentDocumentWindow: DocumentWindow? {
-        return (self.documentController.currentDocument as? Document)?
-            .windowControllers.first as? DocumentWindow
+        return currentDocument?.windowControllers.first as? DocumentWindow
     }
     
     /**
@@ -38,8 +41,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
      */
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         NSApp.activate(ignoringOtherApps: true)
-        if self.documentController.documents.isEmpty {
-            self.documentController.openDocument(nil)
+        if (documentController.documents.isEmpty) {
+            documentController.openDocument(nil)
         }
     }
 
@@ -69,11 +72,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
      Reference: [](https://gist.github.com/SDolha/0ab7d99b75109eb4c7548ba13da9f5f9).
      */
     func applicationShouldOpenUntitledFile(_ sender: NSApplication) -> Bool {
-        if sender.keyWindow == nil {
-            self.documentController.closeAllDocuments(withDelegate: nil,
-                                                      didCloseAllSelector: nil,
-                                                      contextInfo: nil)
-            self.documentController.openDocument(nil)
+        if (sender.keyWindow == nil) {
+            documentController.closeAllDocuments(withDelegate: nil,
+                                                 didCloseAllSelector: nil,
+                                                 contextInfo: nil)
+            documentController.openDocument(nil)
         }
         return false
     }
@@ -89,21 +92,41 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
 }
 
+// MARK: - Menu Setup
+
 extension AppDelegate: NSMenuDelegate {
     
-    private func keyTextView() -> MainTextView? {
-        return self.currentDocumentWindow?.window?.firstResponder as? MainTextView
+    /// Prepares the application's main menus before they are displayed.
+    func menuNeedsUpdate(_ menu: NSMenu) {
+        let menuIdentifier = menu.identifier!.rawValue
+        switch menuIdentifier {
+        case "file":
+            configureFileMenu(menu)
+        case "edit":
+            configureEditMenu(menu)
+        case "insert":
+            configureInsertMenu(menu)
+        case "insertBasics", "insertEnvironments", "insertAnnotations",
+             "insertSymbolsCapitalized", "insertSymbolsLowercased":
+            configureInsertTeXMenu(menu)
+        default:
+            break
+        }
     }
+    
+    // MARK: File Menu
     
     private func configureFileMenu(_ menu: NSMenu) {
         let item = menu.item(withTitle: "Export…")!
-        item.target = self.currentDocumentWindow
+        item.target = currentDocumentWindow
         item.action = Selector(("export"))
     }
     
+    // MARK: Edit Menu
+    
     private func configureEditMenu(_ menu: NSMenu) {
         let toggleModeItem = menu.item(withTitle: "Toggle Mode")!
-        if let renderMode = self.currentDocumentWindow?.editor.document.content.configuration.renderMode,
+        if let renderMode = currentDocument?.content.configuration.renderMode,
            renderMode == 0 {
             toggleModeItem.action = Selector(("insertCommand:"))
         } else {
@@ -112,35 +135,44 @@ extension AppDelegate: NSMenuDelegate {
         
         for markdownCommand in ["Bold", "Italic", "Underlined", "Strikethrough"] {
             let commandItem = menu.item(withTitle: markdownCommand)!
-            commandItem.action = (self.keyTextView() != nil) ? Selector(("insertCommand:")) : nil
+            commandItem.action = Selector(("insertCommand:"))
         }
         
-        let addBookmarkItem = menu.item(withTitle: "Add Bookmark…")!
-        if let mainTextView = self.keyTextView(),
-           mainTextView.selectedRanges.count == 1, mainTextView.selectedRange().length > 0 {
-            addBookmarkItem.action = Selector(("addBookmark"))
+        configureBookmarkItems(in: menu)
+    }
+    
+    private func configureBookmarkItems(in menu: NSMenu) {
+        let createBookmarkItem = menu.item(withTitle: "Create Bookmark…")!
+        if let editor = currentDocument?.editor,
+           editor.canCreateBookmark {
+            createBookmarkItem.action = Selector(("createBookmark"))
         } else {
-            addBookmarkItem.action = nil
+            createBookmarkItem.action = nil
         }
         
         let editBookmarkItem = menu.item(withTitle: "Edit Bookmark…")!
         let deleteBookmarkItem = menu.item(withTitle: "Delete Bookmark")!
-        if let sidebar = self.currentDocumentWindow?.editor.sidebar,
-           sidebar.currentPane == .bookmarks,
-           let _ = sidebar.document.content.selectedBookmark {
-            editBookmarkItem.action = Selector(("editBookmark"))
-            deleteBookmarkItem.action = Selector(("deleteBookmark"))
-        } else {
-            editBookmarkItem.action = nil
-            deleteBookmarkItem.action = nil
+        editBookmarkItem.action = nil
+        deleteBookmarkItem.action = nil
+        if let editor = currentDocument?.editor,
+           editor.sidebar.currentPane == .bookmarks {
+            let selectedCount = editor.bookmarksPane.selectedBookmarks.count
+            if (selectedCount == 1) {
+                editBookmarkItem.action = Selector(("editSelectedBookmark"))
+            }
+            if (selectedCount > 0) {
+                deleteBookmarkItem.action = Selector(("deleteSelectedBookmarks"))
+            }
         }
     }
     
+    // MARK: Insert Menu
+    
     private func configureInsertMenu(_ menu: NSMenu) {
         let scanTexItem = menu.item(withTitle: "Scan TeX…")!
-        if let mainTextView = self.keyTextView(),
-           mainTextView.selectedRanges.count == 1 {
-            scanTexItem.action = Selector(("showTeXScannerDropZone"))
+        if let editor = currentDocument?.editor,
+           editor.canPresentImage2TeXDropZone {
+            scanTexItem.action = Selector(("presentImage2TeXDropZone"))
         } else {
             scanTexItem.action = nil
         }
@@ -148,25 +180,7 @@ extension AppDelegate: NSMenuDelegate {
     
     private func configureInsertTeXMenu(_ menu: NSMenu) {
         for item in menu.items {
-            item.action = (self.keyTextView() != nil) ? Selector(("insertCommand:")) : nil
-        }
-    }
-    
-    /// Prepares the application's main menus before they are displayed.
-    func menuNeedsUpdate(_ menu: NSMenu) {
-        let menuIdentifier = menu.identifier!.rawValue
-        switch menuIdentifier {
-        case "file":
-            self.configureFileMenu(menu)
-        case "edit":
-            self.configureEditMenu(menu)
-        case "insert":
-            self.configureInsertMenu(menu)
-        case "insertBasics", "insertEnvironments", "insertAnnotations",
-             "insertSymbolsCapitalized", "insertSymbolsLowercased":
-            self.configureInsertTeXMenu(menu)
-        default:
-            break
+            item.action = Selector(("insertCommand:"))
         }
     }
     

@@ -10,8 +10,6 @@ import Cocoa
 @objcMembers
 final class AppSettings: NSObject, NSSecureCoding, Reflective {
     
-    static var editorFont: NSFont = .monospacedSystemFont(ofSize: 14.0, weight: .regular)
-    
     static var shared: AppSettings = {
         if let pathURL = Scratch_Paper.fileManager.urls(
             for: .applicationSupportDirectory, in: .userDomainMask
@@ -177,34 +175,34 @@ final class AppSettings: NSObject, NSSecureCoding, Reflective {
     func configuration() -> Configuration {
         let config = Configuration()
         
-        config.renderMode = self.renderMode
+        config.renderMode = renderMode
         
-        config.displayMode = self.displayMode
-        config.displayStyle = self.displayStyle
+        config.displayMode = displayMode
+        config.displayStyle = displayStyle
         
-        config.lineToLine = self.lineToLine
+        config.lineToLine = lineToLine
         
-        config.lockToBottom = self.lockToBottom
-        config.lockToRight = self.lockToRight
+        config.lockToBottom = lockToBottom
+        config.lockToRight = lockToRight
         
-        config.liveRender = self.liveRender
+        config.liveRender = liveRender
         
-        config.renderError = self.renderError
-        config.errorColorString = self.errorColorString
+        config.renderError = renderError
+        config.errorColorString = errorColorString
         
-        config.minLineThicknessEnabled = self.minLineThicknessEnabled
-        config.minLineThickness = self.minLineThickness
+        config.minLineThicknessEnabled = minLineThicknessEnabled
+        config.minLineThickness = minLineThickness
         
-        config.leftJustifyTags = self.leftJustifyTags
+        config.leftJustifyTags = leftJustifyTags
         
-        config.sizeLimitEnabled = self.sizeLimitEnabled
-        config.sizeLimit = self.sizeLimit
+        config.sizeLimitEnabled = sizeLimitEnabled
+        config.sizeLimit = sizeLimit
         
-        config.maxExpansionEnabled = self.maxExpansionEnabled
-        config.maxExpansion = self.maxExpansion
+        config.maxExpansionEnabled = maxExpansionEnabled
+        config.maxExpansion = maxExpansion
         
-        config.trustAllCommands = self.trustAllCommands
-        config.trustedCommands = self.trustedCommands
+        config.trustAllCommands = trustAllCommands
+        config.trustedCommands = trustedCommands
         
         return config
     }
@@ -217,7 +215,8 @@ final class AppSettings: NSObject, NSSecureCoding, Reflective {
      - Note: No fallback solution (like using user defaults) implemented yet.
      */
     func save() {
-        if let pathURL = Scratch_Paper.fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first?.appendingPathComponent("config") {
+        if let pathURL = Scratch_Paper.fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask)
+            .first?.appendingPathComponent("config") {
             do {
                 let data = try NSKeyedArchiver.archivedData(withRootObject: self, requiringSecureCoding: true)
                 try data.write(to: pathURL)
@@ -236,7 +235,7 @@ final class AppSettings: NSObject, NSSecureCoding, Reflective {
     static var supportsSecureCoding = true
     
     func encode(with coder: NSCoder) {
-        for key in self.properties {
+        for key in properties {
             switch key {
             case "trustedCommands":
                 coder.encode(trustedCommands.arrayObject, forKey: key)
@@ -252,15 +251,15 @@ final class AppSettings: NSObject, NSSecureCoding, Reflective {
     
     required init?(coder: NSCoder) {
         super.init()
-        for key in self.properties {
+        for key in properties {
             switch key {
             case "trustedCommands":
                 if let array = coder.decodeObject(of: [NSArray.self, NSNumber.self],
                                                   forKey: key) as? NSArray,
                    let commandsArray = Array(array) as? [NSNumber],
-                   commandsArray.count == self.trustedCommands.count {
-                    for index in 0..<self.trustedCommands.count {
-                        self.trustedCommands[index].trusted = commandsArray[index].boolValue ?? false
+                   commandsArray.count == trustedCommands.count {
+                    for index in 0..<trustedCommands.count {
+                        trustedCommands[index].trusted = commandsArray[index].boolValue ?? false
                     }
                 }
             default:
