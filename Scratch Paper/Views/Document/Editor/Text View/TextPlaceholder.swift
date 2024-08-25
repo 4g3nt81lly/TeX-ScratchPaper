@@ -59,7 +59,6 @@ class TextPlaceholder: NSTextAttachment {
         self.replacementString = replacementString
         super.init(data: nil, ofType: nil)
         attachmentCell = TextPlaceholderCell(textCell: placeholderString)
-        contents = placeholderString.data(using: .unicode)
     }
     
     required init?(coder: NSCoder) {

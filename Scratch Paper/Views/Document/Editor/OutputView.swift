@@ -10,7 +10,7 @@ import JavaScriptCore
  3. Configures the web view.
  4. Supports dark mode.
  */
-class OutputView: WKWebView, EditorControllable {
+class OutputView: WKWebView {
     
     private var renderer = ContentRenderer()
     
@@ -38,17 +38,11 @@ class OutputView: WKWebView, EditorControllable {
                                   with: "\(NSApp.isInDarkMode ? darkModeStyleString : "")")
         
         loadHTMLString(templateHTMLString, baseURL: URL(fileURLWithPath: path))
-        
-        // initialize renderer
-        renderer.initialize(with: document)
     }
     
-    func preprocess(with outline: Structure) {
-        renderer.preprocess(with: outline)
-    }
-    
-    func render() {
-        renderer.render(in: self)
+    func render(_ text: String, with outline: Structure, using configuration: Configuration,
+                onError errorHandler: @escaping (Any?) -> Void) {
+        renderer.render(text: text, with: outline, in: self, using: configuration, onError: errorHandler)
     }
     
     /// Method overriden to disable reload action in the web view's contextual menu.

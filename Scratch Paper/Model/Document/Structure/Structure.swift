@@ -7,7 +7,7 @@ class Structure: NSObject, Sequence {
     private(set) var flattenedOutline: [SectionNode] = []
     
     var sectionRanges: [NSRange] {
-        return flattenedOutline.map { $0.textRange }
+        return flattenedOutline.map { $0.range }
     }
     
     subscript(index: Int) -> SectionNode {
@@ -19,20 +19,15 @@ class Structure: NSObject, Sequence {
     }
     
     func sections(near range: NSRange) -> [SectionNode] {
-        return flattenedOutline.filter { node in
-            node.textRange.intersection(range) != nil
+        return flattenedOutline.filter { section in
+            section.range.intersection(range) != nil
         }
     }
     
     func update(with text: String) {
         flattenedOutline.removeAll(keepingCapacity: true)
         
-        // get plain text by removing all placeholders
-        // this is to ensure the processed text range matches that of in the text storage
-        let plainText = Patterns.textPlaceholder
-            .stringByReplacingMatches(in: text, range: text.range, withTemplate: " ")
-        
-        updateOutline(with: plainText)
+        updateOutline(with: text)
     }
     
     private func updateOutline(with text: String) {
@@ -100,20 +95,20 @@ class Structure: NSObject, Sequence {
         }
         
         for (index, var line) in lines.enumerated() {
-            line = line.trimmingCharacters(in: .whitespacesAndNewlines)
+            line = line.trimmingCharacters(in: .newlines)
             
-            if let headingResult = Patterns.markdownHeading.matches(in: line, range: line.range).first {
+            if let headingResult = Patterns.markdownHeading.firstMatch(in: line, range: line.range) {
                 // current line is a heading
                 let headingLevel = headingResult.range(at: 1).length
                 let headingText = line.nsString.substring(with: headingResult.range(at: 2))
                 processLine(index, of: .heading(level: headingLevel, text: headingText))
             } else if let orderedListResult = Patterns.markdownOrderedList
-                .matches(in: line, range: line.range).first {
+                .firstMatch(in: line, range: line.range) {
                 // current line is an ordered list
                 let previewText = line.nsString.substring(with: orderedListResult.range(at: 1))
                 processLine(index, of: .orderedList(preview: previewText))
             } else if let bulletListResult = Patterns.markdownBulletList
-                .matches(in: line, range: line.range).first {
+                .firstMatch(in: line, range: line.range) {
                 // current line is a bullet list
                 let previewText = line.nsString.substring(with: bulletListResult.range(at: 1))
                 processLine(index, of: .bulletList(preview: previewText))

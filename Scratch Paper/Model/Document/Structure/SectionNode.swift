@@ -28,7 +28,7 @@ class SectionNode: NSObject {
     
     var lineRange: Range<Int>
     
-    var textRange: NSRange
+    var range: NSRange
     
     var mapIndex: Int
     
@@ -78,7 +78,7 @@ class SectionNode: NSObject {
          with mathRanges: [NSRange]) {
         self.type = type
         self.lineRange = lineRange
-        self.textRange = textRange
+        self.range = textRange
         self.mapIndex = index
         self.mathRanges = mathRanges
         super.init()

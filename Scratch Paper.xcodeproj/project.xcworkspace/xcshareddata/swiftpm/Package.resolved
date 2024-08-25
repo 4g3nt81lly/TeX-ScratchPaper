@@ -1,5 +1,5 @@
 {
-  "originHash" : "47b8f96563f081cab071fdc5422386c61fe9ee9952b107e32d372ec7dcd73197",
+  "originHash" : "a7bc470a6ac6d2b16b967d9e8938e9b95f9e864d7634d9eaedd069acc431eee0",
   "pins" : [
     {
       "identity" : "svgview",
@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/siteline/SwiftUI-Introspect.git",
       "state" : {
-        "revision" : "0cd2a5a5895306bc21d54a2254302d24a9a571e4",
-        "version" : "1.1.3"
+        "revision" : "668a65735751432b640260c56dfa621cec568368",
+        "version" : "1.2.0"
       }
     }
   ],

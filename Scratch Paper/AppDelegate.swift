@@ -128,14 +128,14 @@ extension AppDelegate: NSMenuDelegate {
         let toggleModeItem = menu.item(withTitle: "Toggle Mode")!
         if let renderMode = currentDocument?.content.configuration.renderMode,
            renderMode == 0 {
-            toggleModeItem.action = Selector(("insertCommand:"))
+            toggleModeItem.action = #selector(EditorVC.insertCommand(_:))
         } else {
             toggleModeItem.action = nil
         }
         
         for markdownCommand in ["Bold", "Italic", "Underlined", "Strikethrough"] {
             let commandItem = menu.item(withTitle: markdownCommand)!
-            commandItem.action = Selector(("insertCommand:"))
+            commandItem.action = #selector(EditorVC.insertCommand(_:))
         }
         
         configureBookmarkItems(in: menu)
@@ -145,7 +145,7 @@ extension AppDelegate: NSMenuDelegate {
         let createBookmarkItem = menu.item(withTitle: "Create Bookmark…")!
         if let editor = currentDocument?.editor,
            editor.canCreateBookmark {
-            createBookmarkItem.action = Selector(("createBookmark"))
+            createBookmarkItem.action = #selector(EditorVC.createBookmark)
         } else {
             createBookmarkItem.action = nil
         }
@@ -158,10 +158,10 @@ extension AppDelegate: NSMenuDelegate {
            editor.sidebar.currentPane == .bookmarks {
             let selectedCount = editor.bookmarksPane.selectedBookmarks.count
             if (selectedCount == 1) {
-                editBookmarkItem.action = Selector(("editSelectedBookmark"))
+                editBookmarkItem.action = #selector(SidebarVC.editSelectedBookmark)
             }
             if (selectedCount > 0) {
-                deleteBookmarkItem.action = Selector(("deleteSelectedBookmarks"))
+                deleteBookmarkItem.action = #selector(SidebarVC.deleteSelectedBookmarks)
             }
         }
     }

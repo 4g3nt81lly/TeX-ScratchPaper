@@ -4,10 +4,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
         <link rel="stylesheet" type="text/css" href="katex.min.css" />
-        <script src="katex.min.js" type="text/javascript"></script>
-        <script src="marked.min.js" type="text/javascript"></script>
-        <script src="jquery.min.js" type="text/javascript"></script>
-        <script src="jquery-ui.min.js" type="text/javascript"></script>
+        <script src="katex.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="marked.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="jquery.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
     </head>
     <body style="STYLE">
         <div id="error" hidden></div>
@@ -32,23 +32,30 @@
                 // get all line elements and render all
                 var lines = outputContainer.querySelectorAll('div.line');
                 for (var i = 0; i < lines.length; i++) {
+                    const line = lines[i];
                     // get a deep copy of tex elements
-                    var texes = lines[i].getElementsByClassName('tex');
-                    // extract text contents from tex elements
+                    let texes = line.getElementsByClassName('tex');
+                    // extract and (temporarily) clear the text contents from tex elements
                     const texContents = Array.prototype.map.call(texes, function (tex) {
-                        return tex.textContent;
+                        const textContent = tex.textContent;
+                        tex.textContent = '';
+                        return textContent;
                     });
                     // render texts as markdown
-                    lines[i].innerHTML = marked.parse(lines[i].innerHTML);
+                    const mdPlainText = line.innerHTML
+                        .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+                    line.innerHTML = marked.parse(mdPlainText);
                     // restore text contents for tex elements
                     texContents.forEach(function (content, index) {
                         texes[index].textContent = content;
                     });
                     
                     // render tex elements
-                    var lineErrors = {};
+                    let lineErrors = {};
                     for (var j = 0; j < texes.length; j++) {
-                        const content = texes[j].textContent.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+                        // convert the special characters back from character reference
+                        const content = texes[j].textContent
+                            .replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
                         // render error in place
                         if (renderError) {
                             const htmlString = katex.renderToString(content, {

@@ -16,21 +16,6 @@ class MainTextView: NSTextView, EditorControllable {
         return layoutManager as! MainTextViewLayoutManager
     }
     
-    var sourceString: String {
-        return unrenderPlaceholders(textStorage!, in: textStorage!.range).string
-    }
-    
-    var plainString: String {
-        let attributedString = NSMutableAttributedString(attributedString: textStorage!)
-        attributedString.enumerateAttribute(.attachment, in: attributedString.range,
-                                            options: .reverse) { attachment, range, _ in
-            if let placeholder = attachment as? TextPlaceholder {
-                attributedString.replaceCharacters(in: range, with: placeholder.placeholderString)
-            }
-        }
-        return attributedString.string
-    }
-    
     var textLength: Int {
         return textStorage!.length
     }
@@ -39,10 +24,7 @@ class MainTextView: NSTextView, EditorControllable {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        initialize()
-    }
-    
-    func initialize(withLineNumbers initializeRulerView: Bool = true) {
+        
         font = EditorTheme.editorFont
         isAutomaticTextCompletionEnabled = false
         isAutomaticTextReplacementEnabled = false
@@ -51,14 +33,23 @@ class MainTextView: NSTextView, EditorControllable {
         isAutomaticLinkDetectionEnabled = false
         isEditable = false
         
-        if (initializeRulerView) {
-            self.initializeRulerView()
-        }
+        initializeRulerView()
         
         // set up custom layout manager
         let layoutManager = MainTextViewLayoutManager()
         layoutManager.delegate = layoutManager
         textContainer!.replaceLayoutManager(layoutManager)
+    }
+    
+    func initialize() {
+        // initialize text content
+        string = document.content.contentString
+        
+        // highlighting syntax
+        initializeSyntaxHighlighting()
+        highlightSyntaxInVisibleRange()
+        
+        initializeBookmarking()
     }
     
     // MARK: - Line Number Ruler View
@@ -170,31 +161,28 @@ class MainTextView: NSTextView, EditorControllable {
     
     // MARK: - Placeholder
     
-    // MARK: Placeholder Queries
-    
-    private var placeholders: OrderedDictionary<TextPlaceholder, NSRange> {
-        var orderedMap: OrderedDictionary<TextPlaceholder, NSRange> = [:]
-        textStorage!.enumerateAttribute(.attachment, in: textStorage!.range,
-                                        options: .reverse) { attachment, range, _ in
-            if let placeholder = attachment as? TextPlaceholder {
-                orderedMap[placeholder] = range
-            }
-        }
-        return orderedMap
-    }
-    
-    private var hasPlaceholder: Bool {
-        return !placeholders.isEmpty
-    }
-    
     private weak var selectedPlaceholder: TextPlaceholder?
+    
+    func sourceString(withReplacement: Bool = false) -> String {
+        return unrenderPlaceholders(textStorage!, in: textStorage!.range, replace: withReplacement).string
+    }
+    
+    // MARK: Placeholder Queries
     
     private var hasSelectedPlaceholder: Bool {
         return selectedPlaceholder != nil
     }
     
     func rangeOfPlaceholder(_ placeholder: TextPlaceholder) -> NSRange? {
-        return placeholders[placeholder]
+        var placeholderRange: NSRange?
+        textStorage!.enumerateAttribute(.attachment, in: textStorage!.range) { attachment, range, shouldAbort in
+            if let candidatePlaceholder = attachment as? TextPlaceholder,
+               candidatePlaceholder == placeholder {
+                placeholderRange = range
+                shouldAbort.pointee = true
+            }
+        }
+        return placeholderRange
     }
     
     func locationOfPlaceholder(_ placeholder: TextPlaceholder) -> Int? {
@@ -217,12 +205,9 @@ class MainTextView: NSTextView, EditorControllable {
                                       in: textStorage!.range) as? TextPlaceholder
     }
     
-    func firstPlaceholder(in range: NSRange) -> TextPlaceholder? {
-        guard (hasPlaceholder) else {
-            return nil
-        }
+    func firstPlaceholder(in range: NSRange? = nil) -> TextPlaceholder? {
         var placeholder: TextPlaceholder?
-        textStorage!.enumerateAttribute(.attachment, in: range) { (attachment, _, shouldAbort) in
+        textStorage!.enumerateAttribute(.attachment, in: range ?? textStorage!.range) { (attachment, _, shouldAbort) in
             if let placeholderObject = attachment as? TextPlaceholder {
                 placeholder = placeholderObject
                 shouldAbort.pointee = true
@@ -241,41 +226,57 @@ class MainTextView: NSTextView, EditorControllable {
         return placeholders
     }
     
-    func nearestPlaceholder(from location: Int, lookAhead aheadLength: Int = 0, shouldLoop: Bool = true) -> TextPlaceholder? {
-        if (hasPlaceholder) {
-            let startingIndex = max(0, location - aheadLength)
-            let toEndRange = NSRange(location: startingIndex, length: textLength - startingIndex)
-            let nearestPlaceholder = firstPlaceholder(in: toEndRange)
-            // if already found placeholder OR shouldn't loop, return
-            if (nearestPlaceholder != nil || !shouldLoop) {
-                return nearestPlaceholder
+    func nearestPlaceholder(from location: Int, in contextRange: NSRange, shouldLoop: Bool = true) -> TextPlaceholder? {
+        var firstPlaceholder: TextPlaceholder?
+        
+        var nearestPlaceholder: TextPlaceholder?
+        
+        textStorage!.enumerateAttribute(.attachment, in: contextRange) { attachment, range, shouldAbort in
+            guard let placeholder = attachment as? TextPlaceholder else { return }
+            
+            if (firstPlaceholder == nil) {
+                firstPlaceholder = placeholder
             }
-            // otherwise, search from the beginning up until the starting index (avoid redundant search)
-            let fromStartRange = NSRange(location: 0, length: startingIndex)
-            return firstPlaceholder(in: fromStartRange)
+            if (range.location > location) {
+                nearestPlaceholder = placeholder
+                shouldAbort.pointee = true
+            }
         }
-        return nil
+        if (shouldLoop) {
+            return nearestPlaceholder ?? firstPlaceholder
+        }
+        return nearestPlaceholder
     }
     
-    func nextPlaceholder(to placeholder: TextPlaceholder, shouldLoop: Bool = true) -> TextPlaceholder? {
-        guard (placeholders.count > 1),
-              let location = locationOfPlaceholder(placeholder) else {
-            return nil
+    func nextPlaceholder(to placeholder: TextPlaceholder, in contextRange: NSRange, shouldLoop: Bool = true) -> TextPlaceholder? {
+        var firstPlaceholder: TextPlaceholder?
+        
+        var currentPlaceholder: TextPlaceholder?
+        var nextPlaceholder: TextPlaceholder?
+        
+        textStorage!.enumerateAttribute(.attachment, in: contextRange) { attachment, _, shouldAbort in
+            guard let thisPlaceholder = attachment as? TextPlaceholder else { return }
+            
+            if (firstPlaceholder == nil) {
+                firstPlaceholder = thisPlaceholder
+            }
+            if (currentPlaceholder != nil) {
+                nextPlaceholder = thisPlaceholder
+                shouldAbort.pointee = true
+            } else if (thisPlaceholder == placeholder) {
+                currentPlaceholder = thisPlaceholder
+            }
         }
-        let sortedPlaceholders = placeholders.sorted { $0.value.location < $1.value.location }
-        if let nextPlaceholder = sortedPlaceholders.first(where: { $0.value.location > location }) {
-            return nextPlaceholder.key
+        
+        if let nextPlaceholder {
+            return nextPlaceholder
         } else if shouldLoop {
-            return sortedPlaceholders.first?.key
+            return firstPlaceholder
         }
         return nil
     }
     
     // MARK: Placeholder Operations
-    
-    func renderPlaceholders() {
-        renderPlaceholders(textStorage!)
-    }
     
     @discardableResult
     func renderPlaceholders(_ text: NSMutableAttributedString) -> Int {
@@ -292,12 +293,13 @@ class MainTextView: NSTextView, EditorControllable {
         return placeholderCount
     }
     
-    private func unrenderPlaceholders(_ text: NSAttributedString, in range: NSRange) -> NSAttributedString {
+    private func unrenderPlaceholders(_ text: NSAttributedString, in range: NSRange,
+                                      replace: Bool = true) -> NSAttributedString {
         let attributedString = NSMutableAttributedString(attributedString: text)
         attributedString.enumerateAttribute(.attachment, in: range, options: .reverse) { attachment, aRange, _ in
             if let placeholder = attachment as? TextPlaceholder {
-                let plainText = TextPlaceholder.prefix + placeholder.placeholderString + TextPlaceholder.suffix
-                attributedString.replaceCharacters(in: aRange, with: plainText)
+                let plainText = placeholder.replacementString ?? placeholder.placeholderString
+                attributedString.replaceCharacters(in: aRange, with: replace ? plainText : " ")
             }
         }
         return attributedString
@@ -308,14 +310,11 @@ class MainTextView: NSTextView, EditorControllable {
         insertText(placeholder.attributedString, replacementRange: range)
     }
     
-    func appendPlaceholder(_ placeholder: TextPlaceholder) {
-        let range = NSRange(location: textLength, length: 0)
-        insertText(placeholder.attributedString, replacementRange: range)
-    }
-    
     func deletePlaceholder(_ placeholder: TextPlaceholder) {
         if var range = rangeOfPlaceholder(placeholder) {
-            selectedPlaceholder = nil
+            if (selectedPlaceholder == placeholder) {
+                deselectPlaceholder()
+            }
             insertText("", replacementRange: range)
             range.length = 0
             setSelectedRange(range)
@@ -346,15 +345,14 @@ class MainTextView: NSTextView, EditorControllable {
     }
     
     func selectPlaceholder(_ placeholder: TextPlaceholder) {
-        if (selectedPlaceholder != placeholder) {
+        if (selectedPlaceholder != placeholder),
+           let location = locationOfPlaceholder(placeholder) {
             deselectPlaceholder()
             highlightPlaceholder(placeholder, true)
             selectedPlaceholder = placeholder
             
-            if let location = locationOfPlaceholder(placeholder) {
-                let range = NSRange(location: location, length: 1)
-                setSelectedRange(range)
-            }
+            let range = NSRange(location: location, length: 1)
+            setSelectedRange(range)
         }
     }
     
@@ -452,14 +450,15 @@ class MainTextView: NSTextView, EditorControllable {
     }
     
     override func insertTab(_ sender: Any?) {
-        if let selectedPlaceholder, let nextPlaceholder = nextPlaceholder(to: selectedPlaceholder) {
+        if let selectedPlaceholder,
+           let nextPlaceholder = nextPlaceholder(to: selectedPlaceholder, in: textStorage!.range) {
             return selectPlaceholder(nextPlaceholder)
         }
         let currentLocation = selectedRange().location
         let currentTextRange = structure.sectionRanges.first { range in
             range.contains(currentLocation)
         }
-        if let nearestPlaceholder = nearestPlaceholder(from: currentTextRange?.location ?? currentLocation) {
+        if let nearestPlaceholder = nearestPlaceholder(from: currentLocation, in: currentTextRange ?? textStorage!.range) {
             return selectPlaceholder(nearestPlaceholder)
         }
         super.insertTab(sender)
@@ -554,7 +553,7 @@ class MainTextView: NSTextView, EditorControllable {
     // MARK: - Syntax Highlighting
     
     /**
-     The currently edited range, if any.
+     The most-recently edited range, if any.
      
      This property is manually set by ``textStorage(_:didProcessEditing:range:changeInLength:)`` when the
      text storage did process edited characters.
@@ -575,12 +574,8 @@ class MainTextView: NSTextView, EditorControllable {
     
     /**
      Initializes the text view to set up syntax highlighting.
-     
-     This initialization should not be done by the text view itself, rather it should be invoked by ``EditorVC.initialize()``.
-     This is due to the fact that this feature relies on the document's content structure object, which is
-     not yet available when the text view is being initialized.
      */
-    func initializeSyntaxHighlighting() {
+    private func initializeSyntaxHighlighting() {
         // set up text notification for syntax highlighting
         textStorage!.delegate = self
         notificationCenter.addObserver(self, selector: #selector(textObjectDidChange),
@@ -594,7 +589,7 @@ class MainTextView: NSTextView, EditorControllable {
      
      - Parameter sections: The set of section nodes to be syntax-highlighted.
      */
-    func highlightSyntax(in sections: Set<SectionNode>) {
+    private func highlightSyntax(in sections: Set<SectionNode>) {
         textStorage!.beginEditing()
         for section in sections {
             EditorTheme.apply(to: textStorage!, with: section)
@@ -652,12 +647,8 @@ class MainTextView: NSTextView, EditorControllable {
     
     /**
      Initializes the text view to set up syntax highlighting.
-     
-     This initialization should not be done by the text view itself, rather it should be invoked by ``EditorVC.initialize()``.
-     This is due to the fact that this feature relies on the document's content structure object, which is
-     not yet available when the text view is being initialized.
      */
-    func initializeBookmarking() {
+    private func initializeBookmarking() {
         notificationCenter.addObserver(self, selector: #selector(selectionDidChange),
                                        name: NSTextView.didChangeSelectionNotification, object: nil)
     }
@@ -808,8 +799,9 @@ extension MainTextView: NSTextStorageDelegate {
                      didProcessEditing editedMask: NSTextStorageEditActions,
                      range editedRange: NSRange, changeInLength delta: Int) {
         lastEditedRange = nil
-        guard (editedMask.contains(.editedCharacters)) else { return }
-        lastEditedRange = editedRange
+        if (editedMask.contains(.editedCharacters)) {
+            lastEditedRange = editedRange
+        }
     }
     
     @objc func selectionDidChange() {

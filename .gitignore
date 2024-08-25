@@ -4,3 +4,6 @@
 # Playground files
 **/*.playground
 **/*.playground/**
+
+# Xcode user settings
+xcuserdata/

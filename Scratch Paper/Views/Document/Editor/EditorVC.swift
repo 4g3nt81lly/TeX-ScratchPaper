@@ -76,15 +76,8 @@ class EditorVC: NSViewController, ObservableObject {
         outputView.initialize()
         
         // initialize text view
-        mainTextView.string = document.content.contentString
+        mainTextView.initialize()
         
-        // NOTE: must render placeholders first before highlighting syntax
-        mainTextView.renderPlaceholders()
-        mainTextView.initializeSyntaxHighlighting()
-        mainTextView.highlightSyntaxInVisibleRange()
-        
-        // initialize bookmarks
-        mainTextView.initializeBookmarking()
         initializeBookmarks()
     }
     
@@ -600,8 +593,7 @@ class EditorVC: NSViewController, ObservableObject {
     }
     
     private func insertItem(_ item: String, in range: NSRange, shouldSelect: Bool = false) {
-        let text = NSMutableAttributedString(string: item,
-                                             attributes: EditorTheme.templateStyle.attributes)
+        let text = NSMutableAttributedString(string: item, attributes: EditorTheme.templateStyle.attributes)
         let placeholderCount = mainTextView.renderPlaceholders(text)
         mainTextView.insertText(text, replacementRange: range)
         
@@ -706,8 +698,9 @@ class EditorVC: NSViewController, ObservableObject {
      before calling this method.
      */
     func renderText() {
-        outputView.preprocess(with: structure)
-        outputView.render()
+        let text = mainTextView.sourceString(withReplacement: true)
+        outputView.render(text, with: structure, using: document.content.configuration,
+                          onError: sidebar.showError(_:))
     }
     
     /**
@@ -799,7 +792,7 @@ extension EditorVC: MainTextViewDelegate {
      Updates the document content and structure, updates the outline view, and renders text conditionally.
      */
     func textDidChange(_ notification: Notification) {
-        document.content.contentString = mainTextView.sourceString
+        document.content.contentString = mainTextView.sourceString()
         
         // update outline
         sidebar.updateOutlineView()

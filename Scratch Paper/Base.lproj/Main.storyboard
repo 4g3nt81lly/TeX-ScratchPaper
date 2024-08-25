@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="23077.2" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22690"/>
-        <plugIn identifier="com.apple.WebKit2IBPlugin" version="22690"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="23077.2"/>
+        <plugIn identifier="com.apple.WebKit2IBPlugin" version="23077.2"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="System colors introduced in macOS 10.14" minToolsVersion="10.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -631,7 +631,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="800" height="460"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </view>
-                        <toolbar key="toolbar" implicitIdentifier="F38DB0BB-6D99-4478-AEE2-BE23733ABBBA" autosavesConfiguration="NO" allowsUserCustomization="NO" displayMode="iconOnly" sizeMode="regular" id="063-Bx-BYG">
+                        <toolbar key="toolbar" implicitIdentifier="F38DB0BB-6D99-4478-AEE2-BE23733ABBBA" autosavesConfiguration="NO" allowsUserCustomization="NO" showsBaselineSeparator="NO" displayMode="iconOnly" sizeMode="regular" id="063-Bx-BYG">
                             <allowedToolbarItems>
                                 <toolbarItem implicitItemIdentifier="DE1962A0-ABD7-4E5F-85A4-D074472593AC" explicitItemIdentifier="sidebar" label="Sidebar" paletteLabel="Sidebar" tag="-1" image="sidebar.left" catalog="system" bordered="YES" sizingBehavior="auto" navigational="YES" id="lvo-Wp-pZZ">
                                     <connections>
@@ -668,7 +668,7 @@
                                         <segmentedCell key="cell" refusesFirstResponder="YES" borderStyle="border" alignment="left" style="separated" trackingMode="selectOne" id="AtW-MA-eI4">
                                             <font key="font" metaFont="system"/>
                                             <segments>
-                                                <segment toolTip="Text-based" image="textformat.alt" catalog="system" width="32"/>
+                                                <segment toolTip="Markdown" image="textformat.alt" catalog="system" width="32"/>
                                                 <segment toolTip="Math Mode" image="function" catalog="system" width="32" selected="YES" tag="1"/>
                                             </segments>
                                         </segmentedCell>
@@ -804,7 +804,7 @@
                                         <rect key="frame" x="0.0" y="428" width="399" height="5"/>
                                     </box>
                                     <button toolTip="Lock to Bottom" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="blq-8R-fcl">
-                                        <rect key="frame" x="346" y="430.5" width="18.5" height="30"/>
+                                        <rect key="frame" x="346" y="431" width="18.5" height="30"/>
                                         <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="arrow.down.to.line" catalog="system" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="kGW-2B-LmM">
                                             <behavior key="behavior" pushIn="YES" changeContents="YES" lightByContents="YES"/>
                                             <font key="font" metaFont="system"/>

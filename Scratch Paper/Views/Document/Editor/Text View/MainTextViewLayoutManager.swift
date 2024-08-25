@@ -32,25 +32,26 @@ class MainTextViewLayoutManager: NSLayoutManager, NSLayoutManagerDelegate {
                                           forCharacterRange charRange: NSRange, color: NSColor) {
         // don't fill in selection background when only selection is a placeholder
         guard textView.placeholder(at: charRange) == nil else { return }
-        let glyphRange = glyphRange(forCharacterRange: charRange, actualCharacterRange: nil)
-        var fragmentRects: [CGRect] = []
-        let context = NSGraphicsContext.current!
-        context.saveGraphicsState()
-        color.setFill()
-        enumerateLineFragments(forGlyphRange: glyphRange) { _, _, textContainer, glyphRange, _ in
-            let fragmentCharRange = self.characterRange(forGlyphRange: glyphRange, actualGlyphRange: nil)
-                .intersection(charRange)!
-            var fragmentGlyphRange = self.glyphRange(forCharacterRange: fragmentCharRange, actualCharacterRange: nil)
-            
-            let lastFragmentGlyphLocation = fragmentGlyphRange.upperBound - 1
-            if (self.propertyForGlyph(at: lastFragmentGlyphLocation) == .controlCharacter) {
-                fragmentGlyphRange.length -= 1
-            }
-            let fragmentRect = self.boundingRect(forGlyphRange: fragmentGlyphRange, in: textContainer)
-            fragmentRect.fill()
-            fragmentRects.append(fragmentRect)
-        }
-        context.restoreGraphicsState()
+//        let glyphRange = glyphRange(forCharacterRange: charRange, actualCharacterRange: nil)
+//        var fragmentRects: [CGRect] = []
+//        let context = NSGraphicsContext.current!
+//        context.saveGraphicsState()
+//        color.setFill()
+//        enumerateLineFragments(forGlyphRange: glyphRange) { _, _, textContainer, glyphRange, _ in
+//            let fragmentCharRange = self.characterRange(forGlyphRange: glyphRange, actualGlyphRange: nil)
+//                .intersection(charRange)!
+//            var fragmentGlyphRange = self.glyphRange(forCharacterRange: fragmentCharRange, actualCharacterRange: nil)
+//            
+//            let lastFragmentGlyphLocation = fragmentGlyphRange.upperBound - 1
+//            let characterRangeAtLastFragmentGlyph = self.characterRange(forGlyphRange: NSMakeRange(lastFragmentGlyphLocation, 1), actualGlyphRange: nil)
+//            print(self.textView.string.nsString.substring(with: characterRangeAtLastFragmentGlyph),
+//                  self.propertyForGlyph(at: lastFragmentGlyphLocation).rawValue)
+//            let fragmentRect = self.boundingRect(forGlyphRange: fragmentGlyphRange, in: textContainer)
+//            fragmentRect.fill()
+//            fragmentRects.append(fragmentRect)
+//        }
+//        context.restoreGraphicsState()
+        super.fillBackgroundRectArray(rectArray, count: rectCount, forCharacterRange: charRange, color: color)
     }
     
     // MARK: - Bookmarks

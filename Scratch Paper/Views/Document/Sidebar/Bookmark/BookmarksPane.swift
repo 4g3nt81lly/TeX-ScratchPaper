@@ -104,7 +104,7 @@ struct BookmarksPane: View {
         }
         .listStyle(.sidebar)
         .frame(minWidth: 150)
-        .introspect(.list, on: .macOS(.v13, .v14)) { tableView in
+        .introspect(.list, on: .macOS(.v13, .v14, .v15)) { tableView in
             if (self.states.bookmarkListTableView != tableView) {
                 self.states.bookmarkListTableView = tableView
             }

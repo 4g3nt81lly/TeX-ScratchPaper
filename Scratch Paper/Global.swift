@@ -14,6 +14,9 @@ let userDefaults = UserDefaults.standard
 /// The application's default file manager object.
 let fileManager = FileManager.default
 
+/// The application's shared font manager object.
+let fontManager = NSFontManager.shared
+
 /// The main storyboard.
 let mainStoryboard = NSStoryboard.main!
 

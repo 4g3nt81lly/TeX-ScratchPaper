@@ -261,7 +261,7 @@ class DocumentWindow: NSWindowController, ObservableObject {
 
 // MARK: - Toolbar Configuration
 
-extension NSToolbarItem.Identifier: ExpressibleByStringLiteral {
+extension NSToolbarItem.Identifier: @retroactive ExpressibleByStringLiteral {
     
     public init(stringLiteral value: String) {
         self.init(value)

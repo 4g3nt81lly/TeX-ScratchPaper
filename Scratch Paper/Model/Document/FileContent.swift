@@ -31,11 +31,6 @@ class FileContent: NSObject, ObservableObject, NSSecureCoding {
         return document.undoManager
     }
     
-    /// Debug description with memory address and content string.
-    override var debugDescription: String {
-        return "\(Unmanaged.passUnretained(self).toOpaque()): '\(contentString)'"
-    }
-    
     // MARK: - Bookmarks
     
     /**
@@ -137,6 +132,7 @@ class FileContent: NSObject, ObservableObject, NSSecureCoding {
     }
     
     private func publishBookmarkChanges() {
+        // this triggers a UI update, which should be done in the Main thread
         DispatchQueue.main.async {
             self.objectWillChange.send()
         }

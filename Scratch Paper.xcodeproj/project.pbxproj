@@ -27,6 +27,7 @@
 		373F6F242BF48A2C0014E331 /* Collections in Frameworks */ = {isa = PBXBuildFile; productRef = 373F6F232BF48A2C0014E331 /* Collections */; };
 		374B919F27FCAA0400342439 /* OrderedDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374B919E27FCAA0400342439 /* OrderedDictionary.swift */; };
 		374B91A127FE931E00342439 /* AScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 374B91A027FE931E00342439 /* AScrollView.swift */; };
+		3759E93E2C76699B0057C955 /* TokenPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3759E93D2C76699B0057C955 /* TokenPattern.swift */; };
 		376B032D2BDF779A006DD10D /* EditorControllable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376B032C2BDF779A006DD10D /* EditorControllable.swift */; };
 		376DD6032880E513008B4CA0 /* GlobalChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376DD6022880E513008B4CA0 /* GlobalChannel.swift */; };
 		376DD608288153D8008B4CA0 /* BookmarksController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376DD607288153D8008B4CA0 /* BookmarksController.swift */; };
@@ -40,6 +41,7 @@
 		37883CE926770EC50094A71F /* DocumentWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37883CE526770EC50094A71F /* DocumentWindow.swift */; };
 		37883CEA26770EC50094A71F /* SidebarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37883CE626770EC50094A71F /* SidebarVC.swift */; };
 		3794D94227F5F364005870E3 /* ErrorPaneVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3794D94127F5F364005870E3 /* ErrorPaneVC.swift */; };
+		37B7A06B2C793F4400EB5054 /* MDEmphasisParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B7A06A2C793F3700EB5054 /* MDEmphasisParser.swift */; };
 		37BADE72287D126E008DAF3E /* Bookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BADE71287D126E008DAF3E /* Bookmark.swift */; };
 		37BADE74287D3119008DAF3E /* BookmarksPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BADE73287D3119008DAF3E /* BookmarksPane.swift */; };
 		37C113B12BE2B4C200E0C719 /* AnOutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C113B02BE2B4C200E0C719 /* AnOutlineView.swift */; };
@@ -94,6 +96,7 @@
 		373D4C622898DD3E0019F01F /* MainTextViewLayoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTextViewLayoutManager.swift; sourceTree = "<group>"; };
 		374B919E27FCAA0400342439 /* OrderedDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedDictionary.swift; sourceTree = "<group>"; };
 		374B91A027FE931E00342439 /* AScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AScrollView.swift; sourceTree = "<group>"; };
+		3759E93D2C76699B0057C955 /* TokenPattern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenPattern.swift; sourceTree = "<group>"; };
 		376B032C2BDF779A006DD10D /* EditorControllable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorControllable.swift; sourceTree = "<group>"; };
 		376DD6022880E513008B4CA0 /* GlobalChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalChannel.swift; sourceTree = "<group>"; };
 		376DD607288153D8008B4CA0 /* BookmarksController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksController.swift; sourceTree = "<group>"; };
@@ -111,6 +114,7 @@
 		37883CE526770EC50094A71F /* DocumentWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentWindow.swift; sourceTree = "<group>"; };
 		37883CE626770EC50094A71F /* SidebarVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SidebarVC.swift; sourceTree = "<group>"; };
 		3794D94127F5F364005870E3 /* ErrorPaneVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorPaneVC.swift; sourceTree = "<group>"; };
+		37B7A06A2C793F3700EB5054 /* MDEmphasisParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MDEmphasisParser.swift; sourceTree = "<group>"; };
 		37BADE71287D126E008DAF3E /* Bookmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bookmark.swift; sourceTree = "<group>"; };
 		37BADE73287D3119008DAF3E /* BookmarksPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksPane.swift; sourceTree = "<group>"; };
 		37C113B02BE2B4C200E0C719 /* AnOutlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnOutlineView.swift; sourceTree = "<group>"; };
@@ -203,6 +207,8 @@
 			children = (
 				37C6C2FB2BEEFCCD0068855F /* EditorTheme.swift */,
 				37C6C3012BEF8C180068855F /* ThemeToken.swift */,
+				3759E93D2C76699B0057C955 /* TokenPattern.swift */,
+				37B7A06A2C793F3700EB5054 /* MDEmphasisParser.swift */,
 			);
 			path = Theme;
 			sourceTree = "<group>";
@@ -503,8 +509,10 @@
 				37883CDB26770E670094A71F /* OutputView.swift in Sources */,
 				37D11AE6287A79CD0036E122 /* Reflective.swift in Sources */,
 				37883CE726770EC50094A71F /* EditorVC.swift in Sources */,
+				3759E93E2C76699B0057C955 /* TokenPattern.swift in Sources */,
 				37C6C2FC2BEEFCCD0068855F /* EditorTheme.swift in Sources */,
 				37EAD0E627F67AA20039BBD6 /* MainTextViewRulerView.swift in Sources */,
+				37B7A06B2C793F4400EB5054 /* MDEmphasisParser.swift in Sources */,
 				371B20D12876528700812767 /* WelcomeView.swift in Sources */,
 				373D4C632898DD3E0019F01F /* MainTextViewLayoutManager.swift in Sources */,
 				37075EB82878142C00152326 /* Configuration.swift in Sources */,
@@ -700,6 +708,7 @@
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = NQ67CRQP88;
 				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = "Scratch Paper/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Scratch Paper";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
@@ -710,6 +719,7 @@
 				MARKETING_VERSION = 0.1.0a;
 				PRODUCT_BUNDLE_IDENTIFIER = "app.personal.Scratch-Paper";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -738,6 +748,7 @@
 				MARKETING_VERSION = 0.1.0a;
 				PRODUCT_BUNDLE_IDENTIFIER = "app.personal.Scratch-Paper";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -779,7 +790,7 @@
 			repositoryURL = "https://github.com/siteline/swiftui-introspect.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.1.3;
+				minimumVersion = 1.2.0;
 			};
 		};
 		37E926D22BE7293800686135 /* XCRemoteSwiftPackageReference "SVGView" */ = {

@@ -86,6 +86,10 @@ extension String {
         return range
     }
     
+    func matches(pattern: RegEx) -> Bool {
+        return range(of: pattern.pattern, options: .regularExpression) != nil
+    }
+    
 }
 
 extension NSString {

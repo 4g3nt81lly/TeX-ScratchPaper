@@ -8,15 +8,16 @@ final class Patterns {
     
     // MARK: - Markdown
     
-    static let markdownBoldText: RegEx = #"([*_]){2}.*?\1{2}(?!\1)"#
+    static let markdownEmphasisDelimiter: RegEx = #"(?<!\\)(?:\*+|_+)"#
     
-    static let markdownItalicText: RegEx = #"(?:(?<!\*)\*(?![\s*])(?:[^*]*[^\s*])?\*)|(?:(?<!_)_(?![\s_])(?:[^_]*[^\s_])?_)"#
+    static let unicodeWhitespace: RegEx = #"^\s$"#
+    static let unicodePunctuation: RegEx = #"^[!"\#\$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~\p{P}\p{S}]$"#
     
     static let markdownUnderlinedText: RegEx = #"<u>.*?<\/u>"#
     
     static let markdownStrikethroughText: RegEx = #"(?<!~)(~~?)(?![\s~])(?:[^~]*[^\s~])?\1"#
     
-    static let markdownHeading: RegEx = #"^[\t ]*(#{1,6})[\t ]+(.+?)$"#
+    static let markdownHeading: RegEx = #"^ {0,3}(#{1,6})[\t ]+(.+?)$"#
     
     static let markdownBulletList: RegEx = #"^ *[*+-] +(.+)$"#
     
@@ -24,7 +25,9 @@ final class Patterns {
     
     // MARK: - TeX
     
-    static let texDelimiter: RegEx = #"(?:^|[^\\])(\\#(ContentRenderer.texDelimiter))"#
+    static let texDelimiter: RegEx = #"(?<!\\)\\#(ContentRenderer.texDelimiter)"#
+    
+    static let backticks: RegEx = #"(?<!\\)`"#
     
     static let texCommands: RegEx = #"\\(?:[a-zA-Z]+|[\\;, ])"#
     

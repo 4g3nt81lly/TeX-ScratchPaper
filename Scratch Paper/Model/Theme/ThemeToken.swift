@@ -8,51 +8,56 @@ class ThemeToken: NSObject {
     enum Scope {
         case full
         case mathOnly
+        case textOnly
         case custom((NSRange) -> [NSRange])
     }
     
-    let pattern: RegEx?
+    let pattern: TokenPattern?
     
     let attributes: TextAttributes
     
     let scope: Scope
     
-    let handler: ((NSTextStorage, NSTextCheckingResult, TextAttributes) -> Void)?
+    let handler: ((NSTextStorage, TokenPattern.Match, TextAttributes) -> Void)?
     
-    init(pattern: RegEx?, attributes: TextAttributes, scope: Scope,
-         handler: ((NSTextStorage, NSTextCheckingResult, TextAttributes) -> Void)?) {
+    init(pattern: TokenPattern? = nil, attributes: TextAttributes = [:], scope: Scope = .full,
+         handler: ((NSTextStorage, TokenPattern.Match, TextAttributes) -> Void)? = nil) {
         self.pattern = pattern
         self.attributes = attributes
         self.scope = scope
         self.handler = handler
     }
     
-    func apply(to textStorage: NSTextStorage, with outline: SectionNode) {
+    func apply(to textStorage: NSTextStorage, with section: SectionNode) {
+        // retrieve all target ranges within the section
         var targetRanges: [NSRange] = []
         switch scope {
-        case .full:
-            targetRanges = [outline.textRange]
+        case .full, .textOnly:
+            targetRanges = [section.range]
         case .mathOnly:
-            targetRanges = outline.mathRanges
+            targetRanges = section.mathRanges
         case .custom(let subranges):
-            targetRanges = subranges(outline.textRange)
+            targetRanges = subranges(section.range)
         }
-        for range in targetRanges {
+        for targetRange in targetRanges {
             if let pattern {
-                pattern.enumerateMatches(in: textStorage.string, range: range) { result, _, _ in
-                    guard let result else { return }
+                // apply the attributes to the matched ranges in the target range
+                for match in pattern.ranges(textStorage, targetRange, section) {
                     if let handler {
-                        handler(textStorage, result, attributes)
+                        // custom application of attributes
+                        handler(textStorage, match, attributes)
                     } else {
-                        textStorage.addAttributes(attributes, range: result.range)
+                        textStorage.addAttributes(attributes, range: match.range)
                     }
                 }
             } else {
-                textStorage.addAttributes(attributes, range: range)
+                // apply the attributes to the entire target range
+                textStorage.addAttributes(attributes, range: targetRange)
             }
         }
+        // is this necessary? :/
         if (!targetRanges.isEmpty) {
-            textStorage.edited(.editedAttributes, range: outline.textRange, changeInLength: 0)
+            textStorage.edited(.editedAttributes, range: section.range, changeInLength: 0)
         }
     }
     
